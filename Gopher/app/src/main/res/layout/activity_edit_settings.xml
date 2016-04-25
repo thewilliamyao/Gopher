@@ -53,7 +53,8 @@
         style="@android:style/Widget.Holo.ActionButton.TextButton"
         android:textAlignment="gravity"
         android:gravity="bottom|center_horizontal"
-        android:textSize="13dp"/>
+        android:textSize="13dp"
+        android:paddingBottom="5dp"/>
 
 
 </RelativeLayout>
