@@ -22,8 +22,11 @@
             android:name=".FoodieMainActivity"
             android:theme="@style/FoodieTheme.NoActionBar">
         </activity>
+        <activity android:name=".EditSettingsActivity">
+        </activity>
         <activity
-            android:name=".EditSettingsActivity">
+            android:name=".CookMainActivity"
+            android:theme="@style/CookTheme.NoActionBar">
         </activity>
     </application>
 

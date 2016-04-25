@@ -12,7 +12,7 @@
     <string name="profile_title">Profile</string>
     <string name="name_placeholder">John Smith</string>
     <string name="foodie_title">Foodie</string>
-
+    <string name="cook_title">Cook</string>
     <string name="save">Save</string>
 
 </resources>

@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/foodie_title"
-                android:id="@+id/userTypeSwitch"
+                android:id="@+id/userSwitch"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="8dp"
                 style="@style/Base.Widget.AppCompat.CompoundButton.Switch"
@@ -60,7 +60,8 @@
             android:id="@+id/settingsButton"
             android:background="@drawable/ic_settings_24dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="10dp"
+            android:focusable="true"/>
 
     </LinearLayout>
 

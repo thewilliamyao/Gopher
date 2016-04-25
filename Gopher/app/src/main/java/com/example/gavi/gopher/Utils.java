@@ -8,16 +8,37 @@ import android.content.Intent;
  */
 public class Utils {
 
-    private static int currTheme;
+    private static int sTheme;
+    public final static int COOK_THEME = 0;
+    public final static int FOODIE_THEME = 1;
 
-    public static void changeTheme(Activity activity, int theme) {
-        currTheme = theme;
-        Intent intent = new Intent(activity, activity.getClass());
+    /**
+     * Set the theme of the Activity, and restart it by creating a new Activity of the same type.
+     */
+    public static void changeToTheme(Activity activity, int theme) {
+        sTheme = theme;
         activity.finish();
-        activity.startActivity(intent);
+        activity.startActivity(new Intent(activity, activity.getClass()));
     }
 
+    /**
+     * Set the theme of the activity, according to the configuration.
+     */
     public static void onActivityCreateSetTheme(Activity activity) {
+        switch (sTheme) {
+            default:
+            case COOK_THEME:
+                activity.setTheme(R.style.CookTheme);
+                break;
+            case FOODIE_THEME:
+                activity.setTheme(R.style.FoodieTheme);
+                break;
+        }
+    }
+
+    public static void pickTheme(Activity activity) {
         activity.setTheme(R.style.CookTheme);
+        activity.finish();
+        activity.startActivity(new Intent(activity, activity.getClass()));
     }
 }
