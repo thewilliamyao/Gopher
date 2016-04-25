@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Gopher</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="map_title">Map</string>
+    <string name="list_title">List</string>
+    <string name="pending_orders_title">Pending Orders</string>
+    <string name="profile_title">Profile</string>
+    <string name="name_placeholder">John Smith</string>
+    <string name="foodie_title">Foodie</string>
+
+    <string name="save">Save</string>
+
+</resources>

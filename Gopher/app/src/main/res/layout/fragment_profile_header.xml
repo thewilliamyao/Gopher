@@ -1,0 +1,67 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.example.gavi.gopher.ProfileHeaderFragment">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/light_beige"
+        android:id="@+id/linearLayout">
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:id="@+id/imageView"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:background="#ffffff" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/linearLayout"
+            android:layout_alignParentStart="true"
+            android:layout_weight="3">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/name_placeholder"
+                android:id="@+id/nameText"
+                android:textColor="@color/dark_purple"
+                android:textSize="@dimen/header_size"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp" />
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/foodie_title"
+                android:id="@+id/userTypeSwitch"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="8dp"
+                style="@style/Base.Widget.AppCompat.CompoundButton.Switch"
+                android:checked="true"
+                android:textColor="@color/dark_purple"
+                android:textOff="cook"
+                android:textOn="foodie" />
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/settingsButton"
+            android:background="@drawable/ic_settings_24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp" />
+
+    </LinearLayout>
+
+</FrameLayout>
