@@ -19,9 +19,11 @@ public class UserSwitcherActivity extends AppCompatActivity {
         myPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         int userType = myPrefs.getInt(Constants.USER_TYPE, Constants.FOODIE);
         if (userType == Constants.COOK) {
+            setTheme(R.style.CookTheme);
             Intent intent = new Intent(this, CookMainActivity.class);
             startActivity(intent);
         } else {
+            setTheme(R.style.FoodieTheme);
             Intent intent = new Intent(this, FoodieMainActivity.class);
             startActivity(intent);
         }

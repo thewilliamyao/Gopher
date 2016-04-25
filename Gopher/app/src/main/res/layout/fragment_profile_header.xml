@@ -19,7 +19,8 @@
             android:id="@+id/imageView"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
-            android:background="#ffffff" />
+            android:background="#ffffff"
+            android:src="@drawable/ic_person_gray_24dp"/>
 
         <LinearLayout
             android:orientation="vertical"
