@@ -31,8 +31,7 @@ public class ProfileHeaderFragment extends Fragment {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(getActivity(), EditSettingsActivity.class);
-            intent.putExtra("name", nameText.getText());
-            startActivityForResult(intent, 1);
+            startActivity(intent);
         }
     };
 
@@ -49,17 +48,20 @@ public class ProfileHeaderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_profile_header, container, false);
+        myPrefs =  PreferenceManager.getDefaultSharedPreferences(
+                getActivity().getApplicationContext());
         nameText = (TextView) view.findViewById(R.id.nameText);
         settingsButton = (Button) view.findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(editSettings);
-        myPrefs =  PreferenceManager.getDefaultSharedPreferences(
-                getActivity().getApplicationContext());
-
         setupSwitch();
-
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        nameText.setText(myPrefs.getString(Constants.USER_NAME, Constants.DEFAULT_NAME));
     }
 
     //setup the switch based on the user type
@@ -73,15 +75,6 @@ public class ProfileHeaderFragment extends Fragment {
         } else {
             userSwitch.setText(R.string.cook_title);
             userSwitch.setChecked(false);
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
-            if(resultCode == Activity.RESULT_OK) {
-                nameText.setText(data.getStringExtra("name"));
-            }
         }
     }
 }

@@ -7,8 +7,12 @@ public class Constants {
 
     //myPrefs keys
     public static final String USER_TYPE = "user_type";
+    public static final String USER_NAME = "user_name";
 
     //user types
     public static final int FOODIE = 1;
     public static final int COOK = 0;
+
+    //defaults
+    public static final String DEFAULT_NAME = "John Smith";
 }
