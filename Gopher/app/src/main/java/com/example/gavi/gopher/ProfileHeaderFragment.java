@@ -41,8 +41,9 @@ public class ProfileHeaderFragment extends Fragment {
         @Override
         public void onClick(View v) {
             UserSwitcherActivity.toggleUserType(getActivity().getApplicationContext());
-            Intent intent = new Intent(getContext(), UserSwitcherActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(getContext(), UserSwitcherActivity.class);
+//            startActivity(intent);
+            UserSwitcherActivity.chooseUI(getActivity().getApplicationContext(), getActivity());
         }
     };
 

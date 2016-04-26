@@ -1,5 +1,6 @@
 package com.example.gavi.gopher;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,33 +16,39 @@ public class UserSwitcherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        myPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        int userType = myPrefs.getInt(Constants.USER_TYPE, Constants.FOODIE);
-        if (userType == Constants.COOK) {
-            setTheme(R.style.CookTheme);
-            Intent intent = new Intent(this, CookMainActivity.class);
-            startActivity(intent);
-        } else {
-            setTheme(R.style.FoodieTheme);
-            Intent intent = new Intent(this, FoodieMainActivity.class);
-            startActivity(intent);
-        }
+        chooseUI(getApplicationContext(), this);
     }
 
     public static void toggleUserType(Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        int userType = prefs.getInt(Constants.USER_TYPE, Constants.FOODIE);
+        int userType = getUserType(context);
 
         if (userType == Constants.FOODIE) {
             userType = Constants.COOK;
         } else {
             userType = Constants.FOODIE;
         }
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor peditor = prefs.edit();
         peditor.putInt(Constants.USER_TYPE, userType);
         peditor.commit();
+    }
 
+    public static int getUserType(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getInt(Constants.USER_TYPE, Constants.FOODIE);
+    }
+
+    public static void chooseUI(Context context, Activity activity) {
+        int userType = getUserType(context);
+        if (userType == Constants.COOK) {
+            context.setTheme(R.style.CookTheme);
+            Intent intent = new Intent(activity, CookMainActivity.class);
+            activity.startActivity(intent);
+        } else {
+            context.setTheme(R.style.FoodieTheme);
+            Intent intent = new Intent(activity, FoodieMainActivity.class);
+            activity.startActivity(intent);
+        }
     }
 
 }
