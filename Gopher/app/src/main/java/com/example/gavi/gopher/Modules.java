@@ -23,14 +23,4 @@ public class Modules {
         }
     }
 
-    //set background color based on user type
-    public static void setBackgroundColor(Activity activity, View view, int fColor, int cColor) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
-        int userType = prefs.getInt(Constants.USER_TYPE, Constants.FOODIE);
-        if (userType == Constants.FOODIE) {
-            view.setBackgroundColor(activity.getResources().getColor(fColor));
-        } else {
-            view.setBackgroundColor(activity.getResources().getColor(cColor));
-        }
-    }
 }
