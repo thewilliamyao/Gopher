@@ -1,9 +1,15 @@
 package com.example.gavi.gopher;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +32,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
  * Use the {@link MapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, LocationListener {
 
     private View view;
     private MapView mapView;
@@ -53,27 +59,63 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap map) {
+        this.map = map;
 
         //UI settings
         map.getUiSettings().setAllGesturesEnabled(true);
-        map.getUiSettings().setMyLocationButtonEnabled(true);
         map.getUiSettings().setZoomGesturesEnabled(true);
         map.getUiSettings().setZoomControlsEnabled(true);
 
-        LatLng sydney = new LatLng(-33.867, 151.206);
-//        map.setMyLocationEnabled(true);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
-        
+        //request location permission
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            map.setMyLocationEnabled(true);
+            map.getUiSettings().setMyLocationButtonEnabled(true);
+        } else {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, 0);
+        }
 
         //add static coordinate data
+        LatLng coordinate = null;
         MapData coordinates = new MapData();
         for (MapData.Coordinate coord: coordinates.coordinates) {
-            LatLng coordinate = new LatLng(coord.xCoordinate, coord.yCoordinate);
+            coordinate = new LatLng(coord.xCoordinate, coord.yCoordinate);
             map.addMarker(new MarkerOptions()
                     .title(coord.title)
                     .position(coordinate)
             );
         }
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 13)); //center camera on last coordinate
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        //request location permission
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            LatLng coordinate = new LatLng(location.getLatitude(), location.getLongitude() );
+            map.addMarker(new MarkerOptions()
+                    .title("Current Location")
+                    .position(coordinate)
+            );
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 13));
+        }
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
 
     }
 }
