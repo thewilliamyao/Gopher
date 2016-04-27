@@ -13,6 +13,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -57,16 +58,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         map.getUiSettings().setAllGesturesEnabled(true);
         map.getUiSettings().setMyLocationButtonEnabled(true);
         map.getUiSettings().setZoomGesturesEnabled(true);
-
+        map.getUiSettings().setZoomControlsEnabled(true);
 
         LatLng sydney = new LatLng(-33.867, 151.206);
 //        map.setMyLocationEnabled(true);
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
+        
 
-        map.addMarker(new MarkerOptions()
-                .title("Sydney")
-                .snippet("The most populous city in Australia.")
-                .position(sydney));
+        //add static coordinate data
+        MapData coordinates = new MapData();
+        for (MapData.Coordinate coord: coordinates.coordinates) {
+            LatLng coordinate = new LatLng(coord.xCoordinate, coord.yCoordinate);
+            map.addMarker(new MarkerOptions()
+                    .title(coord.title)
+                    .position(coordinate)
+            );
+        }
 
     }
 }

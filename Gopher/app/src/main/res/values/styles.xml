@@ -7,7 +7,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDarkFoodie</item>
         <item name="colorAccent">@color/colorAccentFoodie</item>
         <item name="android:colorButtonNormal">@color/colorPrimaryFoodie</item>
-        <item name="map"
     </style>
 
     <style name="FoodieTheme.NoActionBar">
