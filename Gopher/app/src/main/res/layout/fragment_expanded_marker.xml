@@ -1,0 +1,63 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    tools:context="com.example.gavi.gopher.ExpandedMarkerFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryFoodie"
+        android:alpha="128"
+        >
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:alpha="128">
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@color/white"
+                android:id="@+id/imageView2"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name_placeholder"
+                    android:id="@+id/nameText"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/header_size"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_marginLeft="16dp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/address_placeholder"
+                    android:textColor="@color/white"
+
+                    android:id="@+id/addressText"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+
+</FrameLayout>
