@@ -33,12 +33,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        FragmentManager fragmentManager = getFragmentManager();
-//        SupportMapFragment map = (SupportMapFragment) fragmentManager.findFragmentById(R.id.map);
-//        System.out.println("MAP: " + map);
-//        map.getMapAsync(this);
-
     }
 
     @Override
@@ -50,11 +44,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Gets the MapView from the XML layout and creates it
         mapView = (MapView) view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
-
-        // Gets to GoogleMap from the MapView and does initialization stuff
-//        map = mapView.getMapAsync();
-//        map.getUiSettings().setMyLocationButtonEnabled(false);
-//        map.setMyLocationEnabled(true);
+        mapView.getMapAsync(this);
 
         return view;
     }
