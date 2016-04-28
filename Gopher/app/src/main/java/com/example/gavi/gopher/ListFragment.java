@@ -51,6 +51,8 @@ public class ListFragment extends Fragment {
             newLists.add(new ListItem("Mac and Cheese", 8.99, "Fobby Blay", "30th and St.Paul's Street", 4.0, 0.3, true, true, false));
             newLists.add(new ListItem("Garlic Tomato", 9.99, "Katherine Liu", "1E 31St Baltimore", 4.9, 0.5, true, false, true));
             newLists.add(new ListItem("Seafood Pizza", 6.99, "Susie Wu", "2801 Univ Pkwy", 4.8, 0.6, true, true, true));
+            newLists.add(new ListItem("Egg and Cheese", 8.99, "Duan L", "3400 St.Paul's Street", 4.0, 0.7, true, true, false));
+            newLists.add(new ListItem("Mac and Cheese", 8.99, "Jessie L", "3500th North Charles Street", 4.0, 0.8, true, true, false));
 
             ArrayAdapter<ListItem> adapter = new ListViewAdapter(getActivity().getApplicationContext(), R.layout.listview_item_layout, newLists);
             final ListView list = (ListView) v.findViewById(R.id.item_listViewTwo);
@@ -64,22 +66,29 @@ public class ListFragment extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                         long id) {
 
+                    switch (position) {
+                        case 0:
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                        case 5:
+                        ListItem food = (ListItem) parent.getAdapter().getItem(position);
 
-                    ListItem food = (ListItem) parent.getAdapter().getItem(position);
+                        Intent intent = new Intent(getActivity(), FoodDetails.class);
 
-                    Intent intent = new Intent(getActivity(), FoodDetails.class);
+                        intent.putExtra("KEY_title", food.getTitle());
+                        intent.putExtra("KEY_address", food.getAddress());
+                        intent.putExtra("KEY_chefname", food.getChefName());
+                        intent.putExtra("KEY_rating", Double.toString(food.getRating()));
+                        intent.putExtra("KEY_price", Double.toString(food.getPrice()));
+                        intent.putExtra("KEY_distance", Double.toString(food.getDistance()));
+                        intent.putExtra("KEY_glut", food.getGluten());
+                        intent.putExtra("KEY_nut", food.getNut());
+                        intent.putExtra("KEY_dairy", food.getDairy());
 
-                    intent.putExtra("KEY_title", food.getTitle());
-                    intent.putExtra("KEY_address", food.getAddress());
-                    intent.putExtra("KEY_chefname", food.getChefName());
-                    intent.putExtra("KEY_rating", Double.toString(food.getRating()));
-                    intent.putExtra("KEY_price", Double.toString(food.getPrice()));
-                    intent.putExtra("KEY_distance", Double.toString(food.getDistance()));
-                    intent.putExtra("KEY_glut", food.getGluten());
-                    intent.putExtra("KEY_nut", food.getNut());
-                    intent.putExtra("KEY_dairy", food.getDairy());
-
-                    startActivity(intent);
+                        startActivity(intent);
+                    }
 
                     System.out.println("intent!!");
 

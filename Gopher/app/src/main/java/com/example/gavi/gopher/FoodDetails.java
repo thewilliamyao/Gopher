@@ -35,13 +35,13 @@ public class FoodDetails extends AppCompatActivity {
         String pric = intent.getStringExtra("KEY_price");
         String addr  = intent.getStringExtra("KEY_address");
         String rate = intent.getStringExtra("KEY_rating");
-        boolean dai = intent.getBooleanExtra("Key_dairy", false);
-        boolean glut = intent.getBooleanExtra("Key_gluten", false);
-        boolean nu = intent.getBooleanExtra("Key_nut", false);
+        boolean dai = intent.getBooleanExtra("Key_dairy", true);
+        boolean glut = intent.getBooleanExtra("Key_gluten", true);
+        boolean nu = intent.getBooleanExtra("Key_nut", true);
 
         foodname.setText(title);
         cookname.setText(chefname);
-        price.setText(pric);
+        price.setText("$" + pric);
         address.setText(addr);
         rating.setText(rate);
 
