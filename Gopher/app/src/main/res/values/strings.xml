@@ -14,5 +14,6 @@
     <string name="foodie_title">Foodie</string>
     <string name="cook_title">Cook</string>
     <string name="save">Save</string>
+    <string name="title_activity_food_details">FoodDetails</string>
 
 </resources>
