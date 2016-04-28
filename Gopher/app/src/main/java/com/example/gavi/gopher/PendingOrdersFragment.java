@@ -46,8 +46,8 @@ public class PendingOrdersFragment extends Fragment {
 
         List<ListItem> newLists = new ArrayList<ListItem>();
 
-        newLists.add(new ListItem("Grilled Cheese", 7.99 , "Rordon Gamsay", "33rd and North Charles Street", 4.5));
-        newLists.add(new ListItem("Mac and Cheese", 8.99, "Fobby Blay", "30th and St.Paul's Street", 4.0));
+        newLists.add(new ListItem("Grilled Cheese", 7.99 , "Rordon Gamsay", "33rd and North Charles Street", 4.5, 0.5, true, true, false));
+        newLists.add(new ListItem("Mac and Cheese", 8.99, "Fobby Blay", "30th and St.Paul's Street", 4.0, 0.3, true, false, false));
 
         ArrayAdapter<ListItem> adapter = new ListAdapter(getActivity().getApplicationContext(), R.layout.list_item_layout, newLists);
         ListView list = (ListView) v.findViewById(R.id.item_listView);
