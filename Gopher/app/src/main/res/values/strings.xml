@@ -11,6 +11,7 @@
     <string name="pending_orders_title">Pending Orders</string>
     <string name="profile_title">Profile</string>
     <string name="name_placeholder">John Smith</string>
+    <string name="address_placeholder">3700 North Charles St. Baltimore, MD</string>
     <string name="foodie_title">Foodie</string>
     <string name="cook_title">Cook</string>
     <string name="save">Save</string>

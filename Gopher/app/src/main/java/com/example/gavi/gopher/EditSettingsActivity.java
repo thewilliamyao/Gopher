@@ -58,7 +58,6 @@ public class EditSettingsActivity extends AppCompatActivity {
         nameText = (EditText) findViewById(R.id.nameText);
         nameText.setText(myPrefs.getString(Constants.USER_NAME, Constants.DEFAULT_NAME));
         saveButton = (Button) findViewById(R.id.saveButton);
-        Modules.setBackgroundColor(this, saveButton, R.color.colorPrimaryFoodie, R.color.colorPrimaryCook);
         saveButton.setOnClickListener(save);
 
         userImage = (ImageView) findViewById(R.id.userImage);

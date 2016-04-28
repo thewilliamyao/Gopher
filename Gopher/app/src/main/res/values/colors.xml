@@ -3,10 +3,13 @@
     <color name="colorAccentFoodie">#b86b62</color>
     <color name="colorPrimaryFoodie">#df8276</color>
     <color name="colorPrimaryDarkFoodie">#b86b62</color>
+    <color name="colorPrimaryFoodieTransparent">#BFdf8276</color>
+
 
     <color name="colorPrimaryCook">#72CB97</color>
     <color name="colorPrimaryDarkCook">#4C8764</color>
     <color name="colorAccentCook">#4C8764</color>
+
 
     <color name="white">#ffffff</color>
     <color name="light_beige">#fed2b5</color>

@@ -2,7 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.gavi.gopher">
 
-    <application
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <application>
+        
+        <meta-data
+            android:name="com.google.android.geo.API_KEY" android:value="@string/api_key"/>
+
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
