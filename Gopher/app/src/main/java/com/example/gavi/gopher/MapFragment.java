@@ -21,7 +21,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.HashMap;
 
 
 /**
@@ -37,10 +40,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     private View view;
     private MapView mapView;
     private GoogleMap map;
+    private ExpandedMarkerFragment expandedMarkerFrag;
+    private Marker mSelectedMarker;
+    private HashMap<Marker, Integer> images;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        images = new HashMap<Marker, Integer>();
+
     }
 
     @Override
@@ -49,14 +57,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_map, container, false);
 
+
         // Gets the MapView from the XML layout and creates it
         mapView = (MapView) view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
         //add profile header fragment
+        expandedMarkerFrag = new ExpandedMarkerFragment();
         getChildFragmentManager().beginTransaction().add(
-                R.id.expanded_marker_container, new ExpandedMarkerFragment()
+                R.id.expanded_marker_container, expandedMarkerFrag
         ).commit();
 
         return view;
@@ -86,14 +96,40 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         MapData coordinates = new MapData();
         for (MapData.Coordinate coord: coordinates.coordinates) {
             coordinate = new LatLng(coord.xCoordinate, coord.yCoordinate);
-            map.addMarker(new MarkerOptions()
-                    .title(coord.title)
+            Marker marker = map.addMarker(new MarkerOptions()
                     .position(coordinate)
-            );
+                    .title(coord.title)
+                    .snippet(coord.address));
+            images.put(marker, coord.image); //update images
         }
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 13)); //center camera on last coordinate
+             System.out.println("HERE" + images);
+
+        //set expanded view info on marker select
+        map.setOnMarkerClickListener(updateExpandedView);
 
     }
+
+    //show details in expanded marker view
+    GoogleMap.OnMarkerClickListener updateExpandedView = new GoogleMap.OnMarkerClickListener() {
+        @Override
+        public boolean onMarkerClick(Marker marker) {
+
+            //update expanded view
+            expandedMarkerFrag.setName(marker.getTitle());
+            expandedMarkerFrag.setAddress(marker.getSnippet());
+            expandedMarkerFrag.setImageView(images.get(marker));
+
+            //set selected state
+            if (null != mSelectedMarker) {
+                mSelectedMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+            }
+            mSelectedMarker = marker;
+            mSelectedMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+            return true;
+        }
+    };
+
 
     @Override
     public void onLocationChanged(Location location) {
@@ -108,6 +144,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 13));
         }
     }
+
+
 
     @Override
     public void onProviderDisabled(String s) {

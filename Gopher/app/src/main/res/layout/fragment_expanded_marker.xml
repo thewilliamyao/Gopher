@@ -20,12 +20,11 @@
             android:alpha="128">
 
             <ImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:background="@color/white"
-                android:id="@+id/imageView2"
-                android:layout_gravity="center"
-                android:layout_marginLeft="16dp" />
+                android:id="@+id/imageView"
+                android:layout_gravity="center" />
 
             <LinearLayout
                 android:orientation="vertical"
