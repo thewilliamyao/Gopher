@@ -1,6 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8pt"
+        android:layout_marginLeft="3pt">
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:text="New Button"
+            android:id="@+id/button3" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_marginLeft="3pt">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="Food Title"
+                android:id="@+id/food_title" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price"
+                android:id="@+id/price" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="Chef Name"
+                android:id="@+id/chef_name" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Address"
+                android:id="@+id/address" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rating"
+                android:id="@+id/rating" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10pt"
+        android:layout_marginLeft="3pt"
+        android:layout_marginRight="3pt">
+
+        <Button
+            android:layout_width="75pt"
+            android:layout_height="wrap_content"
+            android:text="Cancel Order"
+            android:id="@+id/cancel_order" />
+
+        <Button
+            android:layout_width="75pt"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8pt"
+            android:text="Directions"
+            android:id="@+id/directions" />
+    </LinearLayout>
 </LinearLayout>
