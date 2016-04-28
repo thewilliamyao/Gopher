@@ -71,7 +71,8 @@
             android:layout_height="wrap_content"
             android:text="Cancel Order"
             android:id="@+id/cancel_order"
-            android:background="#df8276" />
+            android:background="?attr/primary_background"
+            android:textColor="@color/white"/>
 
         <Button
             android:layout_width="75pt"
@@ -79,6 +80,7 @@
             android:layout_marginLeft="8pt"
             android:text="Directions"
             android:id="@+id/directions"
-            android:background="#df8276" />
+            android:background="?attr/primary_background"
+            android:textColor="@color/white"/>
     </LinearLayout>
 </LinearLayout>
