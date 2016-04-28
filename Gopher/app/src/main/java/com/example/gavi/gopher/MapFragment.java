@@ -64,10 +64,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         mapView.getMapAsync(this);
 
         //add profile header fragment
-        expandedMarkerFrag = new ExpandedMarkerFragment();
-        getChildFragmentManager().beginTransaction().add(
-                R.id.expanded_marker_container, expandedMarkerFrag
-        ).commit();
+        if (expandedMarkerFrag == null) {
+            expandedMarkerFrag = new ExpandedMarkerFragment();
+            getChildFragmentManager().beginTransaction().add(
+                    R.id.expanded_marker_container, expandedMarkerFrag
+            ).commit();
+        }
 
         return view;
     }

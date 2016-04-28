@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDarkFoodie</item>
         <item name="colorAccent">@color/colorAccentFoodie</item>
         <item name="android:colorButtonNormal">@color/colorPrimaryFoodie</item>
+        <item name="primary_background">@color/colorPrimaryFoodie</item>
     </style>
 
     <style name="FoodieTheme.NoActionBar">
@@ -19,6 +20,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDarkCook</item>
         <item name="colorAccent">@color/colorAccentCook</item>
         <item name="android:colorButtonNormal">@color/colorPrimaryCook</item>
+        <item name="primary_background">@color/colorPrimaryCook</item>
+
     </style>
 
     <style name="CookTheme.NoActionBar">

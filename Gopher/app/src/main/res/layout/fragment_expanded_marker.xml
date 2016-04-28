@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryFoodie"
+        android:background="?attr/primary_background"
         android:alpha="128"
         >
 
@@ -24,7 +24,8 @@
                 android:layout_height="100dp"
                 android:background="@color/white"
                 android:id="@+id/imageView"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:src="@drawable/ic_local_cafe_grey_24dp" />
 
             <LinearLayout
                 android:orientation="vertical"
@@ -36,18 +37,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/name_placeholder"
                     android:id="@+id/nameText"
                     android:textColor="@color/white"
                     android:textSize="@dimen/header_size"
                     android:gravity="center_vertical|center_horizontal"
-                    android:layout_marginLeft="16dp" />
+                    android:layout_marginLeft="16dp"
+                    android:text="No item selected." />
 
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/address_placeholder"
                     android:textColor="@color/white"
 
                     android:id="@+id/addressText"
