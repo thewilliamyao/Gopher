@@ -16,7 +16,8 @@ public class UserSwitcherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        chooseUI(getApplicationContext(), this);
+        Intent intent = new Intent(this, UserSwitcherActivity.class);
+        startActivity(intent);
     }
 
     public static void toggleUserType(Context context) {
