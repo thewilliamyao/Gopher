@@ -21,7 +21,12 @@
         <item name="colorAccent">@color/colorAccentCook</item>
         <item name="android:colorButtonNormal">@color/colorPrimaryCook</item>
         <item name="primary_background">@color/colorPrimaryCook</item>
+    </style>
 
+    <style name="FoodieTheme.translucent">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="CookTheme.NoActionBar">

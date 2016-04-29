@@ -16,5 +16,8 @@
     <color name="dark_beige">#d6b59e</color>
     <color name="dark_purple">#5d555b</color>
     <color name="light_gray">#cccccc</color>
+    <color name="faded_purple">#44435B</color>
+    <color name="light_purple">#8F8DB3</color>
+    <color name="faded_light_purple">#635F82</color>
 
 </resources>
