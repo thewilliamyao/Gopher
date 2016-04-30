@@ -17,4 +17,6 @@
     <string name="save">Save</string>
     <string name="title_activity_food_details">FoodDetails</string>
 
+    <string name="firebase_url">https://gopher-uima.firebaseIO.com</string>
+
 </resources>

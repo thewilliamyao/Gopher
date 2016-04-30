@@ -11,7 +11,7 @@ import android.support.v7.widget.Toolbar;
 
 public class UserSwitcherActivity extends AppCompatActivity {
 
-    private SharedPreferences myPrefs;
+    private SharedPreferences mylogiPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
