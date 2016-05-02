@@ -29,7 +29,7 @@ public class ExpandedMarkerFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_expanded_marker, container, false);
-        nameText = (TextView) view.findViewById(R.id.nameText);
+        nameText = (TextView) view.findViewById(R.id.firstName);
         addressText = (TextView) view.findViewById(R.id.addressText);
         imageView = (ImageView) view.findViewById(R.id.imageView);
         return view;

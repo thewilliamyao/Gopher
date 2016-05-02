@@ -21,13 +21,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:text="First Name"
         android:ems="10"
-        android:id="@+id/nameText"
+        android:id="@+id/firstName"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_alignBottom="@+id/userImage"
-        android:layout_toEndOf="@+id/userImage"/>
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/userImage" />
 
     <ImageView
         android:layout_width="70dp"
@@ -55,6 +55,17 @@
         android:gravity="bottom|center_horizontal"
         android:textSize="13dp"
         android:paddingBottom="5dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Last Name"
+        android:ems="10"
+        android:id="@+id/lastName"
+        android:layout_marginRight="16dp"
+        android:layout_below="@+id/firstName"
+        android:layout_alignStart="@+id/firstName" />
 
 
 </RelativeLayout>

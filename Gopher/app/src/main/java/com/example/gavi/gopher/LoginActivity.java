@@ -2,7 +2,9 @@ package com.example.gavi.gopher;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -72,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onAuthenticated(AuthData authData) {
                         System.out.println("User ID: " + authData.getUid() + ", Provider: " + authData.getProvider());
+                        storeID(authData.getUid());
                         UserSwitcherActivity.chooseUI(getApplicationContext(), (thisActivity));
                     }
                     @Override
@@ -84,6 +87,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     };
+
+    //store user id in shared prefs for global access
+    private void storeID(String id) {
+        SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor peditor = myPrefs.edit();
+        peditor.putString(Constants.USER_ID, id);
+        peditor.commit();
+    }
 
 
 

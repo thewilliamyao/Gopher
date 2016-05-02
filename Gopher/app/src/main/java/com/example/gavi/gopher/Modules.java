@@ -1,11 +1,12 @@
 package com.example.gavi.gopher;
 
 import android.app.Activity;
-import android.content.Context;
+import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.view.View;
-import android.widget.Button;
+import com.firebase.client.Firebase;
+import com.firebase.client.core.Context;
+
 
 /**
  * Created by Gavi on 4/25/16.
@@ -21,6 +22,11 @@ public class Modules {
         } else {
             activity.setTheme(R.style.CookTheme);
         }
+    }
+
+    public static Firebase connectDB(Activity activity, String path) {
+        Firebase.setAndroidContext(activity); //global firebase context
+        return (new Firebase("https://gopher-uima.firebaseIO.com" + path)); //reference variable
     }
 
 }
