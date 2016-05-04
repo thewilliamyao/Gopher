@@ -2,10 +2,12 @@ package com.example.gavi.gopher;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +16,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fasterxml.jackson.databind.Module;
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -105,7 +114,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
             images.put(marker, coord.image); //update images
         }
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 13)); //center camera on last coordinate
-             System.out.println("HERE" + images);
 
         //set expanded view info on marker select
         map.setOnMarkerClickListener(updateExpandedView);

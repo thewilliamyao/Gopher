@@ -4,34 +4,42 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.media.Image;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.firebase.client.Firebase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class EditSettingsActivity extends AppCompatActivity {
 
-    private EditText nameText;
+    private EditText fName;
+    private EditText lName;
     private Button saveButton;
     private Button addPhotoButton;
     private ImageView userImage;
-    private SharedPreferences myPrefs;
+    private Activity activity;
 
-    //save name to shared preferences
+    //save name to firebase
     View.OnClickListener save = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            SharedPreferences.Editor peditor = myPrefs.edit();
-            peditor.putString(Constants.USER_NAME, nameText.getText().toString());
-            peditor.commit();
+            SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            String userID = myPrefs.getString(Constants.USER_ID, "null");
+            Firebase firebase = Modules.connectDB(activity, "/users");
+            Firebase userRef = firebase.child(userID);
+            Map<String, Object> name = new HashMap<String, Object>();
+            name.put("firstName", fName.getText().toString());
+            name.put("lastName", lName.getText().toString());
+            userRef.updateChildren(name);
             finish();
         }
     };
@@ -49,14 +57,20 @@ public class EditSettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = this;
         Modules.setUserUI(this);
         setContentView(R.layout.activity_edit_settings);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //enable back button
         setTitle("Settings");
 
-        myPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        nameText = (EditText) findViewById(R.id.nameText);
-        nameText.setText(myPrefs.getString(Constants.USER_NAME, Constants.DEFAULT_NAME));
+        fName = (EditText) findViewById(R.id.firstName);
+        lName = (EditText) findViewById(R.id.lastName);
+
+        //get data
+        Intent data = getIntent();
+        fName.setText(data.getStringExtra("first_name"));
+        lName.setText(data.getStringExtra("last_name"));
+
         saveButton = (Button) findViewById(R.id.saveButton);
         saveButton.setOnClickListener(save);
 
