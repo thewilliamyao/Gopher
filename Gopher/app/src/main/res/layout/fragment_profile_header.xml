@@ -38,21 +38,48 @@
                 android:textColor="@color/dark_purple"
                 android:textSize="@dimen/header_size"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp" />
+                android:layout_marginTop="15dp" />
 
-            <Switch
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/foodie_title"
+            <RadioGroup
+                android:checkedButton="@+id/foodieToggle"
                 android:id="@+id/userSwitch"
-                android:layout_marginLeft="22dp"
-                android:layout_marginTop="8dp"
-                style="@style/Base.Widget.AppCompat.CompoundButton.Switch"
-                android:checked="true"
-                android:textColor="@color/dark_purple"
-                android:textOff="cook"
-                android:textOn="foodie"
-                android:switchPadding="15dp"/>
+                android:layout_width="175dp"
+                android:layout_height="30dp"
+                android:background="@drawable/switch_outline"
+                android:orientation="horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp">
+
+                <RadioButton
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:id="@+id/cookToggle"
+                    android:background="@drawable/toggle_widget_background"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="Cook"
+                    android:textColor="@color/white"
+                    android:checked="false" />
+
+                <RadioButton
+                    android:layout_marginRight="1dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="1dp"
+                    android:id="@+id/foodieToggle"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_widget_background"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="Foodie"
+                    android:textColor="@color/white"
+                    android:checked="false" />
+            </RadioGroup>
 
         </LinearLayout>
 

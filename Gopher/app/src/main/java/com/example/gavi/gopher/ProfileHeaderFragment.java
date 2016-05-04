@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -28,7 +30,8 @@ public class ProfileHeaderFragment extends Fragment {
     private View view;
     private TextView nameText;
     private Button settingsButton;
-    private Switch userSwitch;
+    private RadioButton cookToggle;
+    private RadioButton foodieToggle;
     private SharedPreferences myPrefs;
 
     private String fname;
@@ -75,15 +78,18 @@ public class ProfileHeaderFragment extends Fragment {
 
     //setup the switch based on the user type
     private void setupSwitch() {
-        userSwitch = (Switch) view.findViewById(R.id.userSwitch);
-        userSwitch.setOnClickListener(switchUser);
+        foodieToggle = (RadioButton) view.findViewById(R.id.foodieToggle);
+        cookToggle = (RadioButton) view.findViewById(R.id.cookToggle);
+
         int userType = myPrefs.getInt(Constants.USER_TYPE, Constants.FOODIE);
         if (userType == Constants.FOODIE) {
-            userSwitch.setText(R.string.foodie_title);
-            userSwitch.setChecked(true);
+            cookToggle.setOnClickListener(switchUser);
+            foodieToggle.setChecked(true);
+            cookToggle.setChecked(false);
         } else {
-            userSwitch.setText(R.string.cook_title);
-            userSwitch.setChecked(false);
+            foodieToggle.setOnClickListener(switchUser);
+            cookToggle.setChecked(true);
+            foodieToggle.setChecked(false);
         }
     }
 
