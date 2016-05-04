@@ -31,11 +31,16 @@ public class ProfileHeaderFragment extends Fragment {
     private Switch userSwitch;
     private SharedPreferences myPrefs;
 
+    private String fname;
+    private String lname;
+
     //edit the settings for the header bar
     View.OnClickListener editSettings = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(getActivity(), EditSettingsActivity.class);
+            intent.putExtra("first_name", fname);
+            intent.putExtra("last_name", lname);
             startActivity(intent);
         }
     };
@@ -45,8 +50,6 @@ public class ProfileHeaderFragment extends Fragment {
         @Override
         public void onClick(View v) {
             UserSwitcherActivity.toggleUserType(getActivity().getApplicationContext());
-//            Intent intent = new Intent(getContext(), UserSwitcherActivity.class);
-//            startActivity(intent);
             UserSwitcherActivity.chooseUI(getActivity().getApplicationContext(), getActivity());
         }
     };
@@ -94,6 +97,8 @@ public class ProfileHeaderFragment extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChild) {
                 User user = snapshot.getValue(User.class);
+                fname = user.getFirstName();
+                lname = user.getLastName();
                 nameText.setText(user.getFirstName() + " " + user.getLastName());
             }
 

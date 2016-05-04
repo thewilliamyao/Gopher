@@ -37,7 +37,8 @@ public class EditSettingsActivity extends AppCompatActivity {
             Firebase firebase = Modules.connectDB(activity, "/users");
             Firebase userRef = firebase.child(userID);
             Map<String, Object> name = new HashMap<String, Object>();
-            name.put("firstName", nameText.getText().toString());
+            name.put("firstName", fName.getText().toString());
+            name.put("lastName", lName.getText().toString());
             userRef.updateChildren(name);
             finish();
         }
@@ -63,8 +64,13 @@ public class EditSettingsActivity extends AppCompatActivity {
         setTitle("Settings");
 
         fName = (EditText) findViewById(R.id.firstName);
-        lName = (EditText) findViewById(R.id.firstName);
-        nameText.setText(myPrefs.getString(Constants.USER_NAME, Constants.DEFAULT_NAME));
+        lName = (EditText) findViewById(R.id.lastName);
+
+        //get data
+        Intent data = getIntent();
+        fName.setText(data.getStringExtra("first_name"));
+        lName.setText(data.getStringExtra("last_name"));
+
         saveButton = (Button) findViewById(R.id.saveButton);
         saveButton.setOnClickListener(save);
 
