@@ -6,9 +6,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
 import com.squareup.picasso.Picasso;
 
 
@@ -17,6 +19,9 @@ import com.squareup.picasso.Picasso;
  */
 public class ExpandedMarkerFragment extends Fragment {
 
+    private static double x = -34.1;
+    private static double y = 151.1;
+    Firebase lastAdded;
 
     private TextView nameText;
     private TextView addressText;
@@ -32,6 +37,11 @@ public class ExpandedMarkerFragment extends Fragment {
         nameText = (TextView) view.findViewById(R.id.firstName);
         addressText = (TextView) view.findViewById(R.id.addressText);
         imageView = (ImageView) view.findViewById(R.id.imageView);
+
+        //DELETE THIS
+        ((Button) view.findViewById(R.id.addButton)).setOnClickListener(addMeal);
+        ((Button) view.findViewById(R.id.removeButton)).setOnClickListener(removeMeal);
+
         return view;
     }
 
@@ -51,5 +61,29 @@ public class ExpandedMarkerFragment extends Fragment {
                 .centerCrop()
                 .into(imageView);
     }
+
+
+    View.OnClickListener addMeal = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Firebase firebase = Modules.connectDB(getActivity(), "/meals");
+            Firebase newMeal = firebase.push();
+            Meal toAdd = new Meal("Chicken", 10.00, "desc", x, y);
+            x += 0.1;
+            y += 0.1;
+            newMeal.setValue(toAdd);
+            lastAdded = newMeal;
+        }
+    };
+
+    View.OnClickListener removeMeal = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Firebase firebase = Modules.connectDB(getActivity(), "/meals");
+            if (lastAdded != null) {
+                lastAdded.removeValue();
+            }
+        }
+    };
 
 }

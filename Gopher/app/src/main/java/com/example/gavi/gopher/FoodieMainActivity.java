@@ -9,6 +9,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.SupportMapFragment;
 
 public class FoodieMainActivity extends AppCompatActivity {
 
@@ -52,7 +55,6 @@ public class FoodieMainActivity extends AppCompatActivity {
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_list_white_24dp);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_local_grocery_store_white_24dp);
         tabLayout.getTabAt(3).setIcon(R.drawable.ic_person_white_24dp);
-
     }
 
 
@@ -71,7 +73,7 @@ public class FoodieMainActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
-                case 0: return new MapFragment();
+                case 0: return new FoodieMap();
                 case 1: return new ListFragment();
                 case 2: return new PendingOrdersFragment();
                 case 3: return new ProfileFragment();
