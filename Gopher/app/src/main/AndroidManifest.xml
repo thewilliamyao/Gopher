@@ -39,8 +39,12 @@
             android:name=".FoodDetails"
             android:label="@string/title_activity_food_details"
             android:theme="@style/FoodieTheme.NoActionBar" />
-        <activity android:name=".SignupActivity"
-            android:theme="@style/FoodieTheme.transparent"/>
+        <activity
+            android:name=".SignupActivity"
+            android:theme="@style/FoodieTheme.transparent" />
+        <activity
+            android:name=".SignupAddressActivity"
+            android:theme="@style/FoodieTheme.transparent" />
     </application>
 
 </manifest>

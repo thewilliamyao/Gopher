@@ -28,7 +28,6 @@ public class SignupActivity extends AppCompatActivity {
     private EditText firstName;
     private EditText lastName;
     private EditText email;
-    private Firebase myFirebaseRef;
     private Button signupButton;
     private Activity thisActivity;
 
@@ -48,16 +47,12 @@ public class SignupActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.passwordText);
         password.setTypeface( Typeface.DEFAULT );
 
-        //init Firebase
-        Firebase.setAndroidContext(this); //global firebase context
-        myFirebaseRef = new Firebase("https://gopher-uima.firebaseIO.com"); //reference variable
-
         //signup button setup
         signupButton = (Button) findViewById(R.id.signupButton);
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createUser();
+                submit();
             }
         });
 
@@ -70,8 +65,7 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-
-    private boolean createUser() {
+    private boolean submit() {
         String emailStr = email.getText().toString();
         String passwordStr = password.getText().toString();
         String fname = firstName.getText().toString();
@@ -85,45 +79,13 @@ public class SignupActivity extends AppCompatActivity {
             return false;
         }
 
-        //create user
-        myFirebaseRef.createUser(emailStr, passwordStr, new Firebase.ValueResultHandler<Map<String, Object>>() {
-            @Override
-            public void onSuccess(Map<String, Object> result) {
-                String id = result.get("uid").toString();
-                storeUser(id);
-                storeID(id);
-                UserSwitcherActivity.chooseUI(getApplicationContext(), (thisActivity));
-            }
-            @Override
-            public void onError(FirebaseError firebaseError) {
-                YoYo.with(Techniques.Shake)
-                        .duration(700)
-                        .playOn(signupButton);
-                System.out.println("Error creating user");
-            }
-        });
+        Intent intent = new Intent(this, SignupAddressActivity.class);
+        intent.putExtra("email", emailStr);
+        intent.putExtra("password", passwordStr);
+        intent.putExtra("fname", fname);
+        intent.putExtra("lname", lname);
+        startActivity(intent);
         return true;
     }
-
-    //store the new user's data in firebase
-    private void storeUser(String id) {
-        User newUser = new User(
-                id, firstName.getText().toString(),
-                lastName.getText().toString(), email.getText().toString()
-        );
-        Firebase alanRef = myFirebaseRef.child("users").child(id);
-        alanRef.setValue(newUser);
-    }
-
-    //store user id in shared prefs for global access
-    private void storeID(String id) {
-        SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor peditor = myPrefs.edit();
-        peditor.putString(Constants.USER_ID, id);
-        peditor.commit();
-
-    }
-
-
 }
 
