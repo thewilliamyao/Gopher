@@ -2,9 +2,13 @@ package com.example.gavi.gopher;
 
 import android.Manifest;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 
@@ -30,11 +34,13 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -79,26 +85,33 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
 
     @Override
     public void onMapReady(GoogleMap map) {
-        this.map = map;
+        if (this.map == null) {
+            this.map = map;
 
-        // Add a marker in Sydney, Australia, and move the camera.
-        LatLng sydney = new LatLng(-34, 151);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 8));
+            // move camera to current location
+            //request location permission
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                map.setMyLocationEnabled(true);
+                map.getUiSettings().setMyLocationButtonEnabled(true);
 
+                //zoom in on current location
+                LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                Criteria criteria = new Criteria();
+                String provider = locationManager.getBestProvider(criteria, true);
+                Location location = locationManager.getLastKnownLocation(provider);
+                if(location!=null){
+                    onLocationChanged(location);
+                }
+//                locationManager.requestLocationUpdates(provider, 20000, 0, this);
 
-        //request location permission
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            map.setMyLocationEnabled(true);
-            map.getUiSettings().setMyLocationButtonEnabled(true);
-        } else {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, 0);
+                map.setOnMarkerClickListener(updateExpandedView);
+                loadMeals();
+            } else {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, 0);
+            }
         }
-
-        map.setOnMarkerClickListener(updateExpandedView);
-        loadMeals(map);
-
     }
 
     //show details in expanded marker view
@@ -112,7 +125,8 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
 
                 //update expanded view
                 expandedMarkerFrag.setName(meal.getTitle());
-                expandedMarkerFrag.setAddress("$" +  String.format("%.2f", meal.getPrice()) );
+                expandedMarkerFrag.setPrice("$" +  String.format("%.2f", meal.getPrice()) );
+                expandedMarkerFrag.setAddress(meal.getAddress());
 
                 //set selected state
                 if (null != mSelectedMarker) {
@@ -126,7 +140,7 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
         }
     };
 
-    private void loadMeals(final GoogleMap map) {
+    private void loadMeals() {
         Firebase firebase = Modules.connectDB(getActivity(), "/meals");
         firebase.addChildEventListener(new ChildEventListener() {
             @Override
@@ -156,13 +170,19 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
     //add a meal marker
     private void addMarker(DataSnapshot data) {
         Meal meal = data.getValue(Meal.class);
-        LatLng coordinate = new LatLng(meal.getxCoordinate(), meal.getyCoordinate());
-        Marker marker = map.addMarker(new MarkerOptions()
-                .position(coordinate));
+        System.out.println("HERE");
+        try {
+            Address a = Modules.addressToCoordinate(meal.getAddress(), getActivity());
+            LatLng coordinate = new LatLng(a.getLatitude(), a.getLongitude());
+            Marker marker = map.addMarker(new MarkerOptions()
+                    .position(coordinate));
 
-        //add to hashmaps
-        markers.put(data.getKey(), marker);
-        meals.put(marker, meal);
+            //add to hashmaps
+            markers.put(data.getKey(), marker);
+            meals.put(marker, meal);
+        } catch (IOException e) {
+            //error
+        }
     }
 
 
@@ -172,11 +192,7 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             LatLng coordinate = new LatLng(location.getLatitude(), location.getLongitude() );
-            map.addMarker(new MarkerOptions()
-                    .title("Current Location")
-                    .position(coordinate)
-            );
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 13));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 16));
         }
     }
 

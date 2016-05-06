@@ -8,15 +8,13 @@ public class Meal {
     private String title;
     private double price;
     private String description;
-    private double xCoordinate;
-    private double yCoordinate;
+    private String address;
 
-    public Meal(String t, double p, String d, double x, double y) {
+    public Meal(String t, double p, String d, String a) {
         this.title = t;
         this.description = d;
         this.price = p;
-        this.yCoordinate = y;
-        this.xCoordinate = x;
+        this.address = a;
     }
 
     public Meal() { }
@@ -24,6 +22,8 @@ public class Meal {
     public String getTitle() { return this.title; }
     public String getDescription() { return this.description; }
     public double getPrice() { return this.price; }
-    public double getxCoordinate() { return this.xCoordinate; }
-    public double getyCoordinate() { return yCoordinate; }
+
+    public String getAddress() {
+        return address;
+    }
 }

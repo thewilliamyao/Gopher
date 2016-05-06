@@ -29,7 +29,7 @@
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="230dp"
+                android:layout_width="wrap_content"
                 android:layout_height="100dp"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical">
@@ -48,36 +48,38 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/price"
                     android:textColor="@color/white"
+                    android:textSize="15dp"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_marginLeft="16dp" />
 
-                    android:id="@+id/addressText"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:id="@+id/address"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="8dp"
                     android:maxLines="2" />
+
             </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/arrowButton"
+                    android:background="@drawable/ic_keyboard_arrow_right_white_24dp"
+                    android:layout_gravity="center_vertical|right" />
+            </FrameLayout>
 
         </LinearLayout>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add"
-            android:id="@+id/addButton" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Remove"
-            android:id="@+id/removeButton"
-            android:layout_marginTop="40dp" />
     </RelativeLayout>
-
-    <Button
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:id="@+id/arrowButton"
-        android:background="@drawable/ic_keyboard_arrow_right_white_24dp"
-        android:layout_gravity="right|center_vertical" />
 
 
 </FrameLayout>

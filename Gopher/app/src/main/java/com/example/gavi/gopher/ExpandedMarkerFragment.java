@@ -19,12 +19,12 @@ import com.squareup.picasso.Picasso;
  */
 public class ExpandedMarkerFragment extends Fragment {
 
-    private static double x = -34.1;
-    private static double y = 151.1;
+
     Firebase lastAdded;
 
     private TextView nameText;
     private TextView addressText;
+    private TextView priceText;
     private ImageView imageView;
     private View view;
 
@@ -35,12 +35,9 @@ public class ExpandedMarkerFragment extends Fragment {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_expanded_marker, container, false);
         nameText = (TextView) view.findViewById(R.id.firstName);
-        addressText = (TextView) view.findViewById(R.id.addressText);
+        addressText = (TextView) view.findViewById(R.id.address);
         imageView = (ImageView) view.findViewById(R.id.imageView);
-
-        //DELETE THIS
-        ((Button) view.findViewById(R.id.addButton)).setOnClickListener(addMeal);
-        ((Button) view.findViewById(R.id.removeButton)).setOnClickListener(removeMeal);
+        priceText = (TextView) view.findViewById(R.id.price);
 
         return view;
     }
@@ -48,7 +45,9 @@ public class ExpandedMarkerFragment extends Fragment {
     public void setName(String name) {
         nameText.setText(name);
     }
-
+    public void setPrice(String price) {
+        priceText.setText(price);
+    }
     public void setAddress(String address) {
         addressText.setText(address);
     }
@@ -63,27 +62,25 @@ public class ExpandedMarkerFragment extends Fragment {
     }
 
 
-    View.OnClickListener addMeal = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Firebase firebase = Modules.connectDB(getActivity(), "/meals");
-            Firebase newMeal = firebase.push();
-            Meal toAdd = new Meal("Chicken", 10.00, "desc", x, y);
-            x += 0.1;
-            y += 0.1;
-            newMeal.setValue(toAdd);
-            lastAdded = newMeal;
-        }
-    };
-
-    View.OnClickListener removeMeal = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Firebase firebase = Modules.connectDB(getActivity(), "/meals");
-            if (lastAdded != null) {
-                lastAdded.removeValue();
-            }
-        }
-    };
+//    View.OnClickListener addMeal = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View view) {
+//            Firebase firebase = Modules.connectDB(getActivity(), "/meals");
+//            Firebase newMeal = firebase.push();
+//            Meal toAdd = new Meal("Chicken", 10.00, "desc", "3900 north Charles st, Baltimore 21218");
+//            newMeal.setValue(toAdd);
+//            lastAdded = newMeal;
+//        }
+//    };
+//
+//    View.OnClickListener removeMeal = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View view) {
+//            Firebase firebase = Modules.connectDB(getActivity(), "/meals");
+//            if (lastAdded != null) {
+//                lastAdded.removeValue();
+//            }
+//        }
+//    };
 
 }
