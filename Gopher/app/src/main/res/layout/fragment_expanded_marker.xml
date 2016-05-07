@@ -2,13 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="100dp"
+    android:id="@+id/background"
+    android:background="?attr/primary_background_transparent"
+
     tools:context="com.example.gavi.gopher.ExpandedMarkerFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/primary_background"
-        android:alpha="128"
         >
 
         <LinearLayout

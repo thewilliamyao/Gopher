@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +19,7 @@ import android.widget.ImageView;
 
 import com.firebase.client.Firebase;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,18 +70,53 @@ public class EditSettingsActivity extends AppCompatActivity {
         fName = (EditText) findViewById(R.id.firstName);
         lName = (EditText) findViewById(R.id.lastName);
 
+        userImage = (ImageView) findViewById(R.id.userImage);
+
         //get data
         Intent data = getIntent();
         fName.setText(data.getStringExtra("first_name"));
         lName.setText(data.getStringExtra("last_name"));
+//        String encodedImage = data.getStringExtra("prof_pic");
+//        Bitmap decodedImage = Modules.decodeBase64(encodedImage);
+//        userImage.setImageBitmap(decodedImage);
 
         saveButton = (Button) findViewById(R.id.saveButton);
         saveButton.setOnClickListener(save);
 
-        userImage = (ImageView) findViewById(R.id.userImage);
         addPhotoButton = (Button) findViewById(R.id.addPhotoButton);
         addPhotoButton.setOnClickListener(addPhoto);
     }
+
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//
+//        // TODO Auto-generated method stub
+//        super.onActivityResult(requestCode, resultCode, data);
+//        switch (requestCode) {
+//
+//            case 0:
+//                if (resultCode == RESULT_OK) {
+//                    Uri targetUri = data.getData();
+//                    //             textTargetUri.setText(targetUri.toString());
+//                    Bitmap bitmap;
+//                    try {
+//                        bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
+//                        userImage.setImageBitmap(bitmap);
+//
+//
+//                    } catch (FileNotFoundException e) {
+//                        // TODO Auto-generated catch block
+//                        e.printStackTrace();
+//                    }
+//                }
+//                break;
+//
+//        }
+//
+//    }
+
+
 
     //get results from selected user photo
     @Override
@@ -96,7 +135,21 @@ public class EditSettingsActivity extends AppCompatActivity {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            userImage.setImageURI(selectedImage);
+            try {
+                //encode image
+                Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage));
+                String encodedImage = Modules.encodeToBase64(bitmap, Bitmap.CompressFormat.JPEG, 30);
+
+                //get user ID and store image in firebase
+                SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String userID = myPrefs.getString(Constants.USER_ID, "");
+                Firebase user = Modules.connectDB(this, "/users/" + userID);
+                user.child("profilePic").setValue(encodedImage);
+
+                userImage.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                //handle
+            }
 
             // String picturePath contains the path of selected Image
         }

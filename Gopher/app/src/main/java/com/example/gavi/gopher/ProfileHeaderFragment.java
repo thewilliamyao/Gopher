@@ -3,6 +3,7 @@ package com.example.gavi.gopher;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
@@ -20,6 +22,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -33,6 +36,8 @@ public class ProfileHeaderFragment extends Fragment {
     private RadioButton cookToggle;
     private RadioButton foodieToggle;
     private SharedPreferences myPrefs;
+    private ImageView profPic;
+    private String encodedProfilePic;
 
     private String fname;
     private String lname;
@@ -44,6 +49,7 @@ public class ProfileHeaderFragment extends Fragment {
             Intent intent = new Intent(getActivity(), EditSettingsActivity.class);
             intent.putExtra("first_name", fname);
             intent.putExtra("last_name", lname);
+//            intent.putExtra("prof_pic", encodedProfilePic);
             startActivity(intent);
         }
     };
@@ -66,6 +72,9 @@ public class ProfileHeaderFragment extends Fragment {
         nameText = (TextView) view.findViewById(R.id.firstName);
         settingsButton = (Button) view.findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(editSettings);
+
+        profPic = (ImageView) view.findViewById(R.id.profPic);
+
         setupSwitch();
         return view;
     }
@@ -93,6 +102,7 @@ public class ProfileHeaderFragment extends Fragment {
         }
     }
 
+    //setup user data
     private void setName() {
         SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         String userID = myPrefs.getString(Constants.USER_ID, "null");
@@ -106,6 +116,11 @@ public class ProfileHeaderFragment extends Fragment {
                 fname = user.getFirstName();
                 lname = user.getLastName();
                 nameText.setText(user.getFirstName() + " " + user.getLastName());
+
+//                encodedProfilePic = user.getProfilePic();
+//                Bitmap decodedImage = Modules.decodeBase64(user.getProfilePic());
+//                profPic.setImageBitmap(decodedImage);
+
             }
 
             @Override

@@ -7,6 +7,7 @@
 
 
     <color name="colorPrimaryCook">#72CB97</color>
+    <color name="colorPrimaryCookTransparent">#BF72CB97</color>
     <color name="colorPrimaryDarkCook">#4C8764</color>
     <color name="colorAccentCook">#4C8764</color>
 

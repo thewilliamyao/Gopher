@@ -1,6 +1,7 @@
 package com.example.gavi.gopher;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 import com.squareup.picasso.Picasso;
+
+import jp.wasabeef.blurry.Blurry;
 
 
 /**
@@ -38,6 +41,18 @@ public class ExpandedMarkerFragment extends Fragment {
         addressText = (TextView) view.findViewById(R.id.address);
         imageView = (ImageView) view.findViewById(R.id.imageView);
         priceText = (TextView) view.findViewById(R.id.price);
+
+        nameText.setText("Select a meal nearby!");
+
+//        ViewGroup background = (ViewGroup) view.findViewById(R.id.background);
+//        Blurry.with(getActivity())
+//                .radius(10)
+//                .sampling(8)
+//                .color(Color.argb(66, 255, 255, 0))
+//                .async()
+//                .animate(500)
+//                .onto(background);
+//
 
         return view;
     }

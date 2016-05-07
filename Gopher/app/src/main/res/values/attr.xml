@@ -2,5 +2,7 @@
 <resources>
 
     <attr name="primary_background" format="color|reference" />
+    <attr name="primary_background_transparent" format="color|reference" />
+
 
 </resources>
