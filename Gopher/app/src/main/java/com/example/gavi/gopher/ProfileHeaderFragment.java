@@ -92,10 +92,12 @@ public class ProfileHeaderFragment extends Fragment {
 
         int userType = myPrefs.getInt(Constants.USER_TYPE, Constants.FOODIE);
         if (userType == Constants.FOODIE) {
+            cookToggle.setTextColor(getResources().getColor(R.color.dark_beige));
             cookToggle.setOnClickListener(switchUser);
             foodieToggle.setChecked(true);
             cookToggle.setChecked(false);
         } else {
+            foodieToggle.setTextColor(getResources().getColor(R.color.dark_beige));
             foodieToggle.setOnClickListener(switchUser);
             cookToggle.setChecked(true);
             foodieToggle.setChecked(false);
