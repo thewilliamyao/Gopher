@@ -1,6 +1,7 @@
 package com.example.gavi.gopher;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -38,19 +39,22 @@ public class ProfileHeaderFragment extends Fragment {
     private SharedPreferences myPrefs;
     private ImageView profPic;
     private String encodedProfilePic;
+    private User currUser;
 
-    private String fname;
-    private String lname;
 
     //edit the settings for the header bar
     View.OnClickListener editSettings = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(getActivity(), EditSettingsActivity.class);
-            intent.putExtra("first_name", fname);
-            intent.putExtra("last_name", lname);
+            if (currUser != null) {
+                Intent intent = new Intent(getActivity(), EditSettingsActivity.class);
+                intent.putExtra("first_name", currUser.getFirstName());
+                intent.putExtra("last_name", currUser.getLastName());
+                intent.putExtra("address", currUser.getAddress());
 //            intent.putExtra("prof_pic", encodedProfilePic);
-            startActivity(intent);
+                startActivityForResult(intent, 0);
+            }
+
         }
     };
 
@@ -85,6 +89,12 @@ public class ProfileHeaderFragment extends Fragment {
         setName();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        setName();
+    }
+
     //setup the switch based on the user type
     private void setupSwitch() {
         foodieToggle = (RadioButton) view.findViewById(R.id.foodieToggle);
@@ -114,10 +124,8 @@ public class ProfileHeaderFragment extends Fragment {
         queryRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChild) {
-                User user = snapshot.getValue(User.class);
-                fname = user.getFirstName();
-                lname = user.getLastName();
-                nameText.setText(user.getFirstName() + " " + user.getLastName());
+                currUser = snapshot.getValue(User.class);
+                nameText.setText(currUser.getFirstName() + " " + currUser.getLastName());
 
 //                encodedProfilePic = user.getProfilePic();
 //                Bitmap decodedImage = Modules.decodeBase64(user.getProfilePic());

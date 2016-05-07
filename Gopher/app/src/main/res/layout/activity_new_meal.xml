@@ -26,7 +26,7 @@
         android:id="@+id/description"
         android:hint="Description"
         android:maxLines="15"
-        android:inputType="textCapSentences"
+        android:inputType="textCapSentences|textMultiLine"
         android:layout_marginLeft="0dp"
         android:layout_below="@+id/price"
         android:layout_alignStart="@+id/price"

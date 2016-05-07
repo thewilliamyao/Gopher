@@ -22,14 +22,14 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="First Name"
+        android:inputType="textPersonName|textCapWords"
         android:ems="10"
         android:id="@+id/firstName"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="20dp"
         android:layout_marginLeft="16dp"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/userImage" />
+        android:layout_toEndOf="@+id/userImage"
+        android:hint="Last Name"/>
 
     <ImageView
         android:layout_width="70dp"
@@ -39,7 +39,7 @@
         android:background="#ffffff"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="20dp"
         android:src="@drawable/ic_person_grey_70dp"
         android:layout_marginTop="13dp" />
 
@@ -51,7 +51,7 @@
         android:id="@+id/addPhotoButton"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="20dp"
         android:background="@drawable/photo_screen"
         style="@android:style/Widget.Holo.ActionButton.TextButton"
         android:textAlignment="gravity"
@@ -63,13 +63,68 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Last Name"
+        android:inputType="textPersonName|textCapWords"
         android:ems="10"
         android:id="@+id/lastName"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="20dp"
         android:layout_below="@+id/firstName"
-        android:layout_alignStart="@+id/firstName" />
+        android:layout_alignStart="@+id/firstName"
+        android:hint="Last Name"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress|textCapWords"
+        android:id="@+id/street"
+        android:layout_below="@+id/lastName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="40dp"
+        android:hint="Street"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress|textCapWords"
+        android:id="@+id/city"
+        android:layout_below="@+id/street"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="40dp"
+        android:hint="City or Town"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress|number"
+        android:id="@+id/zipcode"
+        android:layout_below="@+id/city"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="40dp"
+        android:hint="Zipcode"/>
+
+    <Switch
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Share location with Cooks"
+        android:id="@+id/shareSwitch"
+        android:checked="false"
+        android:layout_below="@+id/zipcode"
+        android:layout_alignStart="@+id/zipcode"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="40dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Allows to Cooks to view your location on a map. This allows Cooks to cater specifically to you! "
+        android:id="@+id/textView"
+        android:layout_below="@+id/shareSwitch"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"/>
 
 
 </RelativeLayout>
