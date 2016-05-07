@@ -1,6 +1,7 @@
 package com.example.gavi.gopher;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -10,8 +11,10 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -25,11 +28,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import mehdi.sakout.dynamicbox.DynamicBox;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText password;
     private Firebase firebase;
     private Button loginButton;
+    private View background;
     Activity thisActivity;
 
     @Override
@@ -63,6 +69,9 @@ public class LoginActivity extends AppCompatActivity {
         ((EditText) findViewById(R.id.emailText)).setText("gavi@test.com");
         ((EditText) findViewById(R.id.passwordText)).setText("test");
 
+        background = (View) findViewById(R.id.background);
+
+
     }
 
     View.OnClickListener login = new View.OnClickListener() {
@@ -77,15 +86,24 @@ public class LoginActivity extends AppCompatActivity {
                         .duration(700)
                         .playOn(loginButton);
             } else {
+                //hide keyboard and show loading screen
+                View view = thisActivity.getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+                final DynamicBox box = new DynamicBox(thisActivity, background);
+                box.showLoadingLayout();
+
                 firebase.authWithPassword(email, password, new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
-                        System.out.println("User ID: " + authData.getUid() + ", Provider: " + authData.getProvider());
                         storeID(authData.getUid());
                         UserSwitcherActivity.chooseUI(getApplicationContext(), (thisActivity));
                     }
                     @Override
                     public void onAuthenticationError(FirebaseError firebaseError) {
+                        box.hideAll();
                         YoYo.with(Techniques.Shake)
                                 .duration(700)
                                 .playOn(loginButton);

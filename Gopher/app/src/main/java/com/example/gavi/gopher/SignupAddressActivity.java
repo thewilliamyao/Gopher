@@ -1,6 +1,7 @@
 package com.example.gavi.gopher;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Address;
@@ -8,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -19,6 +21,8 @@ import com.firebase.client.FirebaseError;
 import java.io.IOException;
 import java.util.Map;
 
+import mehdi.sakout.dynamicbox.DynamicBox;
+
 public class SignupAddressActivity extends AppCompatActivity {
 
     private Firebase myFirebaseRef;
@@ -27,6 +31,7 @@ public class SignupAddressActivity extends AppCompatActivity {
     private EditText zipcodeText;
     private Button signupButton;
     private Activity thisActivity;
+    private View background;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,7 @@ public class SignupAddressActivity extends AppCompatActivity {
         streetText = (EditText) findViewById(R.id.street);
         cityText = (EditText) findViewById(R.id.city);
         zipcodeText = (EditText) findViewById(R.id.zipcode);
+        background = (View) findViewById(R.id.background);
     }
 
 
@@ -80,6 +86,14 @@ public class SignupAddressActivity extends AppCompatActivity {
         final String password = data.getStringExtra("password");
 
         //create user
+        //hide keyboard and show loading screen
+        View view = thisActivity.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+        final DynamicBox box = new DynamicBox(thisActivity, background);
+        box.showLoadingLayout();
         myFirebaseRef.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
             public void onSuccess(Map<String, Object> result) {
@@ -120,6 +134,7 @@ public class SignupAddressActivity extends AppCompatActivity {
         SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor peditor = myPrefs.edit();
         peditor.putString(Constants.USER_ID, id);
+        peditor.putInt(Constants.USER_TYPE, Constants.FOODIE); //reset user type
         peditor.commit();
 
     }

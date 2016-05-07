@@ -153,7 +153,10 @@ public class CookMap extends SupportMapFragment implements OnMapReadyCallback, L
             public void onCancelled(FirebaseError firebaseError) {}
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                removeMarker(dataSnapshot);
+                addMarker(dataSnapshot);
+            }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
@@ -167,20 +170,19 @@ public class CookMap extends SupportMapFragment implements OnMapReadyCallback, L
 
     //add a meal marker
     private void addMarker(DataSnapshot data) {
-//        User user = data.getValue(User.class);
-//        System.out.println("NAME: " + user.getFirstName());
-//        try {
-//            Address a = Modules.addressToCoordinate(user.getAddress(), getActivity());
-//            LatLng coordinate = new LatLng(a.getLatitude(), a.getLongitude());
-//            Marker marker = map.addMarker(new MarkerOptions()
-//                    .position(coordinate));
-//
-//            //add to hashmaps
-//            markers.put(data.getKey(), marker);
-//            users.put(marker, user);
-//        } catch (IOException e) {
-//            //error
-//        }
+        User user = data.getValue(User.class);
+        try {
+            Address a = Modules.addressToCoordinate(user.getAddress(), getActivity());
+            LatLng coordinate = new LatLng(a.getLatitude(), a.getLongitude());
+            Marker marker = map.addMarker(new MarkerOptions()
+                    .position(coordinate));
+
+            //add to hashmaps
+            markers.put(data.getKey(), marker);
+            users.put(marker, user);
+        } catch (IOException e) {
+            //error
+        }
     }
 
 
