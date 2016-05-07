@@ -1,8 +1,12 @@
 package com.example.gavi.gopher;
 
 
-import android.graphics.Color;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +15,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import jp.wasabeef.blurry.Blurry;
@@ -22,15 +29,12 @@ import jp.wasabeef.blurry.Blurry;
  */
 public class ExpandedMarkerFragment extends Fragment {
 
-
-    Firebase lastAdded;
-
     private TextView nameText;
     private TextView addressText;
     private TextView priceText;
     private ImageView imageView;
     private View view;
-
+    private Button detailButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +45,33 @@ public class ExpandedMarkerFragment extends Fragment {
         addressText = (TextView) view.findViewById(R.id.address);
         imageView = (ImageView) view.findViewById(R.id.imageView);
         priceText = (TextView) view.findViewById(R.id.price);
+        detailButton = (Button) view.findViewById(R.id.detailButton);
+
+        detailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //check if already selling meal
+                SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+                String userID = myPrefs.getString(Constants.USER_ID, "");
+                Firebase mealID = Modules.connectDB(getActivity(), "/users/" + userID);
+                mealID.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        User user = snapshot.getValue(User.class);
+                        if (user.getMealSellingID().equals("")) {
+                            Intent intent = new Intent(getActivity(), NewMealActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Snackbar.make(view, "You can only post one meal at a time!", Snackbar.LENGTH_LONG)
+                                    .setAction("Pending Meals", pendingMeals)
+                                    .show();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {}
+                });
+            }
+        });
 
         nameText.setText("Select a meal nearby!");
 
@@ -56,6 +87,13 @@ public class ExpandedMarkerFragment extends Fragment {
 
         return view;
     }
+
+    View.OnClickListener pendingMeals = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            CookMainActivity.mViewPager.setCurrentItem(2);
+        }
+    };
 
     public void setName(String name) {
         nameText.setText(name);

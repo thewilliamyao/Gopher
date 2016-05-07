@@ -36,8 +36,6 @@ dependencies {
     compile 'jp.wasabeef:blurry:2.0.2'
     compile 'com.github.medyo:dynamicbox:1.2@aar'
 
-
-
 }
 
 
