@@ -51,13 +51,13 @@ public class CookMap extends SupportMapFragment implements OnMapReadyCallback, L
     private GoogleMap map;
     private ExpandedMarkerFragment expandedMarkerFrag;
     private Marker mSelectedMarker;
-    private HashMap<Marker, Meal> meals;
+    private HashMap<Marker, User> users;
     private HashMap<String, Marker> markers;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        meals = new HashMap<>();
+        users = new HashMap<>();
         markers = new HashMap<>();
 
         //encapsulate map view inside custom view
@@ -102,7 +102,7 @@ public class CookMap extends SupportMapFragment implements OnMapReadyCallback, L
 //                locationManager.requestLocationUpdates(provider, 20000, 0, this);
 
                 map.setOnMarkerClickListener(updateExpandedView);
-                loadMeals();
+                loadUsers();
             } else {
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, 0);
@@ -115,14 +115,14 @@ public class CookMap extends SupportMapFragment implements OnMapReadyCallback, L
         @Override
         public boolean onMarkerClick(Marker marker) {
 
-            Meal meal = meals.get(marker);
+            User user = users.get(marker);
 
-            if (meal != null) {
+            if (user != null) {
 
                 //update expanded view
-                expandedMarkerFrag.setName(meal.getTitle());
-                expandedMarkerFrag.setPrice("$" +  String.format("%.2f", meal.getPrice()) );
-                expandedMarkerFrag.setAddress(meal.getAddress());
+                expandedMarkerFrag.setName(user.getFirstName() + " " + user.getLastName());
+                expandedMarkerFrag.setPrice("Foodie");//CHANGE THIS
+                expandedMarkerFrag.setAddress(user.getAddress());
 
                 //set selected state
                 if (null != mSelectedMarker) {
@@ -136,12 +136,14 @@ public class CookMap extends SupportMapFragment implements OnMapReadyCallback, L
         }
     };
 
-    private void loadMeals() {
-        Firebase firebase = Modules.connectDB(getActivity(), "/meals");
+    private void loadUsers() {
+        Firebase firebase = Modules.connectDB(getActivity(), "/users");
         firebase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChild) {
+                System.out.println(snapshot);
                 addMarker(snapshot);
+
             }
 
             @Override
@@ -165,20 +167,20 @@ public class CookMap extends SupportMapFragment implements OnMapReadyCallback, L
 
     //add a meal marker
     private void addMarker(DataSnapshot data) {
-        Meal meal = data.getValue(Meal.class);
-        System.out.println("HERE");
-        try {
-            Address a = Modules.addressToCoordinate(meal.getAddress(), getActivity());
-            LatLng coordinate = new LatLng(a.getLatitude(), a.getLongitude());
-            Marker marker = map.addMarker(new MarkerOptions()
-                    .position(coordinate));
-
-            //add to hashmaps
-            markers.put(data.getKey(), marker);
-            meals.put(marker, meal);
-        } catch (IOException e) {
-            //error
-        }
+//        User user = data.getValue(User.class);
+//        System.out.println("NAME: " + user.getFirstName());
+//        try {
+//            Address a = Modules.addressToCoordinate(user.getAddress(), getActivity());
+//            LatLng coordinate = new LatLng(a.getLatitude(), a.getLongitude());
+//            Marker marker = map.addMarker(new MarkerOptions()
+//                    .position(coordinate));
+//
+//            //add to hashmaps
+//            markers.put(data.getKey(), marker);
+//            users.put(marker, user);
+//        } catch (IOException e) {
+//            //error
+//        }
     }
 
 
@@ -197,7 +199,7 @@ public class CookMap extends SupportMapFragment implements OnMapReadyCallback, L
         String key = data.getKey();
         Marker toRemove = markers.get(key);
         toRemove.remove();
-        meals.remove(toRemove);
+        users.remove(toRemove);
         markers.remove(key);
     }
 
