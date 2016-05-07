@@ -155,7 +155,10 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
             public void onCancelled(FirebaseError firebaseError) {}
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                removeMarker(dataSnapshot);
+                addMarker(dataSnapshot);
+            }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
