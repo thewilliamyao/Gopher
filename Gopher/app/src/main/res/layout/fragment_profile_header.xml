@@ -20,7 +20,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:background="#ffffff"
-            android:src="@drawable/ic_person_gray_24dp"/>
+            android:src="@drawable/ic_person_grey_70dp"/>
 
         <LinearLayout
             android:orientation="vertical"

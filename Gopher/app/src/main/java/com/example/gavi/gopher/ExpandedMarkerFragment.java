@@ -47,31 +47,54 @@ public class ExpandedMarkerFragment extends Fragment {
         priceText = (TextView) view.findViewById(R.id.price);
         detailButton = (Button) view.findViewById(R.id.detailButton);
 
-        detailButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //check if already selling meal
-                SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-                String userID = myPrefs.getString(Constants.USER_ID, "");
-                Firebase mealID = Modules.connectDB(getActivity(), "/users/" + userID);
-                mealID.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        User user = snapshot.getValue(User.class);
-                        if (user.getMealSellingID().equals("")) {
-                            Intent intent = new Intent(getActivity(), NewMealActivity.class);
-                            startActivity(intent);
-                        } else {
-                            Snackbar.make(view, "You can only post one meal at a time!", Snackbar.LENGTH_LONG)
-                                    .setAction("Pending Meals", pendingMeals)
-                                    .show();
+        //set title and icon
+        if (getActivity() instanceof CookMainActivity) {
+            nameText.setText("Find Foodies nearby!");
+            detailButton.setBackgroundResource(R.drawable.ic_add_white_24dp);
+
+        } else {
+            nameText.setText("Select a meal nearby!");
+        }
+
+
+            //cook detail button
+        if (getActivity() instanceof CookMainActivity) {
+            detailButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //check if already selling meal
+                    SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+                    String userID = myPrefs.getString(Constants.USER_ID, "");
+                    Firebase mealID = Modules.connectDB(getActivity(), "/users/" + userID);
+                    mealID.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            User user = snapshot.getValue(User.class);
+                            if (user.getMealSellingID().equals("")) {
+                                Intent intent = new Intent(getActivity(), NewMealActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Snackbar.make(view, "You can only post one meal at a time!", Snackbar.LENGTH_LONG)
+                                        .setAction("Pending Meals", pendingMeals)
+                                        .show();
+                            }
                         }
-                    }
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {}
-                });
-            }
-        });
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {}
+                    });
+                }
+            });
+        } else { //Foodie detail button
+            detailButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Snackbar.make(view, "Not yet implemented", Snackbar.LENGTH_LONG)
+                            .show();
+                }
+            });
+        }
+
+
 
         nameText.setText("Select a meal nearby!");
 
@@ -113,27 +136,5 @@ public class ExpandedMarkerFragment extends Fragment {
                 .centerCrop()
                 .into(imageView);
     }
-
-
-//    View.OnClickListener addMeal = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View view) {
-//            Firebase firebase = Modules.connectDB(getActivity(), "/meals");
-//            Firebase newMeal = firebase.push();
-//            Meal toAdd = new Meal("Chicken", 10.00, "desc", "3900 north Charles st, Baltimore 21218");
-//            newMeal.setValue(toAdd);
-//            lastAdded = newMeal;
-//        }
-//    };
-//
-//    View.OnClickListener removeMeal = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View view) {
-//            Firebase firebase = Modules.connectDB(getActivity(), "/meals");
-//            if (lastAdded != null) {
-//                lastAdded.removeValue();
-//            }
-//        }
-//    };
 
 }
