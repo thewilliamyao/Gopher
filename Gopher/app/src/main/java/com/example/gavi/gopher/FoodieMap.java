@@ -43,6 +43,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by grawson2 on 5/4/16.
@@ -53,17 +54,14 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
 
     private View view;
     private MapView mapView;
-    private GoogleMap map;
+    private static GoogleMap map;
     private ExpandedMarkerFragment expandedMarkerFrag;
     private Marker mSelectedMarker;
-    private static HashMap<Marker, Meal> meals = new HashMap<>();
-    private static HashMap<String, Marker> markers = new HashMap<>();
+    private static HashMap<Marker, Meal> meals = new HashMap<>(); //maps marker to meal
+    private static HashMap<String, Marker> markers = new HashMap<>(); //maps meal id to marker
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-//        meals = new HashMap<>();
-//        markers = new HashMap<>();
 
         //encapsulate map view inside custom view
         FrameLayout mapView = (FrameLayout) super.onCreateView(inflater, container, savedInstanceState);
@@ -72,6 +70,7 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
 
         //add profile header fragment
         if (expandedMarkerFrag == null) {
+            Log.d("log", "new expanded view");
             expandedMarkerFrag = new ExpandedMarkerFragment();
             getChildFragmentManager().beginTransaction().add(
                     R.id.expanded_marker_container, expandedMarkerFrag
@@ -98,15 +97,9 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
     }
 
     @Override
-    public void onDestroy() {
-        Log.d("log", "destroy");
-        super.onDetach();
-    }
-
-    @Override
     public void onDestroyView() {
         Log.d("log", "destroy view");
-        map = null;
+        mSelectedMarker = null;
         super.onDestroyView();
     }
 
@@ -142,14 +135,25 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
 
     }
 
-
     private void reloadMarkers() {
         map.clear();
-        for (Marker marker: markers.values()) {
-            LatLng coordinate = marker.getPosition();
-            map.addMarker(new MarkerOptions()
+
+        HashMap <String, Marker> tempMarkers = new HashMap<>();
+        HashMap <Marker, Meal> tempMeals = new HashMap<>();
+
+        for (Map.Entry<String, Marker> entry: markers.entrySet()) {
+            LatLng coordinate = entry.getValue().getPosition();
+            Marker newMarker = map.addMarker(new MarkerOptions()
                     .position(coordinate));
+
+            //add to temp hashmaps
+            tempMarkers.put(entry.getKey(), newMarker);
+            tempMeals.put(newMarker, meals.get(entry.getValue()));
         }
+
+        //update hashmaps
+        markers = tempMarkers;
+        meals = tempMeals;
     }
 
     //show details in expanded marker view
@@ -157,9 +161,11 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
         @Override
         public boolean onMarkerClick(Marker marker) {
 
+
             Meal meal = meals.get(marker);
 
             if (meal != null) {
+                Log.d("log", "update expanded");
 
                 //update expanded view
                 expandedMarkerFrag.setName(meal.getTitle());
@@ -194,12 +200,15 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                clearExpandedView();
                 removeMarker(dataSnapshot);
                 addMarker(dataSnapshot);
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                clearExpandedView();
                 removeMarker(dataSnapshot);
             }
 
@@ -229,12 +238,21 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
 
     @Override
     public void onLocationChanged(Location location) {
+        Log.d("log", "location set");
+
         //request location permission
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             LatLng coordinate = new LatLng(location.getLatitude(), location.getLongitude() );
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 16));
         }
+    }
+
+    private void clearExpandedView() {
+        mSelectedMarker = null;
+        expandedMarkerFrag.setEmptyTitle();
+        expandedMarkerFrag.setPrice("");
+        expandedMarkerFrag.setAddress("");
     }
 
     //remove marker from map

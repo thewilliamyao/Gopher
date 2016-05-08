@@ -47,17 +47,9 @@ public class ExpandedMarkerFragment extends Fragment {
         priceText = (TextView) view.findViewById(R.id.price);
         detailButton = (Button) view.findViewById(R.id.detailButton);
 
-        //set title and icon
-        if (getActivity() instanceof CookMainActivity) {
-            nameText.setText("Find Foodies nearby!");
-            detailButton.setBackgroundResource(R.drawable.ic_add_white_24dp);
+        setEmptyTitle(); //set placeholder title
 
-        } else {
-            nameText.setText("Select a meal nearby!");
-        }
-
-
-            //cook detail button
+        //cook detail button
         if (getActivity() instanceof CookMainActivity) {
             detailButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -96,7 +88,6 @@ public class ExpandedMarkerFragment extends Fragment {
 
 
 
-        nameText.setText("Select a meal nearby!");
 
 //        ViewGroup background = (ViewGroup) view.findViewById(R.id.background);
 //        Blurry.with(getActivity())
@@ -135,6 +126,16 @@ public class ExpandedMarkerFragment extends Fragment {
                 .resize(100, 100)
                 .centerCrop()
                 .into(imageView);
+    }
+
+    protected void setEmptyTitle() {
+        //set title and icon
+        if (getActivity() instanceof CookMainActivity) {
+            nameText.setText("Find Foodies nearby.");
+            detailButton.setBackgroundResource(R.drawable.ic_add_white_24dp);
+        } else {
+            nameText.setText("Select a meal nearby!");
+        }
     }
 
 }
