@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.ViewUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,22 +56,19 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
     private GoogleMap map;
     private ExpandedMarkerFragment expandedMarkerFrag;
     private Marker mSelectedMarker;
-    private HashMap<Marker, Meal> meals;
-    private HashMap<String, Marker> markers;
+    private static HashMap<Marker, Meal> meals = new HashMap<>();
+    private static HashMap<String, Marker> markers = new HashMap<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        meals = new HashMap<>();
-        markers = new HashMap<>();
+//        meals = new HashMap<>();
+//        markers = new HashMap<>();
 
         //encapsulate map view inside custom view
         FrameLayout mapView = (FrameLayout) super.onCreateView(inflater, container, savedInstanceState);
         View frag = inflater.inflate(R.layout.fragment_map, null);
         mapView.addView(frag);
-
-        //map callback
-        getMapAsync(this);
 
         //add profile header fragment
         if (expandedMarkerFrag == null) {
@@ -80,37 +78,77 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
             ).commit();
         }
 
+        Log.d("log", "create view");
+
         return mapView;
     }
 
     @Override
-    public void onMapReady(GoogleMap map) {
+    public void onResume() {
+        super.onResume();
+        Log.d("log", "resume");
+
+        //map callback
         if (this.map == null) {
-            this.map = map;
+            getMapAsync(this);
+        } else {
+            reloadMarkers();
+        }
 
-            // move camera to current location
-            //request location permission
-            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                map.setMyLocationEnabled(true);
-                map.getUiSettings().setMyLocationButtonEnabled(true);
+    }
 
-                //zoom in on current location
-                LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-                Criteria criteria = new Criteria();
-                String provider = locationManager.getBestProvider(criteria, true);
-                Location location = locationManager.getLastKnownLocation(provider);
-                if(location!=null){
-                    onLocationChanged(location);
-                }
+    @Override
+    public void onDestroy() {
+        Log.d("log", "destroy");
+        super.onDetach();
+    }
+
+    @Override
+    public void onDestroyView() {
+        Log.d("log", "destroy view");
+        map = null;
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        this.map = map;
+        Log.d("log", "create map");
+
+        // move camera to current location
+        //request location permission
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            map.setMyLocationEnabled(true);
+            map.getUiSettings().setMyLocationButtonEnabled(true);
+
+            //zoom in on current location
+            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
+            String provider = locationManager.getBestProvider(criteria, true);
+            Location location = locationManager.getLastKnownLocation(provider);
+            if(location!=null){
+                onLocationChanged(location);
+            }
 //                locationManager.requestLocationUpdates(provider, 20000, 0, this);
 
-                map.setOnMarkerClickListener(updateExpandedView);
-                loadMeals();
-            } else {
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, 0);
-            }
+            map.setOnMarkerClickListener(updateExpandedView);
+            loadMeals();
+        } else {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, 0);
+        }
+
+
+    }
+
+
+    private void reloadMarkers() {
+        map.clear();
+        for (Marker marker: markers.values()) {
+            LatLng coordinate = marker.getPosition();
+            map.addMarker(new MarkerOptions()
+                    .position(coordinate));
         }
     }
 
