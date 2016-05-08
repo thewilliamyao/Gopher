@@ -54,7 +54,7 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
 
     private View view;
     private MapView mapView;
-    private static GoogleMap map;
+    private GoogleMap map;
     private ExpandedMarkerFragment expandedMarkerFrag;
     private Marker mSelectedMarker;
     private static HashMap<Marker, Meal> meals = new HashMap<>(); //maps marker to meal
