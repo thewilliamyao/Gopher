@@ -4,6 +4,9 @@ import android.Manifest;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Location;
@@ -34,6 +37,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -50,8 +54,8 @@ import java.util.Map;
  */
 public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback, LocationListener {
 
-
-
+    private BitmapDescriptor markerIcon;
+    private BitmapDescriptor selectedMarkerIcon;
     private View view;
     private MapView mapView;
     private GoogleMap map;
@@ -67,6 +71,12 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
         FrameLayout mapView = (FrameLayout) super.onCreateView(inflater, container, savedInstanceState);
         View frag = inflater.inflate(R.layout.fragment_map, null);
         mapView.addView(frag);
+
+        //set custom markers
+        if (markerIcon == null && selectedMarkerIcon == null) {
+            markerIcon = customMarker(R.drawable.meal_marker);
+            selectedMarkerIcon = customMarker(R.drawable.meal_marker_selected);
+        }
 
         //add profile header fragment
         if (expandedMarkerFrag == null) {
@@ -144,7 +154,9 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
         for (Map.Entry<String, Marker> entry: markers.entrySet()) {
             LatLng coordinate = entry.getValue().getPosition();
             Marker newMarker = map.addMarker(new MarkerOptions()
-                    .position(coordinate));
+                    .position(coordinate)
+                    .icon(markerIcon)
+            );
 
             //add to temp hashmaps
             tempMarkers.put(entry.getKey(), newMarker);
@@ -174,10 +186,10 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
 
                 //set selected state
                 if (null != mSelectedMarker) {
-                    mSelectedMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                    mSelectedMarker.setIcon(markerIcon);
                 }
                 mSelectedMarker = marker;
-                mSelectedMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                mSelectedMarker.setIcon(selectedMarkerIcon);
 
             }
             return true;
@@ -225,7 +237,9 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
             Address a = Modules.addressToCoordinate(meal.getAddress(), getActivity());
             LatLng coordinate = new LatLng(a.getLatitude(), a.getLongitude());
             Marker marker = map.addMarker(new MarkerOptions()
-                    .position(coordinate));
+                    .position(coordinate)
+                    .icon(markerIcon)
+            );
 
             //add to hashmaps
             markers.put(data.getKey(), marker);
@@ -262,6 +276,17 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
         toRemove.remove();
         meals.remove(toRemove);
         markers.remove(key);
+    }
+
+    private BitmapDescriptor customMarker(int id) {
+        Drawable d = getResources().getDrawable(id); // programatically create drawable
+        Canvas canvas = new Canvas();
+        Bitmap bitmap = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bitmap);
+        d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+        d.draw(canvas);
+        return  BitmapDescriptorFactory.fromBitmap(bitmap);
+
     }
 
     @Override
