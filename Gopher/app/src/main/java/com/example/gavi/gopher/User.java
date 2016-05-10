@@ -12,24 +12,19 @@ public class User {
     private String address;
     private String mealBuyingID;
     private String mealSellingID;
-    private String profilePic;
 
-    public User(String id, String fn, String ln, String email, String a,  String bid, String sid, String p) {
+    public User(String id, String fn, String ln, String email, String a,  String bid, String sid) {
         this.id = id;
         this.firstName = fn;
         this.lastName = ln;
         this.email = email;
         this.address = a;
-        this.profilePic = p;
         this.mealBuyingID = bid;
         this.mealSellingID = sid;
     }
 
     public User(){ }
 
-    public String getProfilePic() {
-        return profilePic;
-    }
 
     public String getId() {
         return id;

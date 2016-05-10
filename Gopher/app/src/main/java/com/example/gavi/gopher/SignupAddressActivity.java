@@ -98,7 +98,7 @@ public class SignupAddressActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Map<String, Object> result) {
                 String id = result.get("uid").toString();
-                User newUser = new User(id, fname, lname, email, address, "", "", "");
+                User newUser = new User(id, fname, lname, email, address, "", "");
                 storeUser(id, newUser);
                 storeID(id);
                 UserSwitcherActivity.chooseUI(getApplicationContext(), (thisActivity));
