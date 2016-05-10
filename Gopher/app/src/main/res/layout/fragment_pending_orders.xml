@@ -1,14 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <ListView
-        android:layout_width="wrap_content"
+    <Button
+        android:layout_width="368dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="8dp"
+        android:id="@+id/button3"
+        android:background="@drawable/pizza" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/item_listView"
-        android:isScrollContainer="true"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
-        android:scrollbars="vertical"
-        android:soundEffectsEnabled="true"/>
+        android:layout_marginTop="8pt"
+        android:layout_marginLeft="3pt">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3pt">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="40dp"
+                android:text="Food Title"
+                android:id="@+id/food_title" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price"
+                android:textSize="30dp"
+                android:id="@+id/price" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:textStyle="bold"
+                android:textSize="40dp"
+                android:text="Chef Name"
+                android:id="@+id/chef_name" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:text="Address"
+                android:id="@+id/address" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:textColor="@color/white"
+        android:layout_marginTop="120dp"
+        android:id="@+id/cancel_pending"
+        android:layout_gravity="center_horizontal" />
+
 </LinearLayout>
