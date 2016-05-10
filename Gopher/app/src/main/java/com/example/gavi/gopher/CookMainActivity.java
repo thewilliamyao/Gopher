@@ -72,7 +72,7 @@ public class CookMainActivity extends AppCompatActivity {
             switch (position) {
                 case 0: return new CookMap();
                 case 1: return new ListFragment();
-                case 2: return new PendingOrdersFragment();
+                case 2: return new CookPendingOrdersFrag();
                 case 3: return new ProfileFragment();
             }
             return null;
