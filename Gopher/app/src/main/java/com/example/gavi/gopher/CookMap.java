@@ -131,6 +131,7 @@ public class CookMap extends SupportMapFragment implements OnMapReadyCallback, L
 
     private void reloadMarkers() {
         map.clear();
+        mSelectedMarker = null;
 
         HashMap <String, Marker> tempMarkers = new HashMap<>();
         HashMap <Marker, User> tempUsers = new HashMap<>();

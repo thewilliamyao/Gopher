@@ -42,8 +42,9 @@
         <activity
             android:name=".FoodDetails"
             android:screenOrientation="portrait"
-            android:label="@string/title_activity_food_details"
-            android:theme="@style/FoodieTheme.NoActionBar"/>
+            android:label= "@string/title_activity_food_details"
+            android:parentActivityName=".FoodieMainActivity"
+            android:theme="@style/FoodieTheme"/>
         <activity
             android:name=".SignupActivity"
             android:screenOrientation="portrait"

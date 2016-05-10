@@ -148,6 +148,7 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
 
     private void reloadMarkers() {
         map.clear();
+        mSelectedMarker = null;
 
         HashMap <String, Marker> tempMarkers = new HashMap<>();
         HashMap <Marker, Meal> tempMeals = new HashMap<>();
@@ -184,6 +185,7 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
                 expandedMarkerFrag.setName(meal.getTitle());
                 expandedMarkerFrag.setPrice("$" +  String.format("%.2f", meal.getPrice()) );
                 expandedMarkerFrag.setAddress(meal.getAddress());
+                expandedMarkerFrag.setUser(meal);
 
                 //set image
                 expandedMarkerFrag.startAnim();

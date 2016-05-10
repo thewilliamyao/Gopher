@@ -15,7 +15,7 @@
     <string name="foodie_title">Foodie</string>
     <string name="cook_title">Cook</string>
     <string name="save">Save</string>
-    <string name="title_activity_food_details">FoodDetails</string>
+    <string name="title_activity_food_details">Food Details</string>
 
     <string name="firebase_url">https://gopher-uima.firebaseIO.com</string>
 

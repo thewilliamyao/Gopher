@@ -38,7 +38,8 @@ public class ExpandedMarkerFragment extends Fragment {
     private ImageView imageView;
     private View view;
     private Button detailButton;
-    private DynamicBox box;
+    private Meal meal;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,8 +85,16 @@ public class ExpandedMarkerFragment extends Fragment {
             detailButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Snackbar.make(view, "Not yet implemented", Snackbar.LENGTH_LONG)
-                            .show();
+                    if (meal != null) {
+                        Intent intent = new Intent(getActivity(), FoodDetails.class);
+                        intent.putExtra("title", meal.getTitle());
+                        intent.putExtra("price", meal.getPrice());
+                        intent.putExtra("description", meal.getDescription());
+                        intent.putExtra("id", meal.getId());
+                        startActivity(intent);
+                    } else {
+                        Snackbar.make(view, "No meal selected.", Snackbar.LENGTH_LONG).show();
+                    }
                 }
             });
         }
@@ -126,15 +135,16 @@ public class ExpandedMarkerFragment extends Fragment {
         imageView.setImageBitmap(bitmap);
     }
 
-    public void setName(String name) {
+    protected void setName(String name) {
         nameText.setText(name);
     }
-    public void setPrice(String price) {
+    protected void setPrice(String price) {
         priceText.setText(price);
     }
-    public void setAddress(String address) {
+    protected void setAddress(String address) {
         addressText.setText(address);
     }
+    protected void setUser(Meal meal) { this.meal = meal; }
 
 //    public void setImageView(Bitmap bitmap) {
 //        Picasso.with(getContext())

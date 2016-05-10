@@ -1,7 +1,10 @@
 package com.example.gavi.gopher;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,63 +12,94 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class FoodDetails extends AppCompatActivity {
+
+    private TextView titleText;
+    private TextView priceText;
+    private TextView descriptionText;
+
+    private String mealid;
+    private Activity thisActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("here here");
         setContentView(R.layout.activity_food_details);
-        Intent intent = getIntent();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TextView foodname = ((TextView)findViewById(R.id.title));
-        TextView cookname = ((TextView)findViewById(R.id.cookname));
-        TextView price = ((TextView)findViewById(R.id.price));
-        TextView address = ((TextView)findViewById(R.id.address));
-        TextView rating = ((TextView)findViewById(R.id.rating));
-        TextView dairy = ((TextView)findViewById(R.id.dairy));
-        TextView gluten = ((TextView)findViewById(R.id.glut));
-        TextView nut = ((TextView)findViewById(R.id.nut));
+        //init vars
+        thisActivity = this;
 
-/* Get values from Intent */
-        String title  = intent.getStringExtra("KEY_title");
-        String chefname  = intent.getStringExtra("KEY_chefname");
-        String pric = intent.getStringExtra("KEY_price");
-        String addr  = intent.getStringExtra("KEY_address");
-        String rate = intent.getStringExtra("KEY_rating");
-        boolean dai = intent.getBooleanExtra("Key_dairy", true);
-        boolean glut = intent.getBooleanExtra("Key_gluten", true);
-        boolean nu = intent.getBooleanExtra("Key_nut", true);
+        //init UI
+        titleText = (TextView) findViewById(R.id.title);
+        priceText = (TextView) findViewById(R.id.price);
+        descriptionText = (TextView) findViewById(R.id.description);
 
-        foodname.setText(title);
-        cookname.setText(chefname);
-        price.setText("$" + pric);
-        address.setText(addr);
-        rating.setText(rate);
+        //get data
+        Intent data = getIntent();
+        String title = data.getStringExtra("title");
+        double price = data.getDoubleExtra("price", 0);
+        String description = data.getStringExtra("description");
+        mealid = data.getStringExtra("id");
 
+        //set text views
+        titleText.setText(title);
+        priceText.setText("$" + price);
+        descriptionText.setText(description);
 
-        if (dai) {
-            dairy.setText("•Dairy Free");
-        }
+        //set listeners
+        (findViewById(R.id.order)).setOnClickListener(orderMeal);
 
-        if (glut) {
-            gluten.setText("•Gluten Free");
-        }
-
-        if (nu) {
-            nut.setText("•Nut Free");
-        }
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
+
+    View.OnClickListener orderMeal = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            //sweet alert
+            new SweetAlertDialog(thisActivity, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("Order this meal?")
+                    .setConfirmText("Yes")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+
+                            //store meal buying ID for user
+                            SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                            String userID = myPrefs.getString(Constants.USER_ID, "");
+                            final Firebase userRef = Modules.connectDB(thisActivity, "/users/" + userID);
+                            userRef.child("mealBuyingID").setValue(mealid);
+
+                            //TODO: Need to send alert to cook
+
+
+                            //confirmation dialogue
+                            sDialog
+                                    .setTitleText("Meal Ordered!")
+                                    .setContentText("Your Cook will notify you when your meal is ready.")
+                                    .showCancelButton(false)
+                                    .setConfirmText("OK")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            thisActivity.finish();
+                                        }
+                                    })
+                                    .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                        }
+                    })
+                    .setCancelText("No")
+                    .setCancelClickListener(null)
+                    .show();
+
+        }
+    };
 
 }

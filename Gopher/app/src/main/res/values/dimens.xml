@@ -5,4 +5,8 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
     <dimen name="header_size">22dp</dimen>
+
+    <dimen name="title">20dp</dimen>
+    <dimen name="subtitle">14dp</dimen>
+
 </resources>
