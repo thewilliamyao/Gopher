@@ -138,7 +138,7 @@ public class FoodiePendingFrag extends Fragment {
         public void onClick(View v) {
             if ((cook != null) && (!userid.equals(""))) {
 
-                //sweet alert
+                //confirm canceling meal
                 new SweetAlertDialog(thisActivity, SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("Cancel your order?")
                         .setConfirmText("Yes")
