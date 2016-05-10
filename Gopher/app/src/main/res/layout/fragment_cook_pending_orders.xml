@@ -78,46 +78,6 @@
                     android:layout_marginRight="16dp">
                 </View>
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/cookContainer"
-                    android:layout_below="@+id/spacer"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp">
-
-                    <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:id="@+id/imageView5"
-                        android:background="@color/light_gray"/>
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="16dp"
-                        >
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Cook Name"
-                            android:id="@+id/cookName"
-                            android:textSize="19dp"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="address"
-                            android:id="@+id/address"/>
-                    </LinearLayout>
-
-                </LinearLayout>
-
             </RelativeLayout>
 
         </ScrollView>
@@ -133,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:text="Mark Ready"
                 android:layout_weight="1"
-                android:background="@color/dark_purple"
+                android:background="?attr/primary_background"
                 android:id="@+id/markReady"
                 android:textColor="@color/white"
                 android:layout_centerHorizontal="true"/>
@@ -149,7 +109,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="Mark Picked Up"
-                android:background="@color/dark_purple"
+                android:background="?attr/primary_background"
                 android:id="@+id/markPickedUp"
                 android:textColor="@color/white"
                 android:layout_centerHorizontal="true"/>
@@ -168,7 +128,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="No meal ordered."
+            android:text="No meal being cooked."
             android:textSize="27dp"
             android:gravity="center"/>
 
