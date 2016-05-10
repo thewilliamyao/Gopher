@@ -149,8 +149,9 @@ public class FoodiePendingFrag extends Fragment {
                                 //update values in database and show empty view
                                 Firebase userRef = Modules.connectDB(getActivity(), "/users/" + userid);
                                 userRef.child("mealBuyingID").setValue("");
-                                sDialog.dismiss();
                                 toggleEmptyOrders();
+                                sDialog.dismiss();
+
                             }
                         })
                         .setCancelText("No")
