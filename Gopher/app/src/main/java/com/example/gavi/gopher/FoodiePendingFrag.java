@@ -84,7 +84,9 @@ public class FoodiePendingFrag extends Fragment {
                 if (!mealid.equals("")) {
                     loadMeal(mealid);
                 } else {
-                    toggleEmptyOrders();
+                    if ((view.findViewById(R.id.contentFrame)).getVisibility() == View.VISIBLE) {
+                        toggleEmptyOrders();
+                    }
                 }
 
             }
