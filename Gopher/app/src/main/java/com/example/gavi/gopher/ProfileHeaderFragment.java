@@ -55,7 +55,7 @@ public class ProfileHeaderFragment extends Fragment {
                 intent.putExtra("first_name", currUser.getFirstName());
                 intent.putExtra("last_name", currUser.getLastName());
                 intent.putExtra("address", currUser.getAddress());
-            intent.putExtra("prof_pic", encodedProfilePic);
+//                intent.putExtra("prof_pic", encodedProfilePic);
                 startActivity(intent);
             }
 
@@ -98,7 +98,7 @@ public class ProfileHeaderFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d("log", "view destroyed");
+        Log.d("log", "Prof Header view destroyed");
 
     }
 
