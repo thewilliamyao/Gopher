@@ -35,6 +35,8 @@ dependencies {
     compile 'com.daimajia.androidanimations:library:1.0.8@aar'
     compile 'jp.wasabeef:blurry:2.0.2'
     compile 'com.github.medyo:dynamicbox:1.2@aar'
+    compile 'com.wang.avi:library:1.0.5'
+    compile 'com.nineoldandroids:library:2.4.0'
 
 }
 

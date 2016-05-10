@@ -32,6 +32,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -173,7 +174,7 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
         @Override
         public boolean onMarkerClick(Marker marker) {
 
-
+            final Marker markerRef = marker;
             Meal meal = meals.get(marker);
 
             if (meal != null) {
@@ -183,6 +184,28 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
                 expandedMarkerFrag.setName(meal.getTitle());
                 expandedMarkerFrag.setPrice("$" +  String.format("%.2f", meal.getPrice()) );
                 expandedMarkerFrag.setAddress(meal.getAddress());
+
+                //set image
+                expandedMarkerFrag.startAnim();
+                Firebase imagePath = Modules.connectDB(getActivity(), "/meal_images/" + meal.getId());
+                imagePath.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (mSelectedMarker == markerRef) {
+                            for (DataSnapshot postSnap: dataSnapshot.getChildren()) {
+                                Log.d("log", "photo retrieved");
+                                String encoded = postSnap.getValue().toString();
+                                expandedMarkerFrag.stopAnim();
+                                expandedMarkerFrag.setImage(Modules.decodeBase64(encoded));
+                                Log.d("log", "image decoded");
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {}
+                });
 
                 //set selected state
                 if (null != mSelectedMarker) {

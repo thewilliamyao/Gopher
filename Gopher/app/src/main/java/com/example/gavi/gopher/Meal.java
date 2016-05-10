@@ -9,16 +9,21 @@ public class Meal {
     private double price;
     private String description;
     private String address;
+    private String id;
 
-    public Meal(String t, double p, String d, String a) {
+    public Meal(String t, double p, String d, String a, String i) {
         this.title = t;
         this.description = d;
         this.price = p;
         this.address = a;
+        this.id = i;
     }
 
     public Meal() { }
 
+    public String getId() {
+        return id;
+    }
     public String getTitle() { return this.title; }
     public String getDescription() { return this.description; }
     public double getPrice() { return this.price; }

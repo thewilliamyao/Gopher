@@ -1,11 +1,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:id="@+id/background"
-    android:background="?attr/primary_background_transparent"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="100dp"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:id="@+id/background"
+             android:background="?attr/primary_background_transparent"
 
-    tools:context="com.example.gavi.gopher.ExpandedMarkerFragment">
+             tools:context="com.example.gavi.gopher.ExpandedMarkerFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,15 +24,28 @@
             <FrameLayout
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:id="@+id/frame">
 
                 <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:background="@color/white"
                     android:id="@+id/imageView"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_local_cafe_black_80dp" />
+                    android:src="@drawable/ic_local_cafe_black_80dp"
+                    android:scaleType="centerCrop"/>
+
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:id="@+id/avloadingIndicatorView"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    app:indicator="BallPulseSync"
+                    app:indicator_color="@color/light_gray"
+                    />
+
             </FrameLayout>
 
             <LinearLayout

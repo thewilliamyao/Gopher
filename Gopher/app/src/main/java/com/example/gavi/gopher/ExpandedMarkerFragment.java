@@ -3,11 +3,13 @@ package com.example.gavi.gopher;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ import com.firebase.client.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import jp.wasabeef.blurry.Blurry;
+import mehdi.sakout.dynamicbox.DynamicBox;
 
 
 /**
@@ -35,6 +38,7 @@ public class ExpandedMarkerFragment extends Fragment {
     private ImageView imageView;
     private View view;
     private Button detailButton;
+    private DynamicBox box;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -109,6 +113,19 @@ public class ExpandedMarkerFragment extends Fragment {
         }
     };
 
+    protected void startAnim() {
+        imageView.setImageBitmap(null);
+        view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.VISIBLE);
+    }
+
+    protected void stopAnim(){
+        view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.GONE);
+    }
+
+    protected void setImage(Bitmap bitmap) {
+        imageView.setImageBitmap(bitmap);
+    }
+
     public void setName(String name) {
         nameText.setText(name);
     }
@@ -119,14 +136,13 @@ public class ExpandedMarkerFragment extends Fragment {
         addressText.setText(address);
     }
 
-    public void setImageView(int id) {
-        imageView.setImageResource(id);
-        Picasso.with(getContext())
-                .load(id)
-                .resize(100, 100)
-                .centerCrop()
-                .into(imageView);
-    }
+//    public void setImageView(Bitmap bitmap) {
+//        Picasso.with(getContext())
+//                .load(bitmap)
+//                .resize(100, 100)
+//                .centerCrop()
+//                .into(imageView);
+//    }
 
     protected void setEmptyTitle() {
         //set title and icon
