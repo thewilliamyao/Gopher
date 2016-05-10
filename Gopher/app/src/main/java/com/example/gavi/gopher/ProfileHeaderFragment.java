@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -33,7 +34,7 @@ public class ProfileHeaderFragment extends Fragment {
 
     private View view;
     private TextView nameText;
-    private Button settingsButton;
+    private ImageButton settingsButton;
     private RadioButton cookToggle;
     private RadioButton foodieToggle;
     private SharedPreferences myPrefs;
@@ -74,7 +75,7 @@ public class ProfileHeaderFragment extends Fragment {
         myPrefs =  PreferenceManager.getDefaultSharedPreferences(
                 getActivity().getApplicationContext());
         nameText = (TextView) view.findViewById(R.id.firstName);
-        settingsButton = (Button) view.findViewById(R.id.settingsButton);
+        settingsButton = (ImageButton) view.findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(editSettings);
 
         profPic = (ImageView) view.findViewById(R.id.profPic);
