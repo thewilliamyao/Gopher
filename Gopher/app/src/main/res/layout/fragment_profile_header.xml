@@ -1,7 +1,9 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+              android:orientation="vertical"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
              tools:context="com.example.gavi.gopher.ProfileHeaderFragment">
 
     <LinearLayout
@@ -13,14 +15,31 @@
         android:background="@color/light_beige"
         android:id="@+id/linearLayout">
 
-        <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:id="@+id/profPic"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:background="#ffffff"
-            android:src="@drawable/ic_person_grey_70dp"/>
+        <FrameLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/white"
+            android:id="@+id/frame">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:id="@+id/profPic"
+                android:layout_gravity="center_vertical"
+                android:background="@color/white"
+                android:src="@drawable/ic_person_grey_70dp"
+                android:scaleType="centerCrop"/>
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/avloadingIndicatorView"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:indicator="BallPulseSync"
+                app:indicator_color="@color/light_gray"
+                />
+        </FrameLayout>
 
         <LinearLayout
             android:orientation="vertical"
@@ -94,4 +113,10 @@
 
     </LinearLayout>
 
-</FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/dark_purple"
+        />
+
+</LinearLayout>

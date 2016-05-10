@@ -7,7 +7,9 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 
@@ -52,8 +55,8 @@ public class ProfileHeaderFragment extends Fragment {
                 intent.putExtra("first_name", currUser.getFirstName());
                 intent.putExtra("last_name", currUser.getLastName());
                 intent.putExtra("address", currUser.getAddress());
-//            intent.putExtra("prof_pic", encodedProfilePic);
-                startActivityForResult(intent, 0);
+            intent.putExtra("prof_pic", encodedProfilePic);
+                startActivity(intent);
             }
 
         }
@@ -72,29 +75,33 @@ public class ProfileHeaderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile_header, container, false);
+
+        //init vars
         myPrefs =  PreferenceManager.getDefaultSharedPreferences(
                 getActivity().getApplicationContext());
+
+        //set UI
         nameText = (TextView) view.findViewById(R.id.firstName);
         settingsButton = (ImageButton) view.findViewById(R.id.settingsButton);
-        settingsButton.setOnClickListener(editSettings);
-
         profPic = (ImageView) view.findViewById(R.id.profPic);
 
+        //set listeners
+        settingsButton.setOnClickListener(editSettings);
+
+        //set data
         setupSwitch();
+        setData();
+
         return view;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        setName();
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d("log", "view destroyed");
+
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        setName();
-    }
 
     //setup the switch based on the user type
     private void setupSwitch() {
@@ -116,38 +123,45 @@ public class ProfileHeaderFragment extends Fragment {
     }
 
     //setup user data
-    private void setName() {
-        SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+    private void setData() {
+        SharedPreferences myPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         String userID = myPrefs.getString(Constants.USER_ID, "null");
-        Firebase firebase = Modules.connectDB(getActivity(), "/users");
-        Query queryRef = firebase.orderByKey().equalTo(userID);
+        Firebase userRef = Modules.connectDB(getActivity(), "/users/" + userID);
 
-        queryRef.addChildEventListener(new ChildEventListener() {
+        //set user info
+        userRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChild) {
-                currUser = snapshot.getValue(User.class);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                currUser = dataSnapshot.getValue(User.class);
                 nameText.setText(currUser.getFirstName() + " " + currUser.getLastName());
-
-//                encodedProfilePic = user.getProfilePic();
-//                Bitmap decodedImage = Modules.decodeBase64(user.getProfilePic());
-//                profPic.setImageBitmap(decodedImage);
-
             }
 
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {}
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-
-            @Override
-            protected Object clone() throws CloneNotSupportedException {return super.clone();}
+            public void onCancelled(FirebaseError firebaseError) { }
         });
+
+        //set profile photo
+        profPic.setImageBitmap(null);   //remove placeholder icon
+        view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.VISIBLE); //set loading animation
+        Firebase imageRef = Modules.connectDB(getActivity(), "/profile_images/" + userID);
+        imageRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.hasChildren()) {
+                    view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.GONE); //set loading animation
+                    profPic.setImageDrawable(getResources().getDrawable(R.drawable.ic_person_grey_70dp));
+                } else {
+                    for (DataSnapshot postSnap: dataSnapshot.getChildren()) {
+                        String encoded = postSnap.getValue().toString();
+                        view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.GONE); //set loading animation
+                        profPic.setImageBitmap(Modules.decodeBase64(encoded));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) { }
+        });
+
     }
 }

@@ -131,9 +131,16 @@ public class ExpandedMarkerFragment extends Fragment {
         view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.GONE);
     }
 
+    //set profile image
     protected void setImage(Bitmap bitmap) {
         imageView.setImageBitmap(bitmap);
     }
+
+    //set placeholder image
+    protected void setDefaultImage() {
+        imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_person_grey_70dp));
+    }
+
 
     protected void setName(String name) {
         nameText.setText(name);
@@ -159,9 +166,9 @@ public class ExpandedMarkerFragment extends Fragment {
         if (getActivity() instanceof CookMainActivity) {
             nameText.setText("Find Foodies nearby.");
             detailButton.setBackgroundResource(R.drawable.ic_add_white_24dp);
+            imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_person_grey_70dp));
         } else {
             nameText.setText("Select a meal nearby!");
         }
     }
-
 }

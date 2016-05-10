@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -157,6 +159,7 @@ public class CookMap extends SupportMapFragment implements OnMapReadyCallback, L
         @Override
         public boolean onMarkerClick(Marker marker) {
 
+            final Marker markerRef = marker;
             User user = users.get(marker);
 
             if (user != null) {
@@ -172,8 +175,38 @@ public class CookMap extends SupportMapFragment implements OnMapReadyCallback, L
                 }
                 mSelectedMarker = marker;
                 mSelectedMarker.setIcon(selectedMarkerIcon);
-
             }
+
+            //set image
+            expandedMarkerFrag.startAnim();
+            Firebase imagePath = Modules.connectDB(getActivity(), "/profile_images/" + user.getId());
+            imagePath.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    Log.d("log", dataSnapshot.toString());
+
+
+                    if (mSelectedMarker == markerRef) {
+
+                        //no data
+                        if (!dataSnapshot.hasChildren()) {
+                            expandedMarkerFrag.stopAnim();
+                            expandedMarkerFrag.setDefaultImage();
+                        } else {
+                            for (DataSnapshot postSnap: dataSnapshot.getChildren()) {
+                                String encoded = postSnap.getValue().toString();
+                                expandedMarkerFrag.stopAnim();
+                                expandedMarkerFrag.setImage(Modules.decodeBase64(encoded));
+                            }
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {}
+            });
             return true;
         }
     };
@@ -199,7 +232,6 @@ public class CookMap extends SupportMapFragment implements OnMapReadyCallback, L
                 clearExpandedView();
                 removeMarker(dataSnapshot);
                 addMarker(dataSnapshot);
-
             }
 
             @Override

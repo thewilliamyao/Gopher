@@ -38,6 +38,9 @@ public class EditSettingsActivity extends AppCompatActivity {
     private ImageView userImage;
     private Activity activity;
 
+    private static int PICK_IMAGE_REQUEST = 1;
+    private Bitmap decoded;
+
     //save to firebase
     View.OnClickListener save = new View.OnClickListener() {
         @Override
@@ -76,11 +79,14 @@ public class EditSettingsActivity extends AppCompatActivity {
                 name.put("lastName", lName.getText().toString());
                 name.put("address", newAddress);
                 userRef.updateChildren(name);
+
+                savePhoto(userID);
                 finish();
 
             } else {
                 Snackbar.make(saveButton, "A field is empty, or the entered address is invalid.", Snackbar.LENGTH_LONG).show();
             }
+
         }
     };
 
@@ -88,21 +94,26 @@ public class EditSettingsActivity extends AppCompatActivity {
     View.OnClickListener addPhoto = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent i = new Intent(
-                    Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(i, 1);
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
         }
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = this;
         Modules.setUserUI(this);
         setContentView(R.layout.activity_edit_settings);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //enable back button
         setTitle("Settings");
 
+        //init variables
+        activity = this;
+        decoded = null;
+
+        //init UI
         fName = (EditText) findViewById(R.id.firstName);
         lName = (EditText) findViewById(R.id.lastName);
         street = (EditText) findViewById(R.id.street);
@@ -124,10 +135,6 @@ public class EditSettingsActivity extends AppCompatActivity {
             //handle error
         }
 
-//        String encodedImage = data.getStringExtra("prof_pic");
-//        Bitmap decodedImage = Modules.decodeBase64(encodedImage);
-//        userImage.setImageBitmap(decodedImage);
-
         saveButton = (Button) findViewById(R.id.saveButton);
         saveButton.setOnClickListener(save);
 
@@ -135,71 +142,37 @@ public class EditSettingsActivity extends AppCompatActivity {
         addPhotoButton.setOnClickListener(addPhoto);
     }
 
+    //save profile photo to firebase
+    private void savePhoto(String userid) {
+        if (decoded != null) {
+            Log.d("log", "inside save photo");
+            Firebase imagesRef = Modules.connectDB(activity, "/profile_images");
+            Firebase imagesChildRef = imagesRef.child(userid);
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//
-//        // TODO Auto-generated method stub
-//        super.onActivityResult(requestCode, resultCode, data);
-//        switch (requestCode) {
-//
-//            case 0:
-//                if (resultCode == RESULT_OK) {
-//                    Uri targetUri = data.getData();
-//                    //             textTargetUri.setText(targetUri.toString());
-//                    Bitmap bitmap;
-//                    try {
-//                        bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-//                        userImage.setImageBitmap(bitmap);
-//
-//
-//                    } catch (FileNotFoundException e) {
-//                        // TODO Auto-generated catch block
-//                        e.printStackTrace();
-//                    }
-//                }
-//                break;
-//
-//        }
-//
-//    }
+            // Add some data to the new location
+            Map<String, String> imageMap = new HashMap<String, String>();
+            imageMap.put("image", Modules.encodeToBase64(decoded, Bitmap.CompressFormat.JPEG, 100));
+            imagesChildRef.setValue(imageMap);
+        }
+    }
 
 
 
-    //get results from selected user photo
+
+    //set image
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1 && resultCode == RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri uri = data.getData();
             try {
-                //encode image
-                Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage));
-                String encodedImage = Modules.encodeToBase64(bitmap, Bitmap.CompressFormat.JPEG, 30);
-
-                //get user ID and store image in firebase
-                SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                String userID = myPrefs.getString(Constants.USER_ID, "");
-                Firebase user = Modules.connectDB(this, "/users/" + userID);
-                user.child("profilePic").setValue(encodedImage);
-
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                decoded = bitmap;
                 userImage.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e) {
-                //handle
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-            // String picturePath contains the path of selected Image
         }
     }
 }

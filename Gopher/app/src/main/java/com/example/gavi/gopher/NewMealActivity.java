@@ -95,7 +95,7 @@ public class NewMealActivity extends AppCompatActivity {
                         finish();
 
                         //push meal image
-                        if (!decoded.equals("")) {
+                        if (decoded != null) {
                             Firebase imagesRef = Modules.connectDB(thisActivity, "/meal_images");
                             Firebase imagesChildRef = imagesRef.child(mealRef.getKey());
 
