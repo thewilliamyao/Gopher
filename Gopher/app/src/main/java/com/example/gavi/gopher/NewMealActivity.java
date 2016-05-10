@@ -73,7 +73,7 @@ public class NewMealActivity extends AppCompatActivity {
 
                 //get user firebase ref
                 SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                String userID = myPrefs.getString(Constants.USER_ID, "");
+                final String userID = myPrefs.getString(Constants.USER_ID, "");
                 final Firebase userRef = Modules.connectDB(thisActivity, "/users/" + userID);
 
                 //get user
@@ -82,7 +82,7 @@ public class NewMealActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot snapshot) {
                         User user = snapshot.getValue(User.class);
                         String address = user.getAddress();
-                        Meal meal = new Meal(title, Double.parseDouble(priceStr), description, address, "");
+                        Meal meal = new Meal(title, Double.parseDouble(priceStr), description, address, "", userID);
 
                         //push the new meal
                         Firebase mealsRef = Modules.connectDB(thisActivity, "/meals");

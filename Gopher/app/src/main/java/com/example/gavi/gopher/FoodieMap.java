@@ -257,7 +257,6 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
     //add a meal marker
     private void addMarker(DataSnapshot data) {
         Meal meal = data.getValue(Meal.class);
-        System.out.println("HERE");
         try {
             Address a = Modules.addressToCoordinate(meal.getAddress(), getActivity());
             LatLng coordinate = new LatLng(a.getLatitude(), a.getLongitude());
@@ -277,8 +276,6 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.d("log", "location set");
-
         //request location permission
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {

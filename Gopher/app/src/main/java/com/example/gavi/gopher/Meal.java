@@ -10,13 +10,15 @@ public class Meal {
     private String description;
     private String address;
     private String id;
+    private String sellerID;
 
-    public Meal(String t, double p, String d, String a, String i) {
+    public Meal(String t, double p, String d, String a, String i, String sellerID) {
         this.title = t;
         this.description = d;
         this.price = p;
         this.address = a;
         this.id = i;
+        this.sellerID = sellerID;
     }
 
     public Meal() { }
@@ -27,6 +29,10 @@ public class Meal {
     public String getTitle() { return this.title; }
     public String getDescription() { return this.description; }
     public double getPrice() { return this.price; }
+
+    public String getSellerID() {
+        return sellerID;
+    }
 
     public String getAddress() {
         return address;

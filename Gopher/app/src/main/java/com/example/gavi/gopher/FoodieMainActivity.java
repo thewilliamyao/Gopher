@@ -75,7 +75,7 @@ public class FoodieMainActivity extends AppCompatActivity {
             switch (position) {
                 case 0: return new FoodieMap();
                 case 1: return new ListFragment();
-                case 2: return new PendingOrdersFragment();
+                case 2: return new FoodiePendingFrag();
                 case 3: return new ProfileFragment();
             }
             return null;
