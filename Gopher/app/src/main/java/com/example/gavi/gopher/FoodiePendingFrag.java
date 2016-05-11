@@ -154,6 +154,9 @@ public class FoodiePendingFrag extends Fragment {
                                 toggleEmptyOrders();
                                 sDialog.dismiss();
 
+                                //change meal bought flag to false
+                                Modules.connectDB(thisActivity, "/meals/" + cook.getMealSellingID()).child("bought").setValue(false);
+
                             }
                         })
                         .setCancelText("No")

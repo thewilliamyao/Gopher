@@ -79,6 +79,8 @@ public class FoodDetails extends AppCompatActivity {
 
                             //TODO: Need to send alert to cook
 
+                            //chnage meal bought flag to true
+                            Modules.connectDB(thisActivity, "/meals/" + mealid).child("bought").setValue(true);
 
                             //confirmation dialogue
                             sDialog

@@ -177,9 +177,17 @@ public class CookPendingOrdersFrag extends Fragment {
     }
 
     private void mealBought(final String mealid) {
+        rightButton.setText(MARK_PICKED_UP);
+        rightButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDarkCook));
+        rightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
     }
 
+    //a user has not bought the meal
     private void mealNotBought (final String mealid, final Firebase mealRef) {
         rightButton.setText(DELETE);
         rightButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryFoodie));
