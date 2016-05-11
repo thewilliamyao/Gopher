@@ -63,6 +63,11 @@ public class SignupAddressActivity extends AppCompatActivity {
         background = (View) findViewById(R.id.background);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        (findViewById(R.id.avloadingIndicatorView)).setVisibility(View.GONE);
+    }
 
     private boolean createUser() {
         String street = streetText.getText().toString();
@@ -95,8 +100,10 @@ public class SignupAddressActivity extends AppCompatActivity {
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-        final DynamicBox box = new DynamicBox(thisActivity, background);
-        box.showLoadingLayout();
+        //show loading screen
+        (findViewById(R.id.avloadingIndicatorView)).bringToFront();
+        (findViewById(R.id.avloadingIndicatorView)).setVisibility(View.VISIBLE);
+
         myFirebaseRef.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
             public void onSuccess(Map<String, Object> result) {
@@ -108,6 +115,7 @@ public class SignupAddressActivity extends AppCompatActivity {
             }
             @Override
             public void onError(FirebaseError firebaseError) {
+                (findViewById(R.id.avloadingIndicatorView)).setVisibility(View.GONE);
                 shakeSignup();
             }
         });

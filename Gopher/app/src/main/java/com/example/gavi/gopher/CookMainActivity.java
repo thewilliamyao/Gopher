@@ -81,6 +81,7 @@ public class CookMainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String mealid = dataSnapshot.getValue().toString();
+
                 if (!mealid.equals("")) {
                     loadMealStatus(mealid);
                 } else {
@@ -100,10 +101,12 @@ public class CookMainActivity extends AppCompatActivity {
         mealRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                boolean bought = Boolean.parseBoolean(dataSnapshot.child("bought").getValue().toString());
-                boolean ready = Boolean.parseBoolean(dataSnapshot.child("ready").getValue().toString());
-                displayMealStatus(mainActivity, ready, bought);
 
+                if (dataSnapshot.getValue() != null) {
+                    boolean bought = Boolean.parseBoolean(dataSnapshot.child("bought").getValue().toString());
+                    boolean ready = Boolean.parseBoolean(dataSnapshot.child("ready").getValue().toString());
+                    displayMealStatus(mainActivity, ready, bought);
+                }
             }
 
             @Override

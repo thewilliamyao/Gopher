@@ -67,12 +67,18 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         //DELETE ME
-//        ((EditText) findViewById(R.id.emailText)).setText("gavi@test.com");
-//        ((EditText) findViewById(R.id.passwordText)).setText("test");
+        ((EditText) findViewById(R.id.emailText)).setText("tim@gmail.com");
+        ((EditText) findViewById(R.id.passwordText)).setText("test");
 
         background = (View) findViewById(R.id.background);
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        (findViewById(R.id.avloadingIndicatorView)).setVisibility(View.GONE);
+        super.onResume();
     }
 
     View.OnClickListener login = new View.OnClickListener() {
@@ -93,8 +99,10 @@ public class LoginActivity extends AppCompatActivity {
                     InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
-                final DynamicBox box = new DynamicBox(thisActivity, background);
-                box.showLoadingLayout();
+
+                //show loading screen
+                (findViewById(R.id.avloadingIndicatorView)).bringToFront();
+                (findViewById(R.id.avloadingIndicatorView)).setVisibility(View.VISIBLE);
 
                 firebase.authWithPassword(email, password, new Firebase.AuthResultHandler() {
                     @Override
@@ -104,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onAuthenticationError(FirebaseError firebaseError) {
-                        box.hideAll();
+                        (findViewById(R.id.avloadingIndicatorView)).setVisibility(View.GONE);
                         YoYo.with(Techniques.Shake)
                                 .duration(700)
                                 .playOn(loginButton);
