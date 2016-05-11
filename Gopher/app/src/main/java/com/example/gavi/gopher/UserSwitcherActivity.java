@@ -44,12 +44,12 @@ public class UserSwitcherActivity extends AppCompatActivity {
             context.setTheme(R.style.CookTheme);
             Intent intent = new Intent(activity, CookMainActivity.class);
             activity.startActivity(intent);
-            activity.finish();
+//            activity.finish();
         } else {
             context.setTheme(R.style.FoodieTheme);
             Intent intent = new Intent(activity, FoodieMainActivity.class);
             activity.startActivity(intent);
-            activity.finish();
+//            activity.finish();
 
         }
     }
