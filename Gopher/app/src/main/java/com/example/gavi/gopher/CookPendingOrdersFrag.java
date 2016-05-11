@@ -31,12 +31,19 @@ public class CookPendingOrdersFrag extends Fragment {
     private TextView titleText;
     private TextView priceText;
     private TextView descriptionText;
-    private Button markReadyButton;
-    private Button markPickedUpButton;
+    private Button leftButton;
+    private Button rightButton;
 
     private String userid;
     private User cook;
     private Activity thisActivity;
+
+    private static final String MARK_READY = "Mark Ready";
+    private static final String MARK_NOT_READY = "Mark Not Ready";
+    private static final String MARK_PICKED_UP = "Mark Picked Up";
+    private static final String DELETE = "Delete Meal";
+    private static final String CANCEL = "Cancel Order";
+
 
     public CookPendingOrdersFrag() {
         // Required empty public constructor
@@ -56,15 +63,11 @@ public class CookPendingOrdersFrag extends Fragment {
         titleText = (TextView) view.findViewById(R.id.title);
         priceText = (TextView) view.findViewById(R.id.price);
         descriptionText = (TextView) view.findViewById(R.id.description);
-        markPickedUpButton = (Button) view.findViewById(R.id.markPickedUp);
-        markReadyButton = (Button) view.findViewById(R.id.markReady);
+        leftButton = (Button) view.findViewById(R.id.leftButton);
+        rightButton = (Button) view.findViewById(R.id.rightButton);
 
         //setup data
         setData();
-
-        //set listeners
-//        markPickedUpButton.setOnClickListener(markPickedUp);
-//        markReadyButton.setOnClickListener(markReady);
 
         return view;
     }
@@ -81,7 +84,7 @@ public class CookPendingOrdersFrag extends Fragment {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String mealid = dataSnapshot.child("mealBuyingID").getValue().toString();
+                String mealid = dataSnapshot.child("mealSellingID").getValue().toString();
                 if (!mealid.equals("")) {
                     loadMeal(mealid);
                 } else {
@@ -97,17 +100,35 @@ public class CookPendingOrdersFrag extends Fragment {
     }
 
     //load meal
-    private void loadMeal(String mealid) {
-        Firebase mealRef = Modules.connectDB(getActivity(), "/meals/" + mealid);
+    private void loadMeal(final String mealid) {
+        final Firebase mealRef = Modules.connectDB(getActivity(), "/meals/" + mealid);
         mealRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Meal meal = dataSnapshot.getValue(Meal.class);
 
-                //set UI data
-                titleText.setText(meal.getTitle());
-                priceText.setText("$" + String.format("%.2f", meal.getPrice()));
-                descriptionText.setText(meal.getDescription());
+                if (meal != null) {
+
+                    //setup left button
+                    if (!meal.isReady()) {
+                        mealNotReady(mealid);
+                    } else {
+                        mealReady(mealid);
+                    }
+
+                    //setup right button
+                    if (meal.isBought()) {
+                        mealBought(mealid);
+                    } else {
+                        mealNotBought(mealid, mealRef);
+                    }
+
+                    //set UI data
+                    titleText.setText(meal.getTitle());
+                    priceText.setText("$" + String.format("%.2f", meal.getPrice()));
+                    descriptionText.setText(meal.getDescription());
+                }
+
 
             }
 
@@ -126,9 +147,54 @@ public class CookPendingOrdersFrag extends Fragment {
             (view.findViewById(R.id.contentFrame)).setVisibility(View.GONE);
             (view.findViewById(R.id.emptyFrame)).setVisibility(View.VISIBLE);
         }
+    }
+
+    //When a meal is not ready
+    private void mealNotReady(final String mealid) {
+        leftButton.setText(MARK_READY);
+        leftButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Firebase mealRef = Modules.connectDB(getActivity(), "/meals/" + mealid);
+                mealRef.child("ready").setValue(true);
+                mealReady(mealid);
+            }
+        });
 
     }
 
+    private void mealReady(final String mealid) {
+        leftButton.setText(MARK_NOT_READY);
+        leftButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Firebase mealRef = Modules.connectDB(getActivity(), "/meals/" + mealid);
+                mealRef.child("ready").setValue(false);
+                mealNotReady(mealid);
+            }
+        });
 
+    }
+
+    private void mealBought(final String mealid) {
+
+    }
+
+    private void mealNotBought (final String mealid, final Firebase mealRef) {
+        rightButton.setText(DELETE);
+        rightButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryFoodie));
+        rightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Modules.connectDB(getActivity(), "/meals/" + mealid).removeValue();
+
+                //remove selling id
+                SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+                userid = myPrefs.getString(Constants.USER_ID, "");
+                Firebase userRef = Modules.connectDB(getActivity(), "/users/" + userid);
+                userRef.child("mealSellingID").setValue("");
+            }
+        });
+    }
 
 }

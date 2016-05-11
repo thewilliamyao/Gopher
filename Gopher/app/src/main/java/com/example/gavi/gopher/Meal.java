@@ -11,6 +11,8 @@ public class Meal {
     private String address;
     private String id;
     private String sellerID;
+    private boolean ready;
+    private boolean bought;
 
     public Meal(String t, double p, String d, String a, String i, String sellerID) {
         this.title = t;
@@ -19,6 +21,8 @@ public class Meal {
         this.address = a;
         this.id = i;
         this.sellerID = sellerID;
+        this.bought = false;
+        this.ready = false;
     }
 
     public Meal() { }
@@ -29,9 +33,16 @@ public class Meal {
     public String getTitle() { return this.title; }
     public String getDescription() { return this.description; }
     public double getPrice() { return this.price; }
-
     public String getSellerID() {
         return sellerID;
+    }
+
+    public boolean isReady() {
+        return ready;
+    }
+
+    public boolean isBought() {
+        return bought;
     }
 
     public String getAddress() {

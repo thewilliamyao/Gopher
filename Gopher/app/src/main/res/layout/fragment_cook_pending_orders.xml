@@ -94,7 +94,7 @@
                 android:text="Mark Ready"
                 android:layout_weight="1"
                 android:background="?attr/primary_background"
-                android:id="@+id/markReady"
+                android:id="@+id/leftButton"
                 android:textColor="@color/white"
                 android:layout_centerHorizontal="true"/>
 
@@ -109,8 +109,8 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="Mark Picked Up"
-                android:background="?attr/primary_background"
-                android:id="@+id/markPickedUp"
+                android:background="?attr/colorPrimaryDark"
+                android:id="@+id/rightButton"
                 android:textColor="@color/white"
                 android:layout_centerHorizontal="true"/>
 
