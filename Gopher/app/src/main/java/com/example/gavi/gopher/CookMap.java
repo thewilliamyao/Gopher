@@ -58,7 +58,7 @@ public class CookMap extends SupportMapFragment implements OnMapReadyCallback, L
     private View view;
     private MapView mapView;
     private GoogleMap map;
-    private ExpandedMarkerFragment expandedMarkerFrag;
+    private static ExpandedMarkerFragment expandedMarkerFrag;
     private Marker mSelectedMarker;
     private static HashMap<Marker, User> users = new HashMap<>();
     private static HashMap<String, Marker> markers = new HashMap<>();
