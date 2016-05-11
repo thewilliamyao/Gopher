@@ -8,100 +8,101 @@
 
              tools:context="com.example.gavi.gopher.ExpandedMarkerFragment">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:alpha="128">
+        <FrameLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentLeft="true"
+            android:background="@color/white"
+            android:id="@+id/pictureFrame">
 
-            <FrameLayout
+            <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:background="@color/white"
-                android:id="@+id/frame">
+                android:id="@+id/imageView"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_local_cafe_black_80dp"
+                android:scaleType="centerCrop"/>
 
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:background="@color/white"
-                    android:id="@+id/imageView"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_local_cafe_black_80dp"
-                    android:scaleType="centerCrop"/>
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/avloadingIndicatorView"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:indicator="BallPulseSync"
+                app:indicator_color="@color/light_gray"
+                />
 
-                <com.wang.avi.AVLoadingIndicatorView
-                    android:id="@+id/avloadingIndicatorView"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:visibility="gone"
-                    app:indicator="BallPulseSync"
-                    app:indicator_color="@color/light_gray"
-                    />
+        </FrameLayout>
 
-            </FrameLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="200dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_height="100dp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/pictureFrame"
+            android:id="@+id/linearLayout3">
 
-            <LinearLayout
-                android:orientation="vertical"
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/firstName"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/header_size"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:layout_marginLeft="16dp"
-                    android:text="No item selected." />
+                android:layout_height="wrap_content"
+                android:id="@+id/firstName"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textSize="21dp"
+                android:layout_marginLeft="16dp"
+                android:text="No item selected." />
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/price"
-                    android:textColor="@color/white"
-                    android:textSize="15dp"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:layout_marginLeft="16dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/price"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginLeft="16dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:id="@+id/address"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="8dp"
-                    android:maxLines="2" />
-
-            </LinearLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <Button
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/detailButton"
-                    android:background="@drawable/ic_keyboard_arrow_right_white_24dp"
-                    android:layout_gravity="center_vertical|right"
-                    android:layout_marginRight="7dp"/>
-            </FrameLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:id="@+id/address"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:maxLines="2" />
 
         </LinearLayout>
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_marginRight="8dp"
+            android:layout_gravity="right"
+            android:minWidth="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/linearLayout3">
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right|center_vertical"
+                android:id="@+id/detailButton"
+                android:background="@drawable/ic_keyboard_arrow_right_white_24dp" />
+
+        </FrameLayout>
+
+
     </RelativeLayout>
+
 
 
 </FrameLayout>

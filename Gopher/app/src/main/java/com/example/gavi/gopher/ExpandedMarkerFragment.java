@@ -166,11 +166,11 @@ public class ExpandedMarkerFragment extends Fragment {
     protected void setEmptyTitle() {
         //set title and icon
         if (getActivity() instanceof CookMainActivity) {
-            nameText.setText("Find Foodies nearby.");
+            nameText.setText("Select a Foodie");
             detailButton.setBackgroundResource(R.drawable.ic_add_white_24dp);
             imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_person_grey_70dp));
         } else {
-            nameText.setText("Select a meal nearby!");
+            nameText.setText("Select a meal");
         }
     }
 }
