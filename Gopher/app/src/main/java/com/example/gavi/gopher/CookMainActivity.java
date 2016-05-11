@@ -1,5 +1,8 @@
 package com.example.gavi.gopher;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,6 +11,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class CookMainActivity extends AppCompatActivity {
 
@@ -52,7 +65,78 @@ public class CookMainActivity extends AppCompatActivity {
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_local_grocery_store_white_24dp);
         tabLayout.getTabAt(3).setIcon(R.drawable.ic_person_white_24dp);
 
+        //set cooking status bar
+        Firebase.setAndroidContext(this);
+        cookingStatus();
+
     }
+
+    private void cookingStatus() {
+        //get userID
+        SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String userid = myPrefs.getString(Constants.USER_ID, "");
+
+        Firebase userRef = Modules.connectDB(this, "/users/" + userid + "/mealSellingID");
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String mealid = dataSnapshot.getValue().toString();
+                if (!mealid.equals("")) {
+                    loadMealStatus(mealid);
+                } else {
+                    noMeal();
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {}
+        });
+    }
+
+    //load meal
+    private void loadMealStatus(final String mealid) {
+        final Firebase mealRef = Modules.connectDB(this, "/meals/" + mealid);
+        final Activity mainActivity = this;
+        mealRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean bought = Boolean.parseBoolean(dataSnapshot.child("bought").getValue().toString());
+                boolean ready = Boolean.parseBoolean(dataSnapshot.child("ready").getValue().toString());
+                displayMealStatus(mainActivity, ready, bought);
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {}
+        });
+    }
+
+    //display meal cooking status
+    private void displayMealStatus(Activity mainActivity, boolean ready, boolean bought) {
+        TextView statusBar = (TextView) findViewById(R.id.mealStatus);
+        statusBar.setVisibility(View.VISIBLE);
+        statusBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryFoodie));
+
+        String status = "Your meal is ";
+        if (bought) {
+            status += "bought and ";
+        } else {
+            status += "not bought and ";
+        }
+
+        if (ready) {
+            status += "ready!";
+        } else {
+            status += "not ready!";
+        }
+
+        statusBar.setText(status);
+    }
+
+    private void noMeal() {
+        (findViewById(R.id.mealStatus)).setVisibility(View.GONE);
+    }
+
 
 
     /**

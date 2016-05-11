@@ -266,16 +266,20 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
     private void addMarker(DataSnapshot data) {
         Meal meal = data.getValue(Meal.class);
         try {
-            Address a = Modules.addressToCoordinate(meal.getAddress(), getActivity());
-            LatLng coordinate = new LatLng(a.getLatitude(), a.getLongitude());
-            Marker marker = map.addMarker(new MarkerOptions()
-                    .position(coordinate)
-                    .icon(markerIcon)
-            );
 
-            //add to hashmaps
-            markers.put(data.getKey(), marker);
-            meals.put(marker, meal);
+            if (meal.getAddress() != null) {
+                Address a = Modules.addressToCoordinate(meal.getAddress(), getActivity());
+                LatLng coordinate = new LatLng(a.getLatitude(), a.getLongitude());
+                Marker marker = map.addMarker(new MarkerOptions()
+                        .position(coordinate)
+                        .icon(markerIcon)
+                );
+
+                //add to hashmaps
+                markers.put(data.getKey(), marker);
+                meals.put(marker, meal);
+            }
+
         } catch (IOException e) {
             //error
         }

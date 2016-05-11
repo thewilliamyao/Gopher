@@ -23,6 +23,8 @@ import java.util.Map;
 
 import mehdi.sakout.dynamicbox.DynamicBox;
 
+//TODO: Signup with existing email doesnt work
+
 public class SignupAddressActivity extends AppCompatActivity {
 
     private Firebase myFirebaseRef;

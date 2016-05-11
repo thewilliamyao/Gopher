@@ -9,6 +9,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.preference.PreferenceManager;
 import android.util.Base64;
+import android.util.Log;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.core.Context;
@@ -43,14 +44,18 @@ public class Modules {
 
     //convert an address to a Coordinate
     public static Address addressToCoordinate(String address, Activity activity) throws IOException {
-        Geocoder geocoder = new Geocoder(activity, Locale.getDefault());
-        String textToSearch = address;
-        List<Address> fromLocationName = null;
 
-        fromLocationName = geocoder.getFromLocationName(textToSearch,1);
-        if (fromLocationName != null && fromLocationName.size() > 0) {
-            Address a = fromLocationName.get(0);
-            return a;
+        if (address != null) {
+            Geocoder geocoder = new Geocoder(activity, Locale.getDefault());
+            String textToSearch = address;
+            List<Address> fromLocationName = null;
+
+            fromLocationName = geocoder.getFromLocationName(textToSearch, 1);
+            if (fromLocationName != null && fromLocationName.size() > 0) {
+                Address a = fromLocationName.get(0);
+                return a;
+            }
+
         }
         return null;
     }
