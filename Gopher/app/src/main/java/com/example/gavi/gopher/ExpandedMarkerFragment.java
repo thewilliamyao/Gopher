@@ -73,9 +73,7 @@ public class ExpandedMarkerFragment extends Fragment {
                                 Intent intent = new Intent(getActivity(), NewMealActivity.class);
                                 startActivity(intent);
                             } else {
-                                Snackbar.make(view, "You can only post one meal at a time!", Snackbar.LENGTH_LONG)
-                                        .setAction("Pending Meals", pendingMeals)
-                                        .show();
+                                Snackbar.make(view, "You can only post one meal at a time!", Snackbar.LENGTH_LONG).show();
                             }
                         }
                         @Override
@@ -87,16 +85,7 @@ public class ExpandedMarkerFragment extends Fragment {
             detailButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (meal != null) {
-                        Intent intent = new Intent(getActivity(), FoodDetails.class);
-                        intent.putExtra("title", meal.getTitle());
-                        intent.putExtra("price", meal.getPrice());
-                        intent.putExtra("description", meal.getDescription());
-                        intent.putExtra("id", meal.getId());
-                        startActivity(intent);
-                    } else {
-                        Snackbar.make(view, "No meal selected.", Snackbar.LENGTH_LONG).show();
-                    }
+                    buyMeal();
                 }
             });
         }
@@ -117,12 +106,43 @@ public class ExpandedMarkerFragment extends Fragment {
         return view;
     }
 
-    View.OnClickListener pendingMeals = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            CookMainActivity.mViewPager.setCurrentItem(2);
-        }
-    };
+    //foodie chooses to buy a meal
+    private void buyMeal() {
+
+        //check if already buying meal
+        SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        String userID = myPrefs.getString(Constants.USER_ID, "");
+        Firebase mealID = Modules.connectDB(getActivity(), "/users/" + userID + "/mealBuyingID");
+        mealID.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.getValue().equals("")) { //no meal bought
+                    if (meal != null) {
+                        Intent intent = new Intent(getActivity(), FoodDetails.class);
+                        intent.putExtra("title", meal.getTitle());
+                        intent.putExtra("price", meal.getPrice());
+                        intent.putExtra("description", meal.getDescription());
+                        intent.putExtra("id", meal.getId());
+                        startActivity(intent);
+                    } else {
+                        Snackbar.make(view, "No meal selected.", Snackbar.LENGTH_LONG).show();
+                    }
+                } else {
+                    Snackbar.make(view, "You can only buy one meal at a time!", Snackbar.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {}
+        });
+    }
+
+//    View.OnClickListener pendingMeals = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//
+//            CookMainActivity.mViewPager.setCurrentItem(2);
+//        }
+//    };
 
     protected void startAnim() {
         imageView.setImageBitmap(null);
