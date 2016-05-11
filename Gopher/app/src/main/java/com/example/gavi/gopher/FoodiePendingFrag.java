@@ -196,11 +196,6 @@ public class FoodiePendingFrag extends Fragment {
     private void mealReady() {
         readyText.setText(READY);
         readyText.setTextColor(getResources().getColor(R.color.colorPrimaryCook));
-
-        new SweetAlertDialog(thisActivity, SweetAlertDialog.WARNING_TYPE)
-                .setTitleText("Your meal is now ready!")
-                .setContentText("Head over to the Cook's residence to pick up your meal!")
-                .show();
     }
 
     //meal not ready
