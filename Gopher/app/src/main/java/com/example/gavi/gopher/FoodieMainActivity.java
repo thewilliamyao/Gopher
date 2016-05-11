@@ -135,7 +135,7 @@ public class FoodieMainActivity extends AppCompatActivity {
     private void mealNotReady(Activity mainActivity) {
         TextView statusBar = (TextView) findViewById(R.id.mealStatus);
         statusBar.setVisibility(View.VISIBLE);
-        statusBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDarkFoodie));
+        statusBar.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_80));
         statusBar.setText("Your meal isn't ready!");
 
         new SweetAlertDialog(mainActivity, SweetAlertDialog.WARNING_TYPE)

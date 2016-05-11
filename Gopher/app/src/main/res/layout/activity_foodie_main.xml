@@ -26,14 +26,15 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:id="@+id/mealStatus"
                 android:visibility="gone"
                 android:text="Your meal is ready!"
                 android:textColor="@color/white"
                 android:gravity="center"
                 android:background="@color/colorPrimaryCook"
-                android:layout_above="@+id/toolbar"/>
+                android:layout_below="@+id/appBar"
+                />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
