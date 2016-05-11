@@ -65,7 +65,7 @@ public class ExpandedMarkerFragment extends Fragment {
                     SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
                     String userID = myPrefs.getString(Constants.USER_ID, "");
                     Firebase mealID = Modules.connectDB(getActivity(), "/users/" + userID);
-                    mealID.addValueEventListener(new ValueEventListener() {
+                    mealID.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
                             User user = snapshot.getValue(User.class);
@@ -113,7 +113,7 @@ public class ExpandedMarkerFragment extends Fragment {
         SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         String userID = myPrefs.getString(Constants.USER_ID, "");
         Firebase mealID = Modules.connectDB(getActivity(), "/users/" + userID + "/mealBuyingID");
-        mealID.addValueEventListener(new ValueEventListener() {
+        mealID.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.getValue().equals("")) { //no meal bought
