@@ -245,6 +245,14 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                String key = data.getKey();
+//                Marker toRemove = markers.get(key);
+//                toRemove.remove();
+//                meals.remove(toRemove);
+//                markers.remove(key);
+//
+//                Log.d("log", dataSnapshot.toString());
+
                 clearExpandedView();
                 removeMarker(dataSnapshot);
                 addMarker(dataSnapshot);
@@ -265,23 +273,26 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
     //add a meal marker
     private void addMarker(DataSnapshot data) {
         Meal meal = data.getValue(Meal.class);
-        try {
 
-            if (meal.getAddress() != null) {
-                Address a = Modules.addressToCoordinate(meal.getAddress(), getActivity());
-                LatLng coordinate = new LatLng(a.getLatitude(), a.getLongitude());
-                Marker marker = map.addMarker(new MarkerOptions()
-                        .position(coordinate)
-                        .icon(markerIcon)
-                );
+        if (!meal.isBought()) { //only add to map is meal is not yet bought
+            try {
 
-                //add to hashmaps
-                markers.put(data.getKey(), marker);
-                meals.put(marker, meal);
+                if (meal.getAddress() != null) {
+                    Address a = Modules.addressToCoordinate(meal.getAddress(), getActivity());
+                    LatLng coordinate = new LatLng(a.getLatitude(), a.getLongitude());
+                    Marker marker = map.addMarker(new MarkerOptions()
+                            .position(coordinate)
+                            .icon(markerIcon)
+                    );
+
+                    //add to hashmaps
+                    markers.put(data.getKey(), marker);
+                    meals.put(marker, meal);
+                }
+
+            } catch (IOException e) {
+                //error
             }
-
-        } catch (IOException e) {
-            //error
         }
     }
 
@@ -306,10 +317,12 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
     //remove marker from map
     private void removeMarker(DataSnapshot data) {
         String key = data.getKey();
-        Marker toRemove = markers.get(key);
-        toRemove.remove();
-        meals.remove(toRemove);
-        markers.remove(key);
+        if (markers.containsKey(key)) {
+            Marker toRemove = markers.get(key);
+            toRemove.remove();
+            meals.remove(toRemove);
+            markers.remove(key);
+        }
     }
 
     private BitmapDescriptor customMarker(int id) {
