@@ -140,7 +140,11 @@ public class ExpandedMarkerFragment extends Fragment {
 
     //set placeholder image
     protected void setDefaultImage() {
-        imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_person_grey_70dp));
+        if (getActivity() instanceof CookMainActivity) {
+            imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_person_grey_70dp));
+        } else {
+            imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_local_cafe_black_80dp));
+        }
     }
 
 

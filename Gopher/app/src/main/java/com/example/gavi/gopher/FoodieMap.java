@@ -196,15 +196,21 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (mSelectedMarker == markerRef) {
-                            for (DataSnapshot postSnap: dataSnapshot.getChildren()) {
-                                Log.d("log", "photo retrieved");
-                                String encoded = postSnap.getValue().toString();
+
+                            //no data
+                            if (!dataSnapshot.hasChildren()) {
                                 expandedMarkerFrag.stopAnim();
-                                expandedMarkerFrag.setImage(Modules.decodeBase64(encoded));
-                                Log.d("log", "image decoded");
+                                expandedMarkerFrag.setDefaultImage();
+                            } else {
+                                for (DataSnapshot postSnap: dataSnapshot.getChildren()) {
+                                    Log.d("log", "photo retrieved");
+                                    String encoded = postSnap.getValue().toString();
+                                    expandedMarkerFrag.stopAnim();
+                                    expandedMarkerFrag.setImage(Modules.decodeBase64(encoded));
+                                    Log.d("log", "image decoded");
+                                }
                             }
                         }
-
                     }
 
                     @Override
