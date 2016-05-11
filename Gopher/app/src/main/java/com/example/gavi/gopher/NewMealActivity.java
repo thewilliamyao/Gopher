@@ -43,6 +43,7 @@ public class NewMealActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_meal);
         thisActivity = this;
         setTitle("Cook New Meal");
+        Firebase.setAndroidContext(this);
 
         //setup UI
         titleText = (EditText) findViewById(R.id.title);

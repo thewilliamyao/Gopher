@@ -112,6 +112,7 @@ public class EditSettingsActivity extends AppCompatActivity {
         //init variables
         activity = this;
         decoded = null;
+        Firebase.setAndroidContext(this);
 
         //init UI
         fName = (EditText) findViewById(R.id.firstName);

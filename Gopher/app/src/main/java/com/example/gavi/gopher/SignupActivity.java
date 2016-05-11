@@ -36,6 +36,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         thisActivity = this;
+        Firebase.setAndroidContext(this);
 
         //init Edit texts
         password = (EditText) findViewById(R.id.passwordText);

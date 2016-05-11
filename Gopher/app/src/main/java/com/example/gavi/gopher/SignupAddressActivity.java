@@ -39,6 +39,7 @@ public class SignupAddressActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login_address);
 
         thisActivity = this;
+        Firebase.setAndroidContext(this);
 
         //init Firebase
         Firebase.setAndroidContext(this); //global firebase context

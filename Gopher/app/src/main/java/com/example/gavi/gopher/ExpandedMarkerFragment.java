@@ -52,6 +52,8 @@ public class ExpandedMarkerFragment extends Fragment {
         priceText = (TextView) view.findViewById(R.id.price);
         detailButton = (Button) view.findViewById(R.id.detailButton);
 
+        Firebase.setAndroidContext(getActivity());
+
         setEmptyTitle(); //set placeholder title
 
         //cook detail button

@@ -36,6 +36,7 @@ public class FoodDetails extends AppCompatActivity {
 
         //init vars
         thisActivity = this;
+        Firebase.setAndroidContext(this);
 
         //init UI
         titleText = (TextView) findViewById(R.id.title);

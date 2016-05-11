@@ -55,6 +55,7 @@ public class FoodiePendingFrag extends Fragment {
 
         //init vars
         thisActivity = getActivity();
+        Firebase.setAndroidContext(getActivity());
 
         //init UI
         titleText = (TextView) view.findViewById(R.id.title);
@@ -168,7 +169,7 @@ public class FoodiePendingFrag extends Fragment {
                                 sDialog.dismiss();
 
                                 //change meal bought flag to false
-                                Modules.connectDB(thisActivity, "/meals/" + cook.getMealSellingID()).child("bought").setValue(false);
+                                Modules.connectDB(getActivity(), "/meals/" + cook.getMealSellingID()).child("bought").setValue(false);
 
                             }
                         })

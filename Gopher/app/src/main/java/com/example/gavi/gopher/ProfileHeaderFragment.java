@@ -79,6 +79,7 @@ public class ProfileHeaderFragment extends Fragment {
         //init vars
         myPrefs =  PreferenceManager.getDefaultSharedPreferences(
                 getActivity().getApplicationContext());
+        Firebase.setAndroidContext(getActivity());
 
         //set UI
         nameText = (TextView) view.findViewById(R.id.firstName);

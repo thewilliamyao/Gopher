@@ -71,6 +71,9 @@ public class CookMap extends SupportMapFragment implements OnMapReadyCallback, L
         View frag = inflater.inflate(R.layout.fragment_map, null);
         mapView.addView(frag);
 
+        //init vars
+        Firebase.setAndroidContext(getActivity());
+
         //set custom markers
         if (markerIcon == null && selectedMarkerIcon == null) {
             markerIcon = customMarker(R.drawable.user_marker);

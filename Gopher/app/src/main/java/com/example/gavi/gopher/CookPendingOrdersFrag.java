@@ -58,6 +58,7 @@ public class CookPendingOrdersFrag extends Fragment {
 
         //init vars
         thisActivity = getActivity();
+        Firebase.setAndroidContext(getActivity());
 
         //init UI
         titleText = (TextView) view.findViewById(R.id.title);

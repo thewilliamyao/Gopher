@@ -73,6 +73,8 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
         View frag = inflater.inflate(R.layout.fragment_map, null);
         mapView.addView(frag);
 
+        Firebase.setAndroidContext(getActivity());
+
         //set custom markers
         if (markerIcon == null && selectedMarkerIcon == null) {
             markerIcon = customMarker(R.drawable.meal_marker);
