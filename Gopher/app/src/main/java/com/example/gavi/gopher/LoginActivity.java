@@ -10,6 +10,7 @@ import android.location.Geocoder;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -66,8 +67,8 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         //DELETE ME
-//        ((EditText) findViewById(R.id.emailText)).setText("gavi@test.com");
-//        ((EditText) findViewById(R.id.passwordText)).setText("test");
+        ((EditText) findViewById(R.id.emailText)).setText("gavi@test.com");
+        ((EditText) findViewById(R.id.passwordText)).setText("test");
 
         background = (View) findViewById(R.id.background);
 

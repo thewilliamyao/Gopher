@@ -60,7 +60,7 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
     private View view;
     private MapView mapView;
     private GoogleMap map;
-    private static ExpandedMarkerFragment expandedMarkerFrag;
+    private ExpandedMarkerFragment expandedMarkerFrag;
     private Marker mSelectedMarker;
     private static HashMap<Marker, Meal> meals = new HashMap<>(); //maps marker to meal
     private static HashMap<String, Marker> markers = new HashMap<>(); //maps meal id to marker
@@ -90,7 +90,6 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
             ).commit();
         }
 
-        Log.d("log", "create view");
 
         return mapView;
     }
@@ -98,7 +97,6 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("log", "resume");
 
         //map callback
         if (this.map == null) {
@@ -111,7 +109,6 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
 
     @Override
     public void onDestroyView() {
-        Log.d("log", "destroy view");
         mSelectedMarker = null;
         super.onDestroyView();
     }
@@ -119,7 +116,6 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
     @Override
     public void onMapReady(GoogleMap map) {
         this.map = map;
-        Log.d("log", "create map");
 
         // move camera to current location
         //request location permission
@@ -181,7 +177,6 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
             Meal meal = meals.get(marker);
 
             if (meal != null) {
-                Log.d("log", "update expanded");
 
                 //update expanded view
                 expandedMarkerFrag.setName(meal.getTitle());
@@ -203,11 +198,9 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
                                 expandedMarkerFrag.setDefaultImage();
                             } else {
                                 for (DataSnapshot postSnap: dataSnapshot.getChildren()) {
-                                    Log.d("log", "photo retrieved");
                                     String encoded = postSnap.getValue().toString();
                                     expandedMarkerFrag.stopAnim();
                                     expandedMarkerFrag.setImage(Modules.decodeBase64(encoded));
-                                    Log.d("log", "image decoded");
                                 }
                             }
                         }
