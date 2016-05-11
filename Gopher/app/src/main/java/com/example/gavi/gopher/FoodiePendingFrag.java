@@ -32,10 +32,15 @@ public class FoodiePendingFrag extends Fragment {
     private TextView descriptionText;
     private TextView cookText;
     private TextView addressText;
+    private TextView readyText;
 
     private String userid;
     private User cook;
     private Activity thisActivity;
+
+    private static final String READY = "MEAL READY";
+    private static final String NOT_READY = "MEAL NOT READY";
+
 
     public FoodiePendingFrag() {
         // Required empty public constructor
@@ -57,6 +62,7 @@ public class FoodiePendingFrag extends Fragment {
         descriptionText = (TextView) view.findViewById(R.id.description);
         cookText = (TextView) view.findViewById(R.id.cookName);
         addressText = (TextView) view.findViewById(R.id.address);
+        readyText = (TextView) view.findViewById(R.id.readyText);
 
         //setup data
         setData();
@@ -98,11 +104,18 @@ public class FoodiePendingFrag extends Fragment {
 
     //load meal
     private void loadMeal(String mealid) {
-        Firebase mealRef = Modules.connectDB(getActivity(), "/meals/" + mealid);
+
+        final Firebase mealRef = Modules.connectDB(getActivity(), "/meals/" + mealid);
         mealRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Meal meal = dataSnapshot.getValue(Meal.class);
+
+                if (meal.isReady()) {
+                    mealReady();
+                } else {
+                    mealNotReady();
+                }
 
                 //set UI data
                 titleText.setText(meal.getTitle());
@@ -178,6 +191,21 @@ public class FoodiePendingFrag extends Fragment {
 
     }
 
+    //meal is ready
+    private void mealReady() {
+        readyText.setText(READY);
+        readyText.setTextColor(getResources().getColor(R.color.colorPrimaryCook));
 
+        new SweetAlertDialog(thisActivity, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Your meal is now ready!")
+                .setContentText("Head over to the Cook's residence to pick up your meal!")
+                .show();
+    }
+
+    //meal not ready
+    private void mealNotReady() {
+        readyText.setText(NOT_READY);
+        readyText.setTextColor(getResources().getColor(R.color.colorPrimaryFoodie));
+    }
 
 }

@@ -79,13 +79,45 @@
                 </View>
 
                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cookIndicator"
+                    android:layout_below="@+id/spacer"
+                    android:orientation="horizontal"
+                    android:layout_marginRight="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cook Details:"
+                        android:textSize="20dp"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginLeft="16dp"/>
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="MEAL NOT READY"
+                        android:textSize="18dp"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginLeft="16dp"
+                        android:gravity="right"
+                        android:id="@+id/readyText"/>
+
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/cookContainer"
-                    android:layout_below="@+id/spacer"
+                    android:layout_below="@+id/cookIndicator"
                     android:layout_alignParentStart="true"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp">
 
@@ -107,7 +139,7 @@
                             android:layout_height="wrap_content"
                             android:text="Cook Name"
                             android:id="@+id/cookName"
-                            android:textSize="19dp"/>
+                            android:textSize="18dp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
