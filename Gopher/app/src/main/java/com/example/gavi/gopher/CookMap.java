@@ -253,6 +253,7 @@ public class CookMap extends SupportMapFragment implements OnMapReadyCallback, L
         User user = data.getValue(User.class);
         try {
             Address a = Modules.addressToCoordinate(user.getAddress(), getActivity());
+
             LatLng coordinate = new LatLng(a.getLatitude(), a.getLongitude());
             Marker marker = map.addMarker(new MarkerOptions()
                     .position(coordinate)
