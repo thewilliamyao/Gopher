@@ -45,6 +45,7 @@ public class ListFragment extends Fragment {
 
     HashMap<String, Meal> idtomeal = new HashMap<String, Meal>();
     HashMap<String, Integer> keytoindex = new HashMap<String, Integer>();
+    HashMap<String, Integer> keytoindex2 = new HashMap<String, Integer>();
     private List<ListItem> newLists = new ArrayList<ListItem>();
     private List<Human> humanList = new ArrayList<Human>();
     private ArrayAdapter<ListItem> adapter;
@@ -326,7 +327,7 @@ public class ListFragment extends Fragment {
                 Human hh = new Human(user.getFirstName()+ " " + user.getLastName(), user.getAddress(), user.getEmail() , 0.3d);
                 humanList.add(hh);
                 adp.notifyDataSetChanged();
-                keytoindex.put(user.getId(), newLists.indexOf(hh));
+                keytoindex2.put(user.getId(), humanList.indexOf(hh));
 
             }
 
@@ -335,8 +336,8 @@ public class ListFragment extends Fragment {
 
                 User user = dataSnapshot.getValue(User.class);
 
-                if (keytoindex.containsKey(user.getId())) {
-                    Integer index = keytoindex.get(user.getId());
+                if (keytoindex2.containsKey(user.getId())) {
+                    Integer index = keytoindex2.get(user.getId());
                     Human newmm = new Human(user.getFirstName()+" "+user.getLastName(), user.getAddress(), user.getEmail(), 0.3d);
                     humanList.set(index, newmm);
                 }
