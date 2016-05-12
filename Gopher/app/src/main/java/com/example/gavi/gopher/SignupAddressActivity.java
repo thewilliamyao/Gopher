@@ -84,6 +84,7 @@ public class SignupAddressActivity extends AppCompatActivity {
         //validate
         if (!validAddress(address)) {
             shakeSignup();
+            return false;
         }
 
         //get intent data for user

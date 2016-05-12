@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -53,22 +54,9 @@ public class ListViewAdapter extends ArrayAdapter<ListItem> {
         address.setText(currentList.getDistance() + "km");
 
         TextView rating = (TextView) itemView.findViewById(R.id.rating);
-        rating.setText(Double.toString(currentList.getRating()));
+        rating.setText(currentList.getAddress());
 
-        TextView dairy = (TextView) itemView.findViewById(R.id.textView3);
-        if (currentList.getDairy()) {
-            dairy.setText("•Dairy Free");
-        }
 
-        TextView gluten = (TextView) itemView.findViewById(R.id.textView2);
-        if (currentList.getGluten()) {
-            gluten.setText("•Gluten Free");
-        }
-
-        TextView nut = (TextView) itemView.findViewById(R.id.textView4);
-        if (currentList.getNut()) {
-            nut.setText("•Nut Free");
-        }
 
         ImageView jo = (ImageView) itemView.findViewById(R.id.button3);
         Picasso.with(getContext())

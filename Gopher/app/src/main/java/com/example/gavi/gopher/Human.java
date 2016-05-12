@@ -6,27 +6,27 @@ package com.example.gavi.gopher;
 public class Human {
     private String name;
     private String address;
-    private Double rating;
+    private String email;
     private Double distance;
-    private boolean isDairyFree;
-    private boolean isGlutenFree;
-    private boolean isNutFree;
+//    private boolean isDairyFree;
+//    private boolean isGlutenFree;
+//    private boolean isNutFree;
 
-    Human(String name, String address, Double rating, Double distance, boolean isDairyFree, boolean isGlutenFree, boolean isNutFree) {
+    Human(String name, String address, String rating, Double distance) {
         this.name = name;
         this.address = address;
-        this.rating = rating;
+        this.email = rating;
         this.distance = distance;
-        this.isDairyFree = isDairyFree;
-        this.isGlutenFree = isGlutenFree;
-        this.isNutFree = isNutFree;
+//        this.isDairyFree = isDairyFree;
+//        this.isGlutenFree = isGlutenFree;
+//        this.isNutFree = isNutFree;
     }
 
     public String getName() { return name; }
     public String getAddress() { return address; }
-    public Double getRating() { return rating; }
+    public String getEmail() { return email; }
     public Double getDistance() { return distance; }
-    public boolean getDairy() { return isDairyFree; }
-    public boolean getGluten() { return isGlutenFree; }
-    public boolean getNut() { return isNutFree; }
+//    public boolean getDairy() { return isDairyFree; }
+//    public boolean getGluten() { return isGlutenFree; }
+//    public boolean getNut() { return isNutFree; }
 }

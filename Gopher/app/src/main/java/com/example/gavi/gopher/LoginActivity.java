@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         //DELETE ME
-        ((EditText) findViewById(R.id.emailText)).setText("gavi@test.com");
+        ((EditText) findViewById(R.id.emailText)).setText("gavi@gmail.com");
         ((EditText) findViewById(R.id.passwordText)).setText("test");
 
         background = (View) findViewById(R.id.background);

@@ -49,22 +49,22 @@ public class HumanAdapter extends ArrayAdapter<Human> {
         address.setText(currentList.getDistance() + "km");
 
         TextView rating = (TextView) itemView.findViewById(R.id.rating);
-        rating.setText(Double.toString(currentList.getRating()));
+        rating.setText(currentList.getEmail());
 
-        TextView dairy = (TextView) itemView.findViewById(R.id.dairy);
-        if (currentList.getDairy()) {
-            dairy.setText("•Dairy Free");
-        }
-
-        TextView gluten = (TextView) itemView.findViewById(R.id.glut);
-        if (currentList.getGluten()) {
-            gluten.setText("•Gluten Free");
-        }
-
-        TextView nut = (TextView) itemView.findViewById(R.id.nut);
-        if (currentList.getNut()) {
-            nut.setText("•Nut Free");
-        }
+//        TextView dairy = (TextView) itemView.findViewById(R.id.dairy);
+//        if (currentList.getDairy()) {
+//            dairy.setText("•Dairy Free");
+//        }
+//
+//        TextView gluten = (TextView) itemView.findViewById(R.id.glut);
+//        if (currentList.getGluten()) {
+//            gluten.setText("•Gluten Free");
+//        }
+//
+//        TextView nut = (TextView) itemView.findViewById(R.id.nut);
+//        if (currentList.getNut()) {
+//            nut.setText("•Nut Free");
+//        }
 
         ImageView jo = (ImageView) itemView.findViewById(R.id.joanne);
         Picasso.with(getContext())
