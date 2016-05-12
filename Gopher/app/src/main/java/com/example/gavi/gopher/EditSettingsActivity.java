@@ -68,7 +68,10 @@ public class EditSettingsActivity extends AppCompatActivity {
             //validate address
             String newAddress = streetStr + ", " + cityStr + " " + zipcodeStr;
             try {
-                Modules.addressToCoordinate(newAddress, activity);
+                Address a = Modules.addressToCoordinate(newAddress, activity);
+                if (a == null) {
+                    invalid = true;
+                }
             } catch (IOException e) {
                 invalid = true;
             }
