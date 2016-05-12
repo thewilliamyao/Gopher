@@ -91,6 +91,10 @@ public class FoodiePendingFrag extends Fragment {
                 if (dataSnapshot.child("mealBuyingID").getValue() != null) {
                     String mealid = dataSnapshot.child("mealBuyingID").getValue().toString();
                     if (!mealid.equals("")) {
+
+                        if ((view.findViewById(R.id.contentFrame)).getVisibility() == View.GONE) {
+                            toggleEmptyOrders();
+                        }
                         loadMeal(mealid);
                     } else {
                         if ((view.findViewById(R.id.contentFrame)).getVisibility() == View.VISIBLE) {

@@ -59,9 +59,7 @@ public class ProfileFragment extends Fragment {
         gopherView = (TextView) view.findViewById(R.id.gopher_points_field);
         soldView = (TextView) view.findViewById(R.id.meals_sold_field);
         boughtView = (TextView) view.findViewById(R.id.meals_bought_field);
-        hintView1 = (TextView) view.findViewById(R.id.hint1);
-        hintView2 = (TextView) view.findViewById(R.id.hint2);
-        hintView3 = (TextView) view.findViewById(R.id.hint3);
+
 
         int userType = ListFragment.getUserType(this.getActivity().getApplicationContext());
         System.out.println(userType);
