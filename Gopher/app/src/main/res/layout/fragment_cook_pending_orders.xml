@@ -36,6 +36,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/dark_purple"
                         android:text="Title"
                         android:id="@+id/title"
                         android:textSize="22dp"/>
@@ -43,6 +44,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textStyle="italic"
                         android:text="Price"
                         android:id="@+id/price"/>
 
