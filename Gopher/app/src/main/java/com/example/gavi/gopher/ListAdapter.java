@@ -29,6 +29,7 @@ public class ListAdapter extends ArrayAdapter<ListItem> {
         LinearLayout itemView;
         ListItem currentList = getItem(position);
 
+
         if (convertView == null) {
             itemView = new LinearLayout(getContext());
             String inflater = Context.LAYOUT_INFLATER_SERVICE;

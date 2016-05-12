@@ -111,27 +111,6 @@
         android:layout_marginLeft="40dp"
         android:hint="Zipcode"/>
 
-    <Switch
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Share location with Cooks"
-        android:id="@+id/shareSwitch"
-        android:checked="false"
-        android:layout_below="@+id/zipcode"
-        android:layout_alignStart="@+id/zipcode"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="40dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Allows to Cooks to view your location on a map. This allows Cooks to cater specifically to you! "
-        android:id="@+id/textView"
-        android:layout_below="@+id/shareSwitch"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="5dp"/>
 
 
 </RelativeLayout>

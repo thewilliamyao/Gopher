@@ -68,6 +68,7 @@ public class ListFragment extends Fragment {
         fab1 = (FloatingActionButton) v.findViewById(R.id.fab);
 
 
+
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(getActivity()); //need to do this in every file using firebase
 
@@ -78,6 +79,8 @@ public class ListFragment extends Fragment {
             fab1.hide();
             loadMeals();
             adapter = new ListViewAdapter(getActivity().getApplicationContext(), R.layout.listview_item_layout, newLists);
+
+
 //            for (int i = 0; i < newLists.size();i++) {
 //                System.out.println("new" + newLists.get(i).toString());
 //            }

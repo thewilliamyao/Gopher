@@ -65,7 +65,7 @@
                     android:text="Meals Sold:"
                     android:textSize="20dp"
                     android:id="@+id/meals_sold"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/light_purple"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -74,7 +74,7 @@
                     android:layout_marginLeft="15dp"
                     android:textSize="20dp"
                     android:id="@+id/meals_sold_field"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/light_purple"/>
             </LinearLayout>
 
             <LinearLayout
@@ -89,7 +89,7 @@
                     android:text="Meals Bought:"
                     android:textSize="20dp"
                     android:id="@+id/meals_bought"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/light_purple"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -98,35 +98,10 @@
                     android:layout_marginLeft="15dp"
                     android:textSize="20dp"
                     android:id="@+id/meals_bought_field"
-                    android:textColor="@color/white"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="To let nearby cooks know that you're hungry,"
-                    android:id="@+id/hint1"
-                    android:textColor="@color/light_purple"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="tap on the wedge on the top right corner"
-                    android:id="@+id/hint2"
-                    android:textColor="@color/light_purple"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="and share your location with cooks."
-                    android:id="@+id/hint3"
                     android:textColor="@color/light_purple"/>
             </LinearLayout>
+
+
 
         </LinearLayout>
     </RelativeLayout>
