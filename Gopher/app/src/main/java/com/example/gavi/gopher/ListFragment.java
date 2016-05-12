@@ -63,7 +63,7 @@ public class ListFragment extends Fragment {
 
         int userType = getUserType(this.getActivity().getApplicationContext());
         if (userType == Constants.FOODIE) {
-
+            newLists.clear();
             loadMeals();
             adapter = new ListViewAdapter(getActivity().getApplicationContext(), R.layout.listview_item_layout, newLists);
 //            for (int i = 0; i < newLists.size();i++) {
@@ -114,6 +114,7 @@ public class ListFragment extends Fragment {
 
         } else {
 
+            humanList.clear();
 
             loadUsers();
             adp = new HumanAdapter(getActivity().getApplicationContext(), R.layout.cook_listview_item, humanList);
@@ -322,21 +323,23 @@ public class ListFragment extends Fragment {
 
                 //cast data to meal
                 User user = dataSnapshot.getValue(User.class);
-                    Human hh = new Human(user.getFirstName()+ " " + user.getLastName(), user.getAddress(), user.getEmail() , 0.3d);
-                    humanList.add(hh);
-                    adp.notifyDataSetChanged();
-//                    keytoindex.put(meal.getId(), newLists.indexOf(mm));
+                Human hh = new Human(user.getFirstName()+ " " + user.getLastName(), user.getAddress(), user.getEmail() , 0.3d);
+                humanList.add(hh);
+                adp.notifyDataSetChanged();
+                keytoindex.put(user.getId(), newLists.indexOf(hh));
 
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-//                humanList.clear();
-//                User user = dataSnapshot.getValue(User.class);
-//                Human hh = new Human(user.getFirstName()+ " " + user.getLastName(), user.getAddress(), user.getEmail() , 0.3d);
-//                humanList.add(hh);
-//                adp.notifyDataSetChanged();
+                User user = dataSnapshot.getValue(User.class);
+
+                if (keytoindex.containsKey(user.getId())) {
+                    Integer index = keytoindex.get(user.getId());
+                    Human newmm = new Human(user.getFirstName()+" "+user.getLastName(), user.getAddress(), user.getEmail(), 0.3d);
+                    humanList.set(index, newmm);
+                }
 
             }
 
