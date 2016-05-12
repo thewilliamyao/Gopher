@@ -17,9 +17,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,9 +38,9 @@ public class EditSettingsActivity extends AppCompatActivity {
     private EditText city;
     private EditText zipcode;
     private Button saveButton;
-    private Button addPhotoButton;
-    private ImageView userImage;
+    private ImageButton userImage;
     private Activity activity;
+    private String encodedImage;
 
     private static int PICK_IMAGE_REQUEST = 1;
     private Bitmap decoded;
@@ -120,7 +124,7 @@ public class EditSettingsActivity extends AppCompatActivity {
         street = (EditText) findViewById(R.id.street);
         city = (EditText) findViewById(R.id.city);
         zipcode = (EditText) findViewById(R.id.zipcode);
-        userImage = (ImageView) findViewById(R.id.userImage);
+        userImage = (ImageButton) findViewById(R.id.userImage);
 
         //get data
         Intent data = getIntent();
@@ -136,11 +140,14 @@ public class EditSettingsActivity extends AppCompatActivity {
             //handle error
         }
 
+        //try to get photo
+        loadImage();
+
         saveButton = (Button) findViewById(R.id.saveButton);
         saveButton.setOnClickListener(save);
 
-        addPhotoButton = (Button) findViewById(R.id.addPhotoButton);
-        addPhotoButton.setOnClickListener(addPhoto);
+//        addPhotoButton = (Button) findViewById(R.id.addPhotoButton);
+//        addPhotoButton.setOnClickListener(addPhoto);
     }
 
     //save profile photo to firebase
@@ -157,6 +164,30 @@ public class EditSettingsActivity extends AppCompatActivity {
         }
     }
 
+    //load profile picture
+    private void loadImage() {
+//        userImage.setImageBitmap(null);   //remove placeholder icon
+//        findViewById(R.id.avloadingIndicatorView).setVisibility(View.VISIBLE); //set loading animation
+//        Firebase imageRef = Modules.connectDB(getActivity(), "/profile_images/" + userID);
+//        imageRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (!dataSnapshot.hasChildren()) {
+//                    view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.GONE); //set loading animation
+//                    profPic.setImageDrawable(getResources().getDrawable(R.drawable.ic_person_grey_70dp));
+//                } else {
+//                    for (DataSnapshot postSnap: dataSnapshot.getChildren()) {
+//                        encodedProfilePic = postSnap.getValue().toString();
+//                        view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.GONE); //set loading animation
+//                        profPic.setImageBitmap(Modules.decodeBase64(encodedProfilePic));
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(FirebaseError firebaseError) { }
+//        });
+    }
 
 
 

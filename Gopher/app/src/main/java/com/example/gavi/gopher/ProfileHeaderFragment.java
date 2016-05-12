@@ -55,7 +55,6 @@ public class ProfileHeaderFragment extends Fragment {
                 intent.putExtra("first_name", currUser.getFirstName());
                 intent.putExtra("last_name", currUser.getLastName());
                 intent.putExtra("address", currUser.getAddress());
-//                intent.putExtra("prof_pic", encodedProfilePic);
                 startActivity(intent);
             }
 
@@ -98,6 +97,7 @@ public class ProfileHeaderFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+
         super.onDestroyView();
         Log.d("log", "Prof Header view destroyed");
 
@@ -141,28 +141,28 @@ public class ProfileHeaderFragment extends Fragment {
             public void onCancelled(FirebaseError firebaseError) { }
         });
 
-//        //set profile photo
-//        profPic.setImageBitmap(null);   //remove placeholder icon
-//        view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.VISIBLE); //set loading animation
-//        Firebase imageRef = Modules.connectDB(getActivity(), "/profile_images/" + userID);
-//        imageRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                if (!dataSnapshot.hasChildren()) {
-//                    view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.GONE); //set loading animation
-//                    profPic.setImageDrawable(getResources().getDrawable(R.drawable.ic_person_grey_70dp));
-//                } else {
-//                    for (DataSnapshot postSnap: dataSnapshot.getChildren()) {
-//                        String encoded = postSnap.getValue().toString();
-//                        view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.GONE); //set loading animation
-//                        profPic.setImageBitmap(Modules.decodeBase64(encoded));
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(FirebaseError firebaseError) { }
-//        });
+        //set profile photo
+        profPic.setImageBitmap(null);   //remove placeholder icon
+        view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.VISIBLE); //set loading animation
+        Firebase imageRef = Modules.connectDB(getActivity(), "/profile_images/" + userID);
+        imageRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.hasChildren()) {
+                    view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.GONE); //set loading animation
+                    profPic.setImageDrawable(getResources().getDrawable(R.drawable.ic_person_grey_70dp));
+                } else {
+                    for (DataSnapshot postSnap: dataSnapshot.getChildren()) {
+                        encodedProfilePic = postSnap.getValue().toString();
+                        view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.GONE); //set loading animation
+                        profPic.setImageBitmap(Modules.decodeBase64(encodedProfilePic));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) { }
+        });
 
     }
 }

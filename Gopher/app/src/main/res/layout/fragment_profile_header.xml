@@ -36,7 +36,7 @@
                 android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:visibility="gone"
-                app:indicator="BallPulseSync"
+                app:indicator="BallBeat"
                 app:indicator_color="@color/light_gray"
                 />
         </FrameLayout>

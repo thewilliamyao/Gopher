@@ -46,7 +46,7 @@ public class ProfileFragment extends Fragment {
         soldView = (TextView) view.findViewById(R.id.meals_sold_field);
         boughtView = (TextView) view.findViewById(R.id.meals_bought_field);
 
-        setData();
+//        setData();
 
         return view;
     }
