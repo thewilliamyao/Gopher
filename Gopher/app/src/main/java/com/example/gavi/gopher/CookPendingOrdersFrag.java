@@ -207,9 +207,45 @@ public class CookPendingOrdersFrag extends Fragment {
     }
 
     //meal has been picked up - finalize purchase
-    private void finalizePurchase(String mealid) {
+    private void finalizePurchase(final String mealid) {
 
-        //update stats for users
+        //sweet alert
+        new SweetAlertDialog(thisActivity, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Mark picked up?")
+                .setContentText("Only confirm if a Foodie has picked up and paid for the meal.")
+                .setConfirmText("Yes")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+
+                        //update and remove meal data
+                        updateStats(mealid);
+                        updateIDs(mealid);
+
+                        //confirmation dialogue
+                        sDialog
+                                .setTitleText("Meal purchase finalized!")
+                                .showCancelButton(false)
+                                .setContentText("")
+                                .setConfirmText("OK")
+                                .setConfirmClickListener(null)
+                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                    }
+                })
+                .setCancelText("No")
+                .setCancelClickListener(null)
+                .show();
+
+
+
+
+
+    }
+
+    //remove buyer and seller id then delete meal
+    private void updateIDs(String mealid) {
+
+        //remove buying and selling ids for buyer and seller
         Firebase mealRef = Modules.connectDB(getActivity(), "/meals/" + mealid);
         mealRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -217,7 +253,77 @@ public class CookPendingOrdersFrag extends Fragment {
                 if ((dataSnapshot.child("buyerID").getValue() != null) &&
                         (dataSnapshot.child("sellerID").getValue() != null)) {
 
-                    String buyerID = dataSnapshot.child("buyerID").getValue().toString();
+                    Log.d("log", "inside");
+
+                    //get ids for buyer and seller
+                    final String buyerID = dataSnapshot.child("buyerID").getValue().toString();
+                    final String sellerID = dataSnapshot.child("sellerID").getValue().toString();
+
+                    //remove ids
+                    (Modules.connectDB(getActivity(), "/users/" + buyerID + "/mealBuyingID")).setValue("");
+                    (Modules.connectDB(getActivity(), "/users/" + sellerID + "/mealSellingID")).setValue("");
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {}
+        });
+
+        //remove meal
+        mealRef.removeValue();
+    }
+
+
+
+    //update stats for users when meal is bought
+    private void updateStats(String mealid) {
+        Firebase mealRef = Modules.connectDB(getActivity(), "/meals/" + mealid);
+        mealRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if ((dataSnapshot.child("buyerID").getValue() != null) &&
+                        (dataSnapshot.child("sellerID").getValue() != null)) {
+
+                    //get ids for buyer and seller
+                    final String buyerID = dataSnapshot.child("buyerID").getValue().toString();
+                    final String sellerID = dataSnapshot.child("sellerID").getValue().toString();
+
+                    //update seller stats
+                    Firebase sellerRef = Modules.connectDB(getActivity(), "/meals_bought/" + sellerID);
+                    sellerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.child("mealsSold").getValue() != null) { //value set
+                                int mealsSold = Integer.parseInt(dataSnapshot.child("mealsSold").getValue().toString());
+                                mealsSold++;
+                                Modules.connectDB(getActivity(), "/meals_bought/" + sellerID + "/mealsSold").setValue(mealsSold);
+                            } else { //value not set; set to 1
+                                Modules.connectDB(getActivity(), "/meals_bought/" + sellerID + "/mealsSold").setValue(1);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {}
+                    });
+
+
+                    //update buyer stats
+                    Firebase buyerRef = Modules.connectDB(getActivity(), "/meals_bought/" + buyerID);
+                    buyerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.child("mealsBought").getValue() != null) { //value set
+                                int mealsBought = Integer.parseInt(dataSnapshot.child("mealsBought").getValue().toString());
+                                mealsBought++;
+                                Modules.connectDB(getActivity(), "/meals_bought/" + buyerID + "/mealsBought").setValue(mealsBought);
+                            } else { //value not set; set to 1
+                                Modules.connectDB(getActivity(), "/meals_bought/" + buyerID + "/mealsBought").setValue(1);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {}
+                    });
                 }
 
             }
@@ -225,7 +331,6 @@ public class CookPendingOrdersFrag extends Fragment {
             @Override
             public void onCancelled(FirebaseError firebaseError) { }
         });
-
     }
 
 

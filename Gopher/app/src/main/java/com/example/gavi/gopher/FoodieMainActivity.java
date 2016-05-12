@@ -84,11 +84,14 @@ public class FoodieMainActivity extends AppCompatActivity {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String mealid = dataSnapshot.getValue().toString();
-                if (!mealid.equals("")) {
-                    loadMealStatus(mealid);
-                } else {
-                    noMeal();
+
+                if (dataSnapshot.getValue() != null) {
+                    String mealid = dataSnapshot.getValue().toString();
+                    if (!mealid.equals("")) {
+                        loadMealStatus(mealid);
+                    } else {
+                        noMeal();
+                    }
                 }
             }
 
