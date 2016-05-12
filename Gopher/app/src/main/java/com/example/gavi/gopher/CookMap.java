@@ -180,36 +180,36 @@ public class CookMap extends SupportMapFragment implements OnMapReadyCallback, L
                 mSelectedMarker.setIcon(selectedMarkerIcon);
             }
 
-            //set image
-            expandedMarkerFrag.startAnim();
-            Firebase imagePath = Modules.connectDB(getActivity(), "/profile_images/" + user.getId());
-            imagePath.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    Log.d("log", dataSnapshot.toString());
-
-
-                    if (mSelectedMarker == markerRef) {
-
-                        //no data
-                        if (!dataSnapshot.hasChildren()) {
-                            expandedMarkerFrag.stopAnim();
-                            expandedMarkerFrag.setDefaultImage();
-                        } else {
-                            for (DataSnapshot postSnap: dataSnapshot.getChildren()) {
-                                String encoded = postSnap.getValue().toString();
-                                expandedMarkerFrag.stopAnim();
-                                expandedMarkerFrag.setImage(Modules.decodeBase64(encoded));
-                            }
-                        }
-                    }
-
-                }
-
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {}
-            });
+//            //set image
+//            expandedMarkerFrag.startAnim();
+//            Firebase imagePath = Modules.connectDB(getActivity(), "/profile_images/" + user.getId());
+//            imagePath.addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                    Log.d("log", dataSnapshot.toString());
+//
+//
+//                    if (mSelectedMarker == markerRef) {
+//
+//                        //no data
+//                        if (!dataSnapshot.hasChildren()) {
+//                            expandedMarkerFrag.stopAnim();
+//                            expandedMarkerFrag.setDefaultImage();
+//                        } else {
+//                            for (DataSnapshot postSnap: dataSnapshot.getChildren()) {
+//                                String encoded = postSnap.getValue().toString();
+//                                expandedMarkerFrag.stopAnim();
+//                                expandedMarkerFrag.setImage(Modules.decodeBase64(encoded));
+//                            }
+//                        }
+//                    }
+//
+//                }
+//
+//                @Override
+//                public void onCancelled(FirebaseError firebaseError) {}
+//            });
             return true;
         }
     };
