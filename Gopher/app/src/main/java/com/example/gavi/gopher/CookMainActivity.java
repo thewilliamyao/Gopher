@@ -159,7 +159,7 @@ public class CookMainActivity extends AppCompatActivity {
     private void displayMealStatus(Activity mainActivity, boolean ready, boolean bought) {
         TextView statusBar = (TextView) findViewById(R.id.mealStatus);
         statusBar.setVisibility(View.VISIBLE);
-        statusBar.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_80));
+        statusBar.setBackgroundColor(getResources().getColor(R.color.dark_purple));
 
         String status = "Your meal is ";
         if (bought) {

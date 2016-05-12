@@ -21,14 +21,22 @@
             android:background="@color/white"
             android:id="@+id/frame">
 
-            <ImageView
+            <FrameLayout
                 android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:id="@+id/profPic"
-                android:layout_gravity="center_vertical"
-                android:background="@color/white"
-                android:src="@drawable/ic_person_grey_70dp"
-                android:scaleType="centerCrop"/>
+                android:layout_height="100dp">
+
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:id="@+id/profPic"
+                    android:layout_gravity="center"
+                    android:background="@color/white"
+                    android:src="@drawable/ic_person_grey_70dp"
+                    android:scaleType="centerCrop"/>
+
+            </FrameLayout>
+
+
 
             <com.wang.avi.AVLoadingIndicatorView
                 android:id="@+id/avloadingIndicatorView"
@@ -116,7 +124,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="4dp"
-        android:background="@color/dark_purple"
+        android:background="@color/dark_beige"
         />
 
 </LinearLayout>

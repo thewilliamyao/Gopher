@@ -7,13 +7,23 @@
     android:layout_height="match_parent"
     tools:context="com.example.gavi.gopher.NewMealActivity">
 
-    <ImageView
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:id="@+id/image"
-        android:background="@color/light_gray"
-        android:src="@drawable/ic_add_white_24dp"
-        android:scaleType="centerCrop"/>
+        android:id="@+id/headerFrame"
+        android:background="@android:color/transparent">
+
+        <ImageView
+            android:layout_width="95dp"
+            android:layout_height="95sp"
+            android:layout_gravity="center"
+            android:id="@+id/image"
+            android:src="@drawable/ic_add_green_95dp"
+            android:scaleType="centerCrop"/>
+
+    </FrameLayout>
+
 
     <EditText
         android:layout_width="match_parent"
@@ -21,7 +31,7 @@
         android:id="@+id/title"
         android:hint="Title"
         android:inputType="textCapWords"
-        android:layout_below="@+id/image"
+        android:layout_below="@+id/headerFrame"
         android:layout_alignParentEnd="true"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
