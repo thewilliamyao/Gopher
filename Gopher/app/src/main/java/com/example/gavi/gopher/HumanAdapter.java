@@ -66,12 +66,6 @@ public class HumanAdapter extends ArrayAdapter<Human> {
 //            nut.setText("•Nut Free");
 //        }
 
-        ImageView jo = (ImageView) itemView.findViewById(R.id.joanne);
-        Picasso.with(getContext())
-                .load(R.drawable.joanne)
-                .resize(100, 100)
-                .centerCrop()
-                .into(jo);
 
         return itemView;
 

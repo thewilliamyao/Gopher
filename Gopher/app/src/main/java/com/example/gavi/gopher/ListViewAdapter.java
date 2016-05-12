@@ -58,12 +58,6 @@ public class ListViewAdapter extends ArrayAdapter<ListItem> {
 
 
 
-        ImageView jo = (ImageView) itemView.findViewById(R.id.button3);
-        Picasso.with(getContext())
-                .load(R.drawable.pizza)
-                .resize(100, 100)
-                .centerCrop()
-                .into(jo);
 
         return itemView;
 
