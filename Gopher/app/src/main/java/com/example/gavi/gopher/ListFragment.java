@@ -138,17 +138,30 @@ public class ListFragment extends Fragment {
             ListView humans = (ListView) v.findViewById(R.id.item_listViewTwo);
             humans.setAdapter(adp);
 
-//            humans.setClickable(true);
-            System.out.println("Clickable!!");
             fab1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), NewMealActivity.class);
-                    startActivity(intent);
-
+                    vi = getView();
+                    //check if already selling meal
+                    SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+                    String userID = myPrefs.getString(Constants.USER_ID, "");
+                    Firebase mealID = Modules.connectDB(getActivity(), "/users/" + userID);
+                    mealID.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            User user = snapshot.getValue(User.class);
+                            if (user.getMealSellingID().equals("")) {
+                                Intent intent = new Intent(getActivity(), NewMealActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Snackbar.make(vi, "You can only buy one meal at a time!", Snackbar.LENGTH_LONG).show();
+                            }
+                        }
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {}
+                    });
                 }
             });
-
         }
 
             return v;
