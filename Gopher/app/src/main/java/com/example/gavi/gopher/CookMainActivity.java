@@ -96,6 +96,8 @@ public class CookMainActivity extends AppCompatActivity {
 
     //load meal
     private void loadMealStatus(final String mealid) {
+
+        //status bar listener
         final Firebase mealRef = Modules.connectDB(this, "/meals/" + mealid);
         final Activity mainActivity = this;
         mealRef.addValueEventListener(new ValueEventListener() {
@@ -106,12 +108,51 @@ public class CookMainActivity extends AppCompatActivity {
                     boolean bought = Boolean.parseBoolean(dataSnapshot.child("bought").getValue().toString());
                     boolean ready = Boolean.parseBoolean(dataSnapshot.child("ready").getValue().toString());
                     displayMealStatus(mainActivity, ready, bought);
+
                 }
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {}
         });
+
+
+        //meal ready listener
+        final Firebase boughtRef = Modules.connectDB(this, "/meals/" + mealid + "/bought");
+        boughtRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.getValue() != null) {
+                    boolean bought = Boolean.parseBoolean(dataSnapshot.getValue().toString());
+                    if (bought) {
+                        boughtAlert();
+                    } else {
+                        notBoughtAlert();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {}
+        });
+
+
+    }
+
+    //alert that meal has been bought
+    private void boughtAlert() {
+        new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Your meal has been bought!")
+                .setContentText("If you have finished cooking, make sure to mark that your meal is ready.")
+                .show();
+    }
+
+    private void notBoughtAlert() {
+        new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Your meal is not yet bought!")
+                .setContentText("If you have finished cooking, make sure to mark that your meal is ready.")
+                .show();
     }
 
     //display meal cooking status
