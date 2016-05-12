@@ -87,14 +87,18 @@ public class FoodiePendingFrag extends Fragment {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String mealid = dataSnapshot.child("mealBuyingID").getValue().toString();
-                if (!mealid.equals("")) {
-                    loadMeal(mealid);
-                } else {
-                    if ((view.findViewById(R.id.contentFrame)).getVisibility() == View.VISIBLE) {
-                        toggleEmptyOrders();
+
+                if (dataSnapshot.child("mealBuyingID").getValue() != null) {
+                    String mealid = dataSnapshot.child("mealBuyingID").getValue().toString();
+                    if (!mealid.equals("")) {
+                        loadMeal(mealid);
+                    } else {
+                        if ((view.findViewById(R.id.contentFrame)).getVisibility() == View.VISIBLE) {
+                            toggleEmptyOrders();
+                        }
                     }
                 }
+
 
             }
 
