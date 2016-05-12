@@ -70,7 +70,7 @@ public class ProfileFragment extends Fragment {
             hintView3.setVisibility(View.VISIBLE);
         }
 
-//        setData();
+        setData();
 
         return view;
     }
