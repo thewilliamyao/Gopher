@@ -208,8 +208,13 @@ public class CookPendingOrdersFrag extends Fragment {
 
     //meal has been picked up - finalize purchase
     private void finalizePurchase(String mealid) {
+        updateStats(mealid);
 
-        //update stats for users
+
+    }
+
+    //update stats for users when meal is bought
+    private void updateStats(String mealid) {
         Firebase mealRef = Modules.connectDB(getActivity(), "/meals/" + mealid);
         mealRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -217,7 +222,28 @@ public class CookPendingOrdersFrag extends Fragment {
                 if ((dataSnapshot.child("buyerID").getValue() != null) &&
                         (dataSnapshot.child("sellerID").getValue() != null)) {
 
+                    //get ids for buyer and seller
                     String buyerID = dataSnapshot.child("buyerID").getValue().toString();
+                    final String sellerID = dataSnapshot.child("buyerID").getValue().toString();
+
+                    //update seller stats
+                    Firebase sellerRef = Modules.connectDB(getActivity(), "/meals_bought/" + sellerID);
+                    sellerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.child("mealsSold").getValue() != null) { //value set
+                                int mealsSold = Integer.parseInt(dataSnapshot.child("mealsSold").getValue().toString());
+                                mealsSold++;
+                                Modules.connectDB(getActivity(), "/meals_bought/" + sellerID + "mealsSold").setValue(mealsSold);
+                            } else { //value not set; set to 1
+                                Modules.connectDB(getActivity(), "/meals_bought/" + sellerID + "mealsSold").setValue(1);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {}
+                    });
+
                 }
 
             }
@@ -225,7 +251,6 @@ public class CookPendingOrdersFrag extends Fragment {
             @Override
             public void onCancelled(FirebaseError firebaseError) { }
         });
-
     }
 
 
