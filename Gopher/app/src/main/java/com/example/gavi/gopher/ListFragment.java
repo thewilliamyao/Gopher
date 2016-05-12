@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,6 +53,7 @@ public class ListFragment extends Fragment {
     private ArrayAdapter<Human> adp;
     private String fullname;
     private int counter = 0;
+    FloatingActionButton fab1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,12 +61,17 @@ public class ListFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_list, container, false);
 
+        fab1 = (FloatingActionButton) v.findViewById(R.id.fab);
+
+
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(getActivity()); //need to do this in every file using firebase
 
         int userType = getUserType(this.getActivity().getApplicationContext());
+
         if (userType == Constants.FOODIE) {
             newLists.clear();
+            fab1.hide();
             loadMeals();
             adapter = new ListViewAdapter(getActivity().getApplicationContext(), R.layout.listview_item_layout, newLists);
 //            for (int i = 0; i < newLists.size();i++) {
@@ -82,10 +89,11 @@ public class ListFragment extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                         long id) {
 
-                        ListItem food = (ListItem) parent.getAdapter().getItem(position);
-                        String theid = food.getId();
-                        Meal mmeal = idtomeal.get(theid);
-                        Intent intent = new Intent(getActivity(), FoodDetails.class);
+                    ListItem food = (ListItem) parent.getAdapter().getItem(position);
+                    String theid = food.getId();
+                    Meal mmeal = idtomeal.get(theid);
+                    System.out.println("List" + food.getTitle());
+                    Intent intent = new Intent(getActivity(), FoodDetails.class);
 
 //                        intent.putExtra("KEY_title", food.getTitle());
 //                        intent.putExtra("KEY_address", food.getAddress());
@@ -102,7 +110,7 @@ public class ListFragment extends Fragment {
                     intent.putExtra("description", mmeal.getDescription());
                     intent.putExtra("id", mmeal.getId());
 
-                        startActivity(intent);
+                    startActivity(intent);
 
                     System.out.println("intent!!");
 
@@ -114,7 +122,6 @@ public class ListFragment extends Fragment {
         } else {
 
             humanList.clear();
-
             loadUsers();
             adp = new HumanAdapter(getActivity().getApplicationContext(), R.layout.cook_listview_item, humanList);
             ListView humans = (ListView) v.findViewById(R.id.item_listViewTwo);
@@ -154,12 +161,18 @@ public class ListFragment extends Fragment {
 //
 //                }
 //            });
+            fab1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), NewMealActivity.class);
+                    startActivity(intent);
 
+                }
+            });
 
         }
 
-
-        return v;
+            return v;
     }
 
 
@@ -350,7 +363,7 @@ public class ListFragment extends Fragment {
 
                 //cast data to meal
                 User user = dataSnapshot.getValue(User.class);
-                Human hh = new Human(user.getFirstName()+ " " + user.getLastName(), user.getAddress(), user.getEmail() , 0.3d, user.getId());
+                Human hh = new Human(user.getFirstName() + " " + user.getLastName(), user.getAddress(), user.getEmail(), 0.3d, user.getId());
                 humanList.add(hh);
                 adp.notifyDataSetChanged();
 //                idtouser.put(user.getId(), user);
@@ -365,7 +378,7 @@ public class ListFragment extends Fragment {
 
                 if (keytoindex2.containsKey(user.getId())) {
                     Integer index = keytoindex2.get(user.getId());
-                    Human newmm = new Human(user.getFirstName()+" "+user.getLastName(), user.getAddress(), user.getEmail(), 0.3d, user.getId());
+                    Human newmm = new Human(user.getFirstName() + " " + user.getLastName(), user.getAddress(), user.getEmail(), 0.3d, user.getId());
                     humanList.set(index, newmm);
 //                    idtouser.put(user.getId(), user);
                 }
@@ -379,16 +392,19 @@ public class ListFragment extends Fragment {
             }
 
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {}
+            public void onCancelled(FirebaseError firebaseError) {
+            }
         });
 
     }
 
-    public static int getUserType(Context context){
+    public static int getUserType(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getInt(Constants.USER_TYPE, Constants.FOODIE);
     }
+
 }
