@@ -137,6 +137,7 @@ public class ListFragment extends Fragment {
             adp = new HumanAdapter(getActivity().getApplicationContext(), R.layout.cook_listview_item, humanList);
             ListView humans = (ListView) v.findViewById(R.id.item_listViewTwo);
             humans.setAdapter(adp);
+            humans.setClickable(false);
 
             fab1.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -189,7 +190,6 @@ public class ListFragment extends Fragment {
 
                 //cast data to meal
                 final Meal meal = dataSnapshot.getValue(Meal.class);
-                System.out.println("#" + meal.getTitle());
                 //check if meal is bought
                 if (!meal.isBought()) {
                     //add to array
@@ -201,10 +201,8 @@ public class ListFragment extends Fragment {
                                 String fname = dataSnapshot.child("firstName").getValue().toString();
                                 String lname = dataSnapshot.child("lastName").getValue().toString();
                                 fullname = fname + " " + lname;
-                                System.out.println("##" + fullname);
 //                                names.add(fullname);
                                 ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), 0.3, meal.getId());
-                                System.out.println("###" + meal.getTitle());
                                 newLists.add(mm);
                                 idtomeal.put(meal.getId(), meal);
 //                                newLists.add(mm);
