@@ -104,13 +104,15 @@ public class FoodieMainActivity extends AppCompatActivity {
         mealRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                boolean ready = Boolean.parseBoolean(dataSnapshot.getValue().toString());
-                if (ready) {
-                    mealReady(mainActivity);
-                } else {
-                    mealNotReady(mainActivity);
-                }
 
+                if (dataSnapshot.getValue() != null) {
+                    boolean ready = Boolean.parseBoolean(dataSnapshot.getValue().toString());
+                    if (ready) {
+                        mealReady(mainActivity);
+                    } else {
+                        mealNotReady(mainActivity);
+                    }
+                }
             }
 
             @Override
