@@ -78,6 +78,10 @@ public class FoodDetails extends AppCompatActivity {
                             final Firebase userRef = Modules.connectDB(thisActivity, "/users/" + userID);
                             userRef.child("mealBuyingID").setValue(mealid);
 
+                            //store meal buyingID in meal
+                            final Firebase mealRef = Modules.connectDB(thisActivity, "/meals/" + mealid);
+                            mealRef.child("buyerID").setValue(userID);
+
                             //TODO: Need to send alert to cook
 
                             //chnage meal bought flag to true

@@ -83,7 +83,7 @@ public class NewMealActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot snapshot) {
                         User user = snapshot.getValue(User.class);
                         String address = user.getAddress();
-                        Meal meal = new Meal(title, Double.parseDouble(priceStr), description, address, "", userID);
+                        Meal meal = new Meal(title, Double.parseDouble(priceStr), description, address, "", userID, "");
 
                         //push the new meal
                         Firebase mealsRef = Modules.connectDB(thisActivity, "/meals");

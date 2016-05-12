@@ -11,10 +11,11 @@ public class Meal {
     private String address;
     private String id;
     private String sellerID;
+    private String buyerID;
     private boolean ready;
     private boolean bought;
 
-    public Meal(String t, double p, String d, String a, String i, String sellerID) {
+    public Meal(String t, double p, String d, String a, String i, String sellerID, String buyerID) {
         this.title = t;
         this.description = d;
         this.price = p;
@@ -23,9 +24,14 @@ public class Meal {
         this.sellerID = sellerID;
         this.bought = false;
         this.ready = false;
+        this.buyerID = buyerID;
     }
 
     public Meal() { }
+
+    public String getBuyerID() {
+        return buyerID;
+    }
 
     public String getId() {
         return id;

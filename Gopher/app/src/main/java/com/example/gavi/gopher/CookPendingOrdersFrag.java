@@ -183,7 +183,7 @@ public class CookPendingOrdersFrag extends Fragment {
         rightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finalizePurchase();
+                finalizePurchase(mealid);
             }
         });
     }
@@ -207,8 +207,27 @@ public class CookPendingOrdersFrag extends Fragment {
     }
 
     //meal has been picked up - finalize purchase
-    private void finalizePurchase() {
+    private void finalizePurchase(String mealid) {
+
+        //update stats for users
+        Firebase mealRef = Modules.connectDB(getActivity(), "/meals/" + mealid);
+        mealRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if ((dataSnapshot.child("buyerID").getValue() != null) &&
+                        (dataSnapshot.child("sellerID").getValue() != null)) {
+
+                    String buyerID = dataSnapshot.child("buyerID").getValue().toString();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) { }
+        });
 
     }
+
+
 
 }
