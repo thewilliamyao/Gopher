@@ -55,6 +55,7 @@ public class ExpandedMarkerFragment extends Fragment {
         Firebase.setAndroidContext(getActivity());
 
         setEmptyTitle(); //set placeholder title
+        setDefaultImage();
 
         //cook detail button
         if (getActivity() instanceof CookMainActivity) {

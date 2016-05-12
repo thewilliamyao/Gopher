@@ -149,7 +149,7 @@ public class EditSettingsActivity extends AppCompatActivity {
         saveButton = (Button) findViewById(R.id.saveButton);
         saveButton.setOnClickListener(save);
 
-        userImage.setOnClickListener(addPhoto);
+//        userImage.setOnClickListener(addPhoto);
     }
 
     //save profile photo to firebase

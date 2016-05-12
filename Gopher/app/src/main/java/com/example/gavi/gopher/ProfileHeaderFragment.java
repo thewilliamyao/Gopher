@@ -165,11 +165,11 @@ public class ProfileHeaderFragment extends Fragment {
 //            public void onCancelled(FirebaseError firebaseError) { }
 //        });
 
-        Picasso.with(getContext())
-                .load("http://www.sobeys.com/wp-content/uploads/2015/04/hero-garofalo-pasta.jpg")
-                .resize(100, 100)
-                .centerCrop()
-                .into(profPic);
+//        Picasso.with(getContext())
+//                .load("http://www.sobeys.com/wp-content/uploads/2015/04/hero-garofalo-pasta.jpg")
+//                .resize(100, 100)
+//                .centerCrop()
+//                .into(profPic);
 
     }
 }

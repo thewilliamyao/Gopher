@@ -184,31 +184,31 @@ public class FoodieMap extends SupportMapFragment implements OnMapReadyCallback,
                 expandedMarkerFrag.setAddress(meal.getAddress());
                 expandedMarkerFrag.setUser(meal);
 
-                //set image
-                expandedMarkerFrag.startAnim();
-                Firebase imagePath = Modules.connectDB(getActivity(), "/meal_images/" + meal.getId());
-                imagePath.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (mSelectedMarker == markerRef) {
-
-                            //no data
-                            if (!dataSnapshot.hasChildren()) {
-                                expandedMarkerFrag.stopAnim();
-                                expandedMarkerFrag.setDefaultImage();
-                            } else {
-                                for (DataSnapshot postSnap: dataSnapshot.getChildren()) {
-                                    String encoded = postSnap.getValue().toString();
-                                    expandedMarkerFrag.stopAnim();
-                                    expandedMarkerFrag.setImage(Modules.decodeBase64(encoded));
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {}
-                });
+//                //set image
+//                expandedMarkerFrag.startAnim();
+//                Firebase imagePath = Modules.connectDB(getActivity(), "/meal_images/" + meal.getId());
+//                imagePath.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        if (mSelectedMarker == markerRef) {
+//
+//                            //no data
+//                            if (!dataSnapshot.hasChildren()) {
+//                                expandedMarkerFrag.stopAnim();
+//                                expandedMarkerFrag.setDefaultImage();
+//                            } else {
+//                                for (DataSnapshot postSnap: dataSnapshot.getChildren()) {
+//                                    String encoded = postSnap.getValue().toString();
+//                                    expandedMarkerFrag.stopAnim();
+//                                    expandedMarkerFrag.setImage(Modules.decodeBase64(encoded));
+//                                }
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(FirebaseError firebaseError) {}
+//                });
 
                 //set selected state
                 if (null != mSelectedMarker) {

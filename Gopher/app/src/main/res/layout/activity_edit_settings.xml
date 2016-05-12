@@ -38,7 +38,6 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="13dp"
-        android:background="@color/white"
         android:id="@+id/pictureFrame">
 
         <ImageButton
@@ -46,8 +45,8 @@
             android:layout_height="70dp"
             android:id="@+id/userImage"
             android:layout_gravity="center_vertical"
-            android:background="#ffffff"
             android:layout_alignParentTop="true"
+            android:background="@android:color/transparent"
             android:layout_alignParentStart="true"
             android:src="@drawable/ic_person_grey_70dp"
            />
