@@ -205,7 +205,7 @@ public class ListFragment extends Fragment {
                                 String lname = dataSnapshot.child("lastName").getValue().toString();
                                 fullname = fname + " " + lname;
 //                                names.add(fullname);
-                                ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), "close", meal.getId());
+                                ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), "close by", meal.getId());
                                 newLists.add(mm);
                                 idtomeal.put(meal.getId(), meal);
 //                                newLists.add(mm);
@@ -240,7 +240,7 @@ public class ListFragment extends Fragment {
                     //index = hashmap.get(meal.getId())
                     //update array at arr[index]
                     Integer index = keytoindex.get(meal.getId());
-                    ListItem newmm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), "close", meal.getId());
+                    ListItem newmm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), "close by", meal.getId());
                     newLists.set(index, newmm);
                     idtomeal.put(meal.getId(), meal);
                 }
@@ -317,7 +317,7 @@ public class ListFragment extends Fragment {
                                 fullname = fname + " " + lname;
                                 System.out.println("##" + fullname);
 //                                names.add(fullname);
-                                ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), "close", meal.getId());
+                                ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), "close by", meal.getId());
                                 System.out.println("###" + meal.getTitle());
                                 temp.add(mm);
                                 tempidtomeal.put(meal.getId(), meal);
@@ -368,7 +368,7 @@ public class ListFragment extends Fragment {
 
                 //cast data to meal
                 User user = dataSnapshot.getValue(User.class);
-                Human hh = new Human(user.getFirstName() + " " + user.getLastName(), user.getAddress(), user.getEmail(), "close", user.getId());
+                Human hh = new Human(user.getFirstName() + " " + user.getLastName(), user.getAddress(), user.getEmail(), "close by", user.getId());
                 humanList.add(hh);
                 adp.notifyDataSetChanged();
 //                idtouser.put(user.getId(), user);
@@ -383,7 +383,7 @@ public class ListFragment extends Fragment {
 
                 if (keytoindex2.containsKey(user.getId())) {
                     Integer index = keytoindex2.get(user.getId());
-                    Human newmm = new Human(user.getFirstName() + " " + user.getLastName(), user.getAddress(), user.getEmail(), "close", user.getId());
+                    Human newmm = new Human(user.getFirstName() + " " + user.getLastName(), user.getAddress(), user.getEmail(), "close by", user.getId());
                     humanList.set(index, newmm);
 //                    idtouser.put(user.getId(), user);
                 }

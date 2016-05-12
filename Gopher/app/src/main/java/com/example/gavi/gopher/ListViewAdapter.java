@@ -48,7 +48,7 @@ public class ListViewAdapter extends ArrayAdapter<ListItem> {
         chefName.setText("Cooked by " + currentList.getChefName());
 
         TextView price = (TextView) itemView.findViewById(R.id.price);
-        price.setText("$" + Double.toString(currentList.getPrice()));
+        price.setText("$" + String.format("%.2f", currentList.getPrice()));
 
         TextView address = (TextView) itemView.findViewById(R.id.distance);
         if (currentList.getPrice() > 20) {
