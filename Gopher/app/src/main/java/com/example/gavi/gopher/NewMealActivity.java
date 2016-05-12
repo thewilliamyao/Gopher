@@ -54,7 +54,7 @@ public class NewMealActivity extends AppCompatActivity {
 
         //listeners
         postButton.setOnClickListener(postMeal);
-        image.setOnClickListener(setImage);
+//        image.setOnClickListener(setImage);
     }
 
     //save new meal to database
