@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,6 +53,7 @@ public class ListFragment extends Fragment {
     private ArrayAdapter<Human> adp;
     private String fullname;
     private int counter = 0;
+    FloatingActionButton fab1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,12 +61,16 @@ public class ListFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_list, container, false);
 
+        fab1 = (FloatingActionButton) v.findViewById(R.id.fab);
+
+
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(getActivity()); //need to do this in every file using firebase
 
         int userType = getUserType(this.getActivity().getApplicationContext());
         if (userType == Constants.FOODIE) {
             newLists.clear();
+            fab1.hide();
             loadMeals();
             adapter = new ListViewAdapter(getActivity().getApplicationContext(), R.layout.listview_item_layout, newLists);
 //            for (int i = 0; i < newLists.size();i++) {
@@ -82,15 +88,15 @@ public class ListFragment extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                         long id) {
 
-                    switch (position) {
-                        case 0:
-                        case 1:
-                        case 2:
-                        case 3:
-                        case 4:
-                        case 5:
+//                    switch (position) {
+//                        case 0:
+//                        case 1:
+//                        case 2:
+//                        case 3:
+//                        case 4:
+//                        case 5:
                         ListItem food = (ListItem) parent.getAdapter().getItem(position);
-
+                        System.out.println("List" + food.getTitle());
                         Intent intent = new Intent(getActivity(), FoodDetails.class);
 
                         intent.putExtra("KEY_title", food.getTitle());
@@ -104,7 +110,7 @@ public class ListFragment extends Fragment {
 //                        intent.putExtra("KEY_dairy", food.getDairy());
 
                         startActivity(intent);
-                    }
+//                    }
 
                     System.out.println("intent!!");
 
@@ -124,6 +130,16 @@ public class ListFragment extends Fragment {
 
             humans.setClickable(true);
             System.out.println("Clickable!!");
+
+            fab1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(),NewMealActivity.class);
+                    startActivity(intent);
+
+                }
+            });
+
 
             humans.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
