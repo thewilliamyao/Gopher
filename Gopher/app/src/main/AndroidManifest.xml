@@ -38,6 +38,7 @@
         <activity android:name=".EditSettingsActivity"/>
         <activity
             android:name=".CookMainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/CookTheme.NoActionBar"/>
         <activity
             android:name=".FoodDetails"

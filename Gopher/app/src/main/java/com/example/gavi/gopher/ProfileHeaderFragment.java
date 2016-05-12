@@ -61,6 +61,7 @@ public class ProfileHeaderFragment extends Fragment {
         }
     };
 
+
     //Toggle the user type
     View.OnClickListener switchUser = new View.OnClickListener() {
         @Override
@@ -97,7 +98,7 @@ public class ProfileHeaderFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-
+//        profPic.setImageBitmap(null);
         super.onDestroyView();
         Log.d("log", "Prof Header view destroyed");
 
@@ -142,27 +143,33 @@ public class ProfileHeaderFragment extends Fragment {
         });
 
         //set profile photo
-        profPic.setImageBitmap(null);   //remove placeholder icon
-        view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.VISIBLE); //set loading animation
-        Firebase imageRef = Modules.connectDB(getActivity(), "/profile_images/" + userID);
-        imageRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.hasChildren()) {
-                    view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.GONE); //set loading animation
-                    profPic.setImageDrawable(getResources().getDrawable(R.drawable.ic_person_grey_70dp));
-                } else {
-                    for (DataSnapshot postSnap: dataSnapshot.getChildren()) {
-                        encodedProfilePic = postSnap.getValue().toString();
-                        view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.GONE); //set loading animation
-                        profPic.setImageBitmap(Modules.decodeBase64(encodedProfilePic));
-                    }
-                }
-            }
+//        profPic.setImageBitmap(null);   //remove placeholder icon
+//        view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.VISIBLE); //set loading animation
+//        Firebase imageRef = Modules.connectDB(getActivity(), "/profile_images/" + userID);
+//        imageRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (!dataSnapshot.hasChildren()) {
+//                    view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.GONE); //set loading animation
+//                    profPic.setImageDrawable(getResources().getDrawable(R.drawable.ic_person_grey_70dp));
+//                } else {
+//                    for (DataSnapshot postSnap: dataSnapshot.getChildren()) {
+//                        encodedProfilePic = postSnap.getValue().toString();
+//                        view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.GONE); //set loading animation
+//                        profPic.setImageBitmap(Modules.decodeBase64(encodedProfilePic));
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(FirebaseError firebaseError) { }
+//        });
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) { }
-        });
+        Picasso.with(getContext())
+                .load("http://www.sobeys.com/wp-content/uploads/2015/04/hero-garofalo-pasta.jpg")
+                .resize(100, 100)
+                .centerCrop()
+                .into(profPic);
 
     }
 }
