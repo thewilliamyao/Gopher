@@ -9,13 +9,13 @@ public class ListItem {
     private String chefName;
     private String address;
 //    private Double rating;
-    private Double distance;
+    private String distance;
     private String id;
 //    private boolean isDairyFree;
 //    private boolean isGlutenFree;
 //    private boolean isNutFree;
 
-    ListItem(String title, Double price, String chefName, String address, Double distance, String id) {
+    ListItem(String title, Double price, String chefName, String address, String distance, String id) {
         this.title = title;
         this.price = price;
         this.chefName = chefName;
@@ -33,7 +33,7 @@ public class ListItem {
     public String getChefName() { return chefName; }
     public String getAddress() { return address; }
 //    public Double getRating() { return rating; }
-    public Double getDistance() { return distance; }
+    public String getDistance() { return distance; }
     public String getId() { return id; }
 //    public boolean getDairy() { return isDairyFree; }
 //    public boolean getGluten() { return isGlutenFree; }

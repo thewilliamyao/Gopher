@@ -51,8 +51,13 @@ public class ListViewAdapter extends ArrayAdapter<ListItem> {
         price.setText("$" + Double.toString(currentList.getPrice()));
 
         TextView address = (TextView) itemView.findViewById(R.id.distance);
-        address.setText(currentList.getDistance() + "km");
-
+        if (currentList.getPrice() > 20) {
+            address.setText("$$$");
+        } else if (currentList.getPrice() > 10) {
+            address.setText("$$");
+        } else {
+            address.setText("$");
+        }
         TextView rating = (TextView) itemView.findViewById(R.id.rating);
         rating.setText(currentList.getAddress());
 

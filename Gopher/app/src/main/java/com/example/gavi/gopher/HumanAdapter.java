@@ -46,7 +46,7 @@ public class HumanAdapter extends ArrayAdapter<Human> {
         price.setText(currentList.getAddress());
 
         TextView address = (TextView) itemView.findViewById(R.id.distance);
-        address.setText(currentList.getDistance() + "km");
+        address.setText(currentList.getDistance());
 
         TextView rating = (TextView) itemView.findViewById(R.id.rating);
         rating.setText(currentList.getEmail());

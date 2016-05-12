@@ -7,13 +7,13 @@ public class Human {
     private String name;
     private String address;
     private String email;
-    private Double distance;
+    private String distance;
     private String id;
 //    private boolean isDairyFree;
 //    private boolean isGlutenFree;
 //    private boolean isNutFree;
 
-    Human(String name, String address, String rating, Double distance, String id) {
+    Human(String name, String address, String rating, String distance, String id) {
         this.name = name;
         this.address = address;
         this.email = rating;
@@ -27,7 +27,7 @@ public class Human {
     public String getName() { return name; }
     public String getAddress() { return address; }
     public String getEmail() { return email; }
-    public Double getDistance() { return distance; }
+    public String getDistance() { return distance; }
     public String getId() { return id; }
 //    public boolean getDairy() { return isDairyFree; }
 //    public boolean getGluten() { return isGlutenFree; }
