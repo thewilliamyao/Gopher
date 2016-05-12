@@ -52,7 +52,7 @@ public class FoodDetails extends AppCompatActivity {
 
         //set text views
         titleText.setText(title);
-        priceText.setText("$" + price);
+        priceText.setText("$" + String.format("%.2f", price));
         descriptionText.setText(description);
 
         //set listeners

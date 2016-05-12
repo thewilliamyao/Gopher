@@ -16,12 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:id="@+id/image"
-                android:background="@color/light_gray"
-                android:scaleType="centerCrop"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -30,7 +24,7 @@
                 android:layout_marginLeft="16dp"
                 android:textSize="@dimen/title"
                 android:id="@+id/title"
-                android:layout_below="@+id/image"
+                android:textColor="@color/dark_purple"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"/>
@@ -40,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:text="Price"
+                android:textStyle="italic"
                 android:textSize="@dimen/subtitle"
                 android:id="@+id/price"
                 android:layout_below="@+id/title"

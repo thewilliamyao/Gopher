@@ -39,12 +39,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Title"
+                        android:textColor="@color/dark_purple"
                         android:id="@+id/title"
                         android:textSize="22dp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textStyle="italic"
                         android:text="Price"
                         android:id="@+id/price"/>
 
@@ -82,6 +84,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Cook Details:"
+                        android:textColor="@color/light_gray"
                         android:textSize="20dp"
                         android:layout_marginTop="25dp"
                         android:layout_marginLeft="16dp"/>
@@ -142,6 +145,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Cook Name"
+                            android:textColor="@color/dark_purple"
                             android:id="@+id/cookName"
                             android:textSize="18dp"/>
 
