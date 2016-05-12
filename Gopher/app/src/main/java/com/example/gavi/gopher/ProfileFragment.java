@@ -51,8 +51,9 @@ public class ProfileFragment extends Fragment {
                 R.id.profile_header_container, new ProfileHeaderFragment()
         ).commit();
 
+//
 //        userRef = Modules.connectDB(getActivity(), "/meals_bought/" + userid);
-//        defRef = Modules.connectDB(getActivity(), "meals_bought");
+//        defRef = Modules.connectDB(getActivity(), "/meals_bought");
 //
 //        gopherView = (TextView) view.findViewById(R.id.gopher_points_field);
 //        soldView = (TextView) view.findViewById(R.id.meals_sold_field);
