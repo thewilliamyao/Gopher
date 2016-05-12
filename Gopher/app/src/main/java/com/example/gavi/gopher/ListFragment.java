@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,6 +54,9 @@ public class ListFragment extends Fragment {
     private ArrayAdapter<Human> adp;
     private String fullname;
     private int counter = 0;
+    private AdapterView p = null;
+    private int po = 0;
+    private View vi = null;
     FloatingActionButton fab1;
 
     @Override
@@ -80,41 +84,48 @@ public class ListFragment extends Fragment {
             System.out.println();
             final ListView list = (ListView) v.findViewById(R.id.item_listViewTwo);
             list.setAdapter(adapter);
-
             list.setClickable(true);
             System.out.println("Clickable!!");
+
+
 
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                         long id) {
-
-                    ListItem food = (ListItem) parent.getAdapter().getItem(position);
-                    String theid = food.getId();
-                    Meal mmeal = idtomeal.get(theid);
-                    System.out.println("List" + food.getTitle());
-                    Intent intent = new Intent(getActivity(), FoodDetails.class);
-
-//                        intent.putExtra("KEY_title", food.getTitle());
-//                        intent.putExtra("KEY_address", food.getAddress());
-//                        intent.putExtra("KEY_chefname", food.getChefName());
-////                        intent.putExtra("KEY_rating", Double.toString(food.getRating()));
-//                        intent.putExtra("KEY_price", Double.toString(food.getPrice()));
-//                        intent.putExtra("KEY_distance", Double.toString(food.getDistance()));
-//                        intent.putExtra("KEY_glut", food.getGluten());
-//                        intent.putExtra("KEY_nut", food.getNut());
-//                        intent.putExtra("KEY_dairy", food.getDairy());
-
-                    intent.putExtra("title", mmeal.getTitle());
-                    intent.putExtra("price", mmeal.getPrice());
-                    intent.putExtra("description", mmeal.getDescription());
-                    intent.putExtra("id", mmeal.getId());
-
-                    startActivity(intent);
-
-                    System.out.println("intent!!");
+                    p = parent;
+                    po = position;
+                    vi = view;
+                    SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+                    String userID = myPrefs.getString(Constants.USER_ID, "");
+                    Firebase mealID = Modules.connectDB(getActivity(), "/users/" + userID + "/mealBuyingID");
+                    mealID.addListenerForSingleValueEvent(new ValueEventListener() {
+                        public void onDataChange(DataSnapshot snapshot) {
+                            if (snapshot.getValue().equals("")) { //no meal bought
+                                ListItem food = (ListItem) p.getAdapter().getItem(po);
+                                String theid = food.getId();
+                                Meal mmeal = idtomeal.get(theid);
+                                System.out.println("List" + food.getTitle());
+                                Intent intent = new Intent(getActivity(), FoodDetails.class);
 
 
+                                intent.putExtra("title", mmeal.getTitle());
+                                intent.putExtra("price", mmeal.getPrice());
+                                intent.putExtra("description", mmeal.getDescription());
+                                intent.putExtra("id", mmeal.getId());
+
+                                startActivity(intent);
+
+                                System.out.println("intent!!");
+
+                            } else {
+                                Snackbar.make(vi, "You can only buy one meal at a time!", Snackbar.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {}
+                    });
                 }
             });
 
@@ -129,38 +140,6 @@ public class ListFragment extends Fragment {
 
 //            humans.setClickable(true);
             System.out.println("Clickable!!");
-
-//            humans.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position,
-//                                        long id) {
-//
-//                    Human hu = (Human) parent.getAdapter().getItem(position);
-//                    String huid = hu.getId();
-//                    User uuser = idtouser.get(huid);
-//                    Intent intent = new Intent(getActivity(), FoodieDetails.class);
-//
-////                        intent.putExtra("KEY_title", food.getTitle());
-////                        intent.putExtra("KEY_address", food.getAddress());
-////                        intent.putExtra("KEY_chefname", food.getChefName());
-//////                        intent.putExtra("KEY_rating", Double.toString(food.getRating()));
-////                        intent.putExtra("KEY_price", Double.toString(food.getPrice()));
-////                        intent.putExtra("KEY_distance", Double.toString(food.getDistance()));
-////                        intent.putExtra("KEY_glut", food.getGluten());
-////                        intent.putExtra("KEY_nut", food.getNut());
-////                        intent.putExtra("KEY_dairy", food.getDairy());
-//                    String fullname = uuser.getFirstName() + " " + uuser.getLastName();
-//                    intent.putExtra("title", fullname);
-//                    intent.putExtra("email", uuser.getEmail());
-//                    intent.putExtra("description", uuser.getAddress());
-//
-//                    startActivity(intent);
-//
-//                    System.out.println("intent!!");
-//
-//
-//                }
-//            });
             fab1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -174,6 +153,18 @@ public class ListFragment extends Fragment {
 
             return v;
     }
+//
+//    public void onPause() {
+//        super.onPause();
+//        humanList.clear();
+//        newLists.clear();
+//    }
+//
+//    public void onStop() {
+//        super.onStop();
+//        humanList.clear();
+//        newLists.clear();
+//    }
 
 
     private void loadMeals() {
