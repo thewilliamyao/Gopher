@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 
 /**
@@ -33,6 +43,13 @@ public class ListFragment extends Fragment {
         // Required empty public constructor
     }
 
+    HashMap<String, Integer> keytoindex = new HashMap<String, Integer>();
+    private List<ListItem> newLists = new ArrayList<ListItem>();
+    List<Human> humanList = new ArrayList<Human>();
+    private ArrayAdapter<ListItem> adapter;
+    private ArrayAdapter<Human> adp;
+    private String fullname;
+    private int counter = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,20 +58,17 @@ public class ListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_list, container, false);
 
         super.onCreate(savedInstanceState);
+        Firebase.setAndroidContext(getActivity()); //need to do this in every file using firebase
 
         int userType = getUserType(this.getActivity().getApplicationContext());
         if (userType == Constants.FOODIE) {
 
-            List<ListItem> newLists = new ArrayList<ListItem>();
-
-            newLists.add(new ListItem("Grilled Cheese", 7.99 , "Rordon Gamsay", "33rd and North Charles Street", 4.5, 0.3, true, true, false));
-            newLists.add(new ListItem("Mac and Cheese", 8.99, "Fobby Blay", "30th and St.Paul's Street", 4.0, 0.3, true, true, false));
-            newLists.add(new ListItem("Garlic Tomato", 9.99, "Katherine Liu", "1E 31St Baltimore", 4.9, 0.5, true, false, true));
-            newLists.add(new ListItem("Seafood Pizza", 6.99, "Susie Wu", "2801 Univ Pkwy", 4.8, 0.6, true, true, true));
-            newLists.add(new ListItem("Egg and Cheese", 8.99, "Duan L", "3400 St.Paul's Street", 4.0, 0.7, true, true, false));
-            newLists.add(new ListItem("Mac and Cheese", 8.99, "Jessie L", "3500th North Charles Street", 4.0, 0.8, true, true, false));
-
-            ArrayAdapter<ListItem> adapter = new ListViewAdapter(getActivity().getApplicationContext(), R.layout.listview_item_layout, newLists);
+            loadMeals();
+            adapter = new ListViewAdapter(getActivity().getApplicationContext(), R.layout.listview_item_layout, newLists);
+//            for (int i = 0; i < newLists.size();i++) {
+//                System.out.println("new" + newLists.get(i).toString());
+//            }
+            System.out.println();
             final ListView list = (ListView) v.findViewById(R.id.item_listViewTwo);
             list.setAdapter(adapter);
 
@@ -80,12 +94,12 @@ public class ListFragment extends Fragment {
                         intent.putExtra("KEY_title", food.getTitle());
                         intent.putExtra("KEY_address", food.getAddress());
                         intent.putExtra("KEY_chefname", food.getChefName());
-                        intent.putExtra("KEY_rating", Double.toString(food.getRating()));
+//                        intent.putExtra("KEY_rating", Double.toString(food.getRating()));
                         intent.putExtra("KEY_price", Double.toString(food.getPrice()));
                         intent.putExtra("KEY_distance", Double.toString(food.getDistance()));
-                        intent.putExtra("KEY_glut", food.getGluten());
-                        intent.putExtra("KEY_nut", food.getNut());
-                        intent.putExtra("KEY_dairy", food.getDairy());
+//                        intent.putExtra("KEY_glut", food.getGluten());
+//                        intent.putExtra("KEY_nut", food.getNut());
+//                        intent.putExtra("KEY_dairy", food.getDairy());
 
                         startActivity(intent);
                     }
@@ -99,16 +113,14 @@ public class ListFragment extends Fragment {
 
         } else {
 
-            List<Human> humanList = new ArrayList<Human>();
 
-            humanList.add(new Human("Gavi R", "Malone Hall", 5.0, 0.3, true, false, false));
-            humanList.add(new Human("Will Y", "Mattin Center", 5.0, 0.5, true, true, false));
-            humanList.add(new Human("Kathy W", "Garland Hall", 5.0, 0.6, true, true, true));
-            humanList.add(new Human("Sue L", "Hodson Hall", 5.0, 0.8, true, false, true));
-
-            ArrayAdapter<Human> adp = new HumanAdapter(getActivity().getApplicationContext(), R.layout.cook_listview_item, humanList);
+            loadUsers();
+            adp = new HumanAdapter(getActivity().getApplicationContext(), R.layout.cook_listview_item, humanList);
             ListView humans = (ListView) v.findViewById(R.id.item_listViewTwo);
             humans.setAdapter(adp);
+
+            humans.setClickable(true);
+            System.out.println("Clickable!!");
 
             humans.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -123,6 +135,155 @@ public class ListFragment extends Fragment {
 
 
         return v;
+    }
+
+
+    private void loadMeals() {
+
+        Firebase mealsRef = Modules.connectDB(getActivity(), "/meals");
+        mealsRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                //cast data to meal
+                final Meal meal = dataSnapshot.getValue(Meal.class);
+                System.out.println("#" + meal.getTitle());
+                //check if meal is bought
+                if (!meal.isBought()) {
+                    //add to array
+                    Firebase cookRef = Modules.connectDB(getActivity(), "/users/" + meal.getSellerID());
+                    cookRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() != null) {
+                                String fname = dataSnapshot.child("firstName").getValue().toString();
+                                String lname = dataSnapshot.child("lastName").getValue().toString();
+                                fullname = fname + " " + lname;
+                                System.out.println("##" + fullname);
+//                                names.add(fullname);
+                                ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), 0.3);
+                                System.out.println("###" + meal.getTitle());
+                                newLists.add(mm);
+                                keytoindex.put(meal.getId(), newLists.indexOf(mm));
+                                adapter.notifyDataSetChanged();
+//                                ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname , meal.getAddress(), 0.3);
+//                                newLists.add(mm);
+//                                keytoindex.put(meal.getId(), newLists.indexOf(mm));
+                            }
+
+//                            ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname , meal.getAddress(), 0.3);
+//                            System.out.println("!!" + names.size());
+//                            newLists.add(mm);
+//                            keytoindex.put(meal.getId(), newLists.indexOf(mm));
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+                        }
+                    });
+
+//                    ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), 0.3);
+//                    newLists.add(mm);
+//                    keytoindex.put(meal.getId(), newLists.indexOf(mm));
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                Meal meal = dataSnapshot.getValue(Meal.class);
+
+                if (keytoindex.containsKey(meal.getId())) {
+                    //index = hashmap.get(meal.getId())
+                    //update array at arr[index]
+                    Integer index = keytoindex.get(meal.getId());
+                    ListItem newmm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), 0.3);
+                    newLists.set(index, newmm);
+                }
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                Meal meal = dataSnapshot.getValue(Meal.class);
+
+                if (keytoindex.containsKey(meal.getId())) {
+                    //index = hashmap.get(meal.getId())
+                    //update array at arr[index]
+                    Integer index = keytoindex.get(meal.getId());
+                    newLists.remove(index);
+                }
+
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+
+    }
+
+
+    private void loadUsers() {
+
+        Firebase mealsRef = Modules.connectDB(getActivity(), "/users");
+        mealsRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                //cast data to meal
+                User user = dataSnapshot.getValue(User.class);
+                    Human hh = new Human(user.getFirstName()+ " " + user.getLastName(), user.getAddress(), user.getEmail() , 0.3d);
+                    humanList.add(hh);
+                    adp.notifyDataSetChanged();
+//                    keytoindex.put(meal.getId(), newLists.indexOf(mm));
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                Meal meal = dataSnapshot.getValue(Meal.class);
+
+                if (keytoindex.containsKey(meal.getId())) {
+                    //index = hashmap.get(meal.getId())
+                    //update array at arr[index]
+                    Integer index = keytoindex.get(meal.getId());
+                    ListItem newmm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), 0.3);
+                    newLists.set(index, newmm);
+                }
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                Meal meal = dataSnapshot.getValue(Meal.class);
+
+                if (keytoindex.containsKey(meal.getId())) {
+                    //index = hashmap.get(meal.getId())
+                    //update array at arr[index]
+                    Integer index = keytoindex.get(meal.getId());
+                    newLists.remove(index);
+                }
+
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {}
+        });
+
     }
 
     public static int getUserType(Context context){

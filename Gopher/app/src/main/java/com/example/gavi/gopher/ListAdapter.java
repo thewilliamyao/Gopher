@@ -51,8 +51,8 @@ public class ListAdapter extends ArrayAdapter<ListItem> {
         TextView address = (TextView) itemView.findViewById(R.id.address);
         address.setText(currentList.getAddress());
 
-        TextView rating = (TextView) itemView.findViewById(R.id.rating);
-        rating.setText(Double.toString(currentList.getRating()));
+//        TextView rating = (TextView) itemView.findViewById(R.id.rating);
+//        rating.setText(Double.toString(currentList.getRating()));
 
         return itemView;
 
