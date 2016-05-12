@@ -175,7 +175,10 @@ public class FoodiePendingFrag extends Fragment {
                                 sDialog.dismiss();
 
                                 //change meal bought flag to false
-                                Modules.connectDB(getActivity(), "/meals/" + cook.getMealSellingID()).child("bought").setValue(false);
+                                Firebase boughtRef = Modules.connectDB(getActivity(), "/meals/" + cook.getMealSellingID()).child("bought");
+                                        if (boughtRef != null) {
+                                            boughtRef.setValue(false);
+                                        }
 
                             }
                         })
