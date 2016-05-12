@@ -100,19 +100,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="To let nearby cooks know that you're hungry,"
-                    android:id="@+id/textView5" />
+                    android:id="@+id/hint1" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="tap on the wedge on the top right corner"
-                    android:id="@+id/textView6" />
+                    android:id="@+id/hint2" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="and share your location with cooks."
-                    android:id="@+id/textView7" />
+                    android:id="@+id/hint3" />
             </LinearLayout>
 
         </LinearLayout>
