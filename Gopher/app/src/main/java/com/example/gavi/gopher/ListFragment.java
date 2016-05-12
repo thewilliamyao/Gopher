@@ -32,7 +32,6 @@ import java.util.Queue;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ListFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
 public class ListFragment extends Fragment {
@@ -44,6 +43,7 @@ public class ListFragment extends Fragment {
     }
 
     HashMap<String, Meal> idtomeal = new HashMap<String, Meal>();
+    HashMap<String, User> idtouser = new HashMap<String, User>();
     HashMap<String, Integer> keytoindex = new HashMap<String, Integer>();
     HashMap<String, Integer> keytoindex2 = new HashMap<String, Integer>();
     private List<ListItem> newLists = new ArrayList<ListItem>();
@@ -82,29 +82,27 @@ public class ListFragment extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                         long id) {
 
-                    switch (position) {
-                        case 0:
-                        case 1:
-                        case 2:
-                        case 3:
-                        case 4:
-                        case 5:
                         ListItem food = (ListItem) parent.getAdapter().getItem(position);
-
+                        String theid = food.getId();
+                        Meal mmeal = idtomeal.get(theid);
                         Intent intent = new Intent(getActivity(), FoodDetails.class);
 
-                        intent.putExtra("KEY_title", food.getTitle());
-                        intent.putExtra("KEY_address", food.getAddress());
-                        intent.putExtra("KEY_chefname", food.getChefName());
-//                        intent.putExtra("KEY_rating", Double.toString(food.getRating()));
-                        intent.putExtra("KEY_price", Double.toString(food.getPrice()));
-                        intent.putExtra("KEY_distance", Double.toString(food.getDistance()));
+//                        intent.putExtra("KEY_title", food.getTitle());
+//                        intent.putExtra("KEY_address", food.getAddress());
+//                        intent.putExtra("KEY_chefname", food.getChefName());
+////                        intent.putExtra("KEY_rating", Double.toString(food.getRating()));
+//                        intent.putExtra("KEY_price", Double.toString(food.getPrice()));
+//                        intent.putExtra("KEY_distance", Double.toString(food.getDistance()));
 //                        intent.putExtra("KEY_glut", food.getGluten());
 //                        intent.putExtra("KEY_nut", food.getNut());
 //                        intent.putExtra("KEY_dairy", food.getDairy());
 
+                    intent.putExtra("title", mmeal.getTitle());
+                    intent.putExtra("price", mmeal.getPrice());
+                    intent.putExtra("description", mmeal.getDescription());
+                    intent.putExtra("id", mmeal.getId());
+
                         startActivity(intent);
-                    }
 
                     System.out.println("intent!!");
 
@@ -122,17 +120,41 @@ public class ListFragment extends Fragment {
             ListView humans = (ListView) v.findViewById(R.id.item_listViewTwo);
             humans.setAdapter(adp);
 
-            humans.setClickable(true);
+//            humans.setClickable(true);
             System.out.println("Clickable!!");
 
-            humans.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position,
-                                        long id) {
-                    //lalala
+//            humans.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position,
+//                                        long id) {
+//
+//                    Human hu = (Human) parent.getAdapter().getItem(position);
+//                    String huid = hu.getId();
+//                    User uuser = idtouser.get(huid);
+//                    Intent intent = new Intent(getActivity(), FoodieDetails.class);
+//
+////                        intent.putExtra("KEY_title", food.getTitle());
+////                        intent.putExtra("KEY_address", food.getAddress());
+////                        intent.putExtra("KEY_chefname", food.getChefName());
+//////                        intent.putExtra("KEY_rating", Double.toString(food.getRating()));
+////                        intent.putExtra("KEY_price", Double.toString(food.getPrice()));
+////                        intent.putExtra("KEY_distance", Double.toString(food.getDistance()));
+////                        intent.putExtra("KEY_glut", food.getGluten());
+////                        intent.putExtra("KEY_nut", food.getNut());
+////                        intent.putExtra("KEY_dairy", food.getDairy());
+//                    String fullname = uuser.getFirstName() + " " + uuser.getLastName();
+//                    intent.putExtra("title", fullname);
+//                    intent.putExtra("email", uuser.getEmail());
+//                    intent.putExtra("description", uuser.getAddress());
+//
+//                    startActivity(intent);
+//
+//                    System.out.println("intent!!");
+//
+//
+//                }
+//            });
 
-                }
-            });
 
         }
 
@@ -202,6 +224,7 @@ public class ListFragment extends Fragment {
                     Integer index = keytoindex.get(meal.getId());
                     ListItem newmm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), 0.3, meal.getId());
                     newLists.set(index, newmm);
+                    idtomeal.put(meal.getId(), meal);
                 }
                 //cast data to meal
 //                final Meal meal = dataSnapshot.getValue(Meal.class);
@@ -259,6 +282,7 @@ public class ListFragment extends Fragment {
 //                }
                 final List<ListItem> temp = new ArrayList<ListItem>();
                 final HashMap<String, Integer> temphash = new HashMap<String, Integer>();
+                final HashMap<String, Meal> tempidtomeal = new HashMap<String, Meal>();
                 //cast data to meal
                 final Meal meal = dataSnapshot.getValue(Meal.class);
                 System.out.println("#" + meal.getTitle());
@@ -278,11 +302,13 @@ public class ListFragment extends Fragment {
                                 ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), 0.3, meal.getId());
                                 System.out.println("###" + meal.getTitle());
                                 temp.add(mm);
-                                idtomeal.put(meal.getId(), meal);
+                                tempidtomeal.put(meal.getId(), meal);
                                 temphash.put(meal.getId(), temp.indexOf(mm));
                                 newLists = temp;
                                 keytoindex = temphash;
+                                idtomeal = tempidtomeal;
                                 adapter.notifyDataSetChanged();
+                                tempidtomeal.clear();
                                 temphash.clear();
                                 temp.clear();
 //                                ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname , meal.getAddress(), 0.3);
@@ -324,9 +350,10 @@ public class ListFragment extends Fragment {
 
                 //cast data to meal
                 User user = dataSnapshot.getValue(User.class);
-                Human hh = new Human(user.getFirstName()+ " " + user.getLastName(), user.getAddress(), user.getEmail() , 0.3d);
+                Human hh = new Human(user.getFirstName()+ " " + user.getLastName(), user.getAddress(), user.getEmail() , 0.3d, user.getId());
                 humanList.add(hh);
                 adp.notifyDataSetChanged();
+//                idtouser.put(user.getId(), user);
                 keytoindex2.put(user.getId(), humanList.indexOf(hh));
 
             }
@@ -338,8 +365,9 @@ public class ListFragment extends Fragment {
 
                 if (keytoindex2.containsKey(user.getId())) {
                     Integer index = keytoindex2.get(user.getId());
-                    Human newmm = new Human(user.getFirstName()+" "+user.getLastName(), user.getAddress(), user.getEmail(), 0.3d);
+                    Human newmm = new Human(user.getFirstName()+" "+user.getLastName(), user.getAddress(), user.getEmail(), 0.3d, user.getId());
                     humanList.set(index, newmm);
+//                    idtouser.put(user.getId(), user);
                 }
 
             }

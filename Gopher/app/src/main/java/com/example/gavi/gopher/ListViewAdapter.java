@@ -45,10 +45,10 @@ public class ListViewAdapter extends ArrayAdapter<ListItem> {
         title.setText(currentList.getTitle());
 
         TextView chefName = (TextView) itemView.findViewById(R.id.chef_name);
-        chefName.setText(currentList.getChefName());
+        chefName.setText("Cooked by " + currentList.getChefName());
 
         TextView price = (TextView) itemView.findViewById(R.id.price);
-        price.setText(Double.toString(currentList.getPrice()));
+        price.setText("$" + Double.toString(currentList.getPrice()));
 
         TextView address = (TextView) itemView.findViewById(R.id.distance);
         address.setText(currentList.getDistance() + "km");
