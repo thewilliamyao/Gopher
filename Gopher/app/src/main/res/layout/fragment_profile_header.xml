@@ -124,7 +124,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="4dp"
-        android:background="@color/dark_purple"
+        android:background="@color/dark_beige"
         />
 
 </LinearLayout>
