@@ -25,7 +25,7 @@
                 android:layout_height="70dp"
                 android:id="@+id/imageView"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_local_cafe_black_80dp"
+                android:src="@drawable/ic_local_cafe_white_80dp"
                 android:scaleType="centerCrop"/>
 
             <com.wang.avi.AVLoadingIndicatorView
