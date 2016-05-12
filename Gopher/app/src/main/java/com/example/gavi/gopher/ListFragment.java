@@ -43,9 +43,10 @@ public class ListFragment extends Fragment {
         // Required empty public constructor
     }
 
+    HashMap<String, Meal> idtomeal = new HashMap<String, Meal>();
     HashMap<String, Integer> keytoindex = new HashMap<String, Integer>();
     private List<ListItem> newLists = new ArrayList<ListItem>();
-    List<Human> humanList = new ArrayList<Human>();
+    private List<Human> humanList = new ArrayList<Human>();
     private ArrayAdapter<ListItem> adapter;
     private ArrayAdapter<Human> adp;
     private String fullname;
@@ -161,14 +162,13 @@ public class ListFragment extends Fragment {
                                 fullname = fname + " " + lname;
                                 System.out.println("##" + fullname);
 //                                names.add(fullname);
-                                ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), 0.3);
+                                ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), 0.3, meal.getId());
                                 System.out.println("###" + meal.getTitle());
                                 newLists.add(mm);
+                                idtomeal.put(meal.getId(), meal);
+//                                newLists.add(mm);
                                 keytoindex.put(meal.getId(), newLists.indexOf(mm));
                                 adapter.notifyDataSetChanged();
-//                                ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname , meal.getAddress(), 0.3);
-//                                newLists.add(mm);
-//                                keytoindex.put(meal.getId(), newLists.indexOf(mm));
                             }
 
 //                            ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname , meal.getAddress(), 0.3);
@@ -198,24 +198,106 @@ public class ListFragment extends Fragment {
                     //index = hashmap.get(meal.getId())
                     //update array at arr[index]
                     Integer index = keytoindex.get(meal.getId());
-                    ListItem newmm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), 0.3);
+                    ListItem newmm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), 0.3, meal.getId());
                     newLists.set(index, newmm);
                 }
-
+                //cast data to meal
+//                final Meal meal = dataSnapshot.getValue(Meal.class);
+//                System.out.println("#" + meal.getTitle());
+//                //check if meal is bought
+//                if (!meal.isBought()) {
+//                    //add to array
+//                    Firebase cookRef = Modules.connectDB(getActivity(), "/users/" + meal.getSellerID());
+//                    cookRef.addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                            if (dataSnapshot.getValue() != null) {
+//                                String fname = dataSnapshot.child("firstName").getValue().toString();
+//                                String lname = dataSnapshot.child("lastName").getValue().toString();
+//                                fullname = fname + " " + lname;
+//                                System.out.println("##" + fullname);
+////                                names.add(fullname);
+//                                ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), 0.3, meal.getId());
+//                                System.out.println("###" + meal.getTitle());
+//                                newLists.add(mm);
+//                                idtomeal.put(meal.getId(), meal);
+//                                adapter.notifyDataSetChanged();
+////                                ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname , meal.getAddress(), 0.3);
+////                                newLists.add(mm);
+////                                keytoindex.put(meal.getId(), newLists.indexOf(mm));
+//                            }
+//
+////                            ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname , meal.getAddress(), 0.3);
+////                            System.out.println("!!" + names.size());
+////                            newLists.add(mm);
+////                            keytoindex.put(meal.getId(), newLists.indexOf(mm));
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(FirebaseError firebaseError) {
+//                        }
+//                    });
+//
+////                    ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), 0.3);
+////                    newLists.add(mm);
+////                    keytoindex.put(meal.getId(), newLists.indexOf(mm));
+//                }
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                Meal meal = dataSnapshot.getValue(Meal.class);
+//                Meal meal = dataSnapshot.getValue(Meal.class);
+//
+//                if (keytoindex.containsKey(meal.getId())) {
+//                    //index = hashmap.get(meal.getId())
+//                    //update array at arr[index]
+//                    Integer index = keytoindex.get(meal.getId());
+//                    newLists.remove(index);
+//                }
+                final List<ListItem> temp = new ArrayList<ListItem>();
+                final HashMap<String, Integer> temphash = new HashMap<String, Integer>();
+                //cast data to meal
+                final Meal meal = dataSnapshot.getValue(Meal.class);
+                System.out.println("#" + meal.getTitle());
+                //check if meal is bought
+                if (!meal.isBought()) {
+                    //add to array
+                    Firebase cookRef = Modules.connectDB(getActivity(), "/users/" + meal.getSellerID());
+                    cookRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() != null) {
+                                String fname = dataSnapshot.child("firstName").getValue().toString();
+                                String lname = dataSnapshot.child("lastName").getValue().toString();
+                                fullname = fname + " " + lname;
+                                System.out.println("##" + fullname);
+//                                names.add(fullname);
+                                ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), 0.3, meal.getId());
+                                System.out.println("###" + meal.getTitle());
+                                temp.add(mm);
+                                idtomeal.put(meal.getId(), meal);
+                                temphash.put(meal.getId(), temp.indexOf(mm));
+                                newLists = temp;
+                                keytoindex = temphash;
+                                adapter.notifyDataSetChanged();
+                                temphash.clear();
+                                temp.clear();
+//                                ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname , meal.getAddress(), 0.3);
+//                                newLists.add(mm);
+//                                keytoindex.put(meal.getId(), newLists.indexOf(mm));
+                            }
+                        }
 
-                if (keytoindex.containsKey(meal.getId())) {
-                    //index = hashmap.get(meal.getId())
-                    //update array at arr[index]
-                    Integer index = keytoindex.get(meal.getId());
-                    newLists.remove(index);
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+                        }
+                    });
+
+//                    ListItem mm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), 0.3);
+//                    newLists.add(mm);
+//                    keytoindex.put(meal.getId(), newLists.indexOf(mm));
                 }
-
 
             }
 
@@ -250,29 +332,16 @@ public class ListFragment extends Fragment {
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                Meal meal = dataSnapshot.getValue(Meal.class);
-
-                if (keytoindex.containsKey(meal.getId())) {
-                    //index = hashmap.get(meal.getId())
-                    //update array at arr[index]
-                    Integer index = keytoindex.get(meal.getId());
-                    ListItem newmm = new ListItem(meal.getTitle(), meal.getPrice(), fullname, meal.getAddress(), 0.3);
-                    newLists.set(index, newmm);
-                }
+//                humanList.clear();
+//                User user = dataSnapshot.getValue(User.class);
+//                Human hh = new Human(user.getFirstName()+ " " + user.getLastName(), user.getAddress(), user.getEmail() , 0.3d);
+//                humanList.add(hh);
+//                adp.notifyDataSetChanged();
 
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                Meal meal = dataSnapshot.getValue(Meal.class);
-
-                if (keytoindex.containsKey(meal.getId())) {
-                    //index = hashmap.get(meal.getId())
-                    //update array at arr[index]
-                    Integer index = keytoindex.get(meal.getId());
-                    newLists.remove(index);
-                }
 
 
             }
