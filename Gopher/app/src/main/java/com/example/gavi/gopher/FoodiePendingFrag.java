@@ -112,18 +112,20 @@ public class FoodiePendingFrag extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Meal meal = dataSnapshot.getValue(Meal.class);
 
-                if (meal.isReady()) {
-                    mealReady();
-                } else {
-                    mealNotReady();
+                if (meal != null) {
+                    if (meal.isReady()) {
+                        mealReady();
+                    } else {
+                        mealNotReady();
+                    }
+
+                    //set UI data
+                    titleText.setText(meal.getTitle());
+                    priceText.setText("$" + String.format("%.2f", meal.getPrice()));
+                    descriptionText.setText(meal.getDescription());
+
+                    loadCook(meal.getSellerID());
                 }
-
-                //set UI data
-                titleText.setText(meal.getTitle());
-                priceText.setText("$" + String.format("%.2f", meal.getPrice()));
-                descriptionText.setText(meal.getDescription());
-
-                loadCook(meal.getSellerID());
             }
 
             @Override
