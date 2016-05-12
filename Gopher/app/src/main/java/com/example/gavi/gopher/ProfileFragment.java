@@ -29,9 +29,7 @@ public class ProfileFragment extends Fragment {
     private TextView gopherView;
     private TextView soldView;
     private TextView boughtView;
-    private TextView hintView1;
-    private TextView hintView2;
-    private TextView hintView3;
+
     private Firebase defRef;
     private Firebase userRef;
     private Firebase upRef;
@@ -60,16 +58,6 @@ public class ProfileFragment extends Fragment {
         soldView = (TextView) view.findViewById(R.id.meals_sold_field);
         boughtView = (TextView) view.findViewById(R.id.meals_bought_field);
 
-
-        int userType = ListFragment.getUserType(this.getActivity().getApplicationContext());
-        System.out.println(userType);
-        if (userType == Constants.FOODIE) {
-            //do nothing
-        } else {
-            hintView1.setVisibility(View.VISIBLE);
-            hintView2.setVisibility(View.VISIBLE);
-            hintView3.setVisibility(View.VISIBLE);
-        }
 
         setData();
 
