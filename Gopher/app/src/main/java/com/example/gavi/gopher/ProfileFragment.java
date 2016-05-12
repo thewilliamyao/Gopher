@@ -34,6 +34,7 @@ public class ProfileFragment extends Fragment {
     private TextView hintView3;
     private Firebase defRef;
     private Firebase userRef;
+    private Firebase upRef;
 
 
     View view;
@@ -51,27 +52,26 @@ public class ProfileFragment extends Fragment {
                 R.id.profile_header_container, new ProfileHeaderFragment()
         ).commit();
 
-//
-//        userRef = Modules.connectDB(getActivity(), "/meals_bought/" + userid);
-//        defRef = Modules.connectDB(getActivity(), "/meals_bought");
-//
-//        gopherView = (TextView) view.findViewById(R.id.gopher_points_field);
-//        soldView = (TextView) view.findViewById(R.id.meals_sold_field);
-//        boughtView = (TextView) view.findViewById(R.id.meals_bought_field);
-//        hintView1 = (TextView) view.findViewById(R.id.hint1);
-//        hintView2 = (TextView) view.findViewById(R.id.hint2);
-//        hintView3 = (TextView) view.findViewById(R.id.hint3);
-//
-//        int userType = ListFragment.getUserType(this.getActivity().getApplicationContext());
-//        if (userType == Constants.FOODIE) {
-//            //do nothing
-//        } else {
-//            hintView1.setVisibility(View.VISIBLE);
-//            hintView2.setVisibility(View.VISIBLE);
-//            hintView3.setVisibility(View.VISIBLE);
-//        }
+        defRef = Modules.connectDB(getActivity(), "/meals_bought");
 
-//        setData();
+        gopherView = (TextView) view.findViewById(R.id.gopher_points_field);
+        soldView = (TextView) view.findViewById(R.id.meals_sold_field);
+        boughtView = (TextView) view.findViewById(R.id.meals_bought_field);
+        hintView1 = (TextView) view.findViewById(R.id.hint1);
+        hintView2 = (TextView) view.findViewById(R.id.hint2);
+        hintView3 = (TextView) view.findViewById(R.id.hint3);
+
+        int userType = ListFragment.getUserType(this.getActivity().getApplicationContext());
+        System.out.println(userType);
+        if (userType == Constants.FOODIE) {
+            //do nothing
+        } else {
+            hintView1.setVisibility(View.VISIBLE);
+            hintView2.setVisibility(View.VISIBLE);
+            hintView3.setVisibility(View.VISIBLE);
+        }
+
+        setData();
 
         return view;
     }
@@ -84,6 +84,7 @@ public class ProfileFragment extends Fragment {
         SharedPreferences myPrefs =  PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         userid = myPrefs.getString(Constants.USER_ID, "");
 
+        userRef = Modules.connectDB(getActivity(), "/meals_bought/" + userid);
         //get user ID -> meal ID to get meal
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -92,40 +93,42 @@ public class ProfileFragment extends Fragment {
                 int mealsSold;
                 int mealsBought;
                 String mealsSoldString;
+                String mealsBoughtString;
                 Object a = dataSnapshot.child("mealsSold").getValue();
                 if (a != null) {
+                    System.out.println("not NULL");
                     mealsSoldString = a.toString();
+                    mealsBoughtString = dataSnapshot.child("mealsBought").getValue().toString();
+                    System.out.println(mealsSoldString + " and " + mealsBoughtString);
+                    mealsSold = Integer.parseInt(mealsSoldString);
+                    mealsBought = Integer.parseInt(mealsBoughtString);
+
+                    GopherPoint = (mealsBought * 1) + (mealsSold * 5);
+                    gopherView.setText("" + GopherPoint);
+                    soldView.setText("" + mealsSold);
+                    boughtView.setText("" + mealsBought);
+
                 } else {
-                    mealsSoldString = "";
+
 
                     Map<String, String> newEntryData = new HashMap<String, String>();
                     newEntryData.put("mealsSold", "0");
                     newEntryData.put("mealsBought", "0");
 
-                    Map<String, Map<String, String>> newEntry = new HashMap<String, Map<String, String>>();
-                    newEntry.put(userid, newEntryData);
+                    /*Map<String, Map<String, String>> newEntry = new HashMap<String, Map<String, String>>();
+                    newEntry.put(userid, newEntryData);*/
+                    upRef = defRef.child(userid);
+                    upRef.setValue(newEntryData);
 
-                    defRef.setValue(newEntry);
+                    /*Map<String, Object> mealsSoldMap = new HashMap<String, Object>();
+                    mealsSoldMap.put("nickname", "Alan The Machine");*/
+
+                    gopherView.setText("0");
+                    soldView.setText("0");
+                    boughtView.setText("0");
 
                 }
 
-                String mealsBoughtString = dataSnapshot.child("mealsBought").getValue().toString();
-                System.out.println(mealsSoldString + " and " + mealsBoughtString);
-                if (mealsSoldString.equals("")) {
-                    mealsSold = 0;
-                } else {
-                    mealsSold = Integer.parseInt(mealsSoldString);
-                }
-                if (mealsBoughtString.equals("")) {
-                    mealsBought = 0;
-                } else {
-                    mealsBought = Integer.parseInt(mealsBoughtString);
-                }
-
-                GopherPoint = (mealsBought * 1) + (mealsSold * 5);
-                gopherView.setText("" + GopherPoint);
-                soldView.setText("" + mealsSold);
-                boughtView.setText("" + mealsBought);
 
 
             }

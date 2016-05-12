@@ -183,7 +183,7 @@ public class CookPendingOrdersFrag extends Fragment {
         rightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                finalizePurchase();
             }
         });
     }
@@ -204,6 +204,11 @@ public class CookPendingOrdersFrag extends Fragment {
                 userRef.child("mealSellingID").setValue("");
             }
         });
+    }
+
+    //meal has been picked up - finalize purchase
+    private void finalizePurchase() {
+
     }
 
 }
